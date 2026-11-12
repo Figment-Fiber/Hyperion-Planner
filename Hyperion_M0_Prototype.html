@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hyperion Planner | M0 prototype</title>
+<style>
+:root{color-scheme:dark;--bg:#0a131d;--pane:#101e2b;--soft:#152638;--edge:#263a4c;--fg:#ecf4fa;--muted:#9aafc1;--blue:#6abaff;--bright:#a5d6ff;--teal:#7dd4c2;--amber:#ffd08b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 Inter,"Segoe UI",sans-serif}button,input{font:inherit}button{cursor:pointer;border:1px solid var(--edge);border-radius:7px;color:var(--fg);padding:8px 12px;background:var(--soft);white-space:nowrap}button:hover:not(:disabled){border-color:var(--blue)}button:focus-visible,input:focus-visible{outline:2px solid var(--bright);outline-offset:3px}button:disabled{opacity:.48;cursor:default}.primary{background:var(--blue);color:#071623;font-weight:700;border-color:var(--blue)}.ghost{background:transparent}.quiet{color:var(--muted)}.mast{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:19px 28px;border-bottom:1px solid var(--edge);background:#0e1b28}.brand{display:flex;align-items:center;gap:12px;font-size:18px;font-weight:750;letter-spacing:.02em}.mark{width:30px;height:30px;position:relative;border-left:3px solid var(--blue);border-right:3px solid var(--blue);border-radius:4px}.mark:before,.mark:after{content:"";position:absolute;top:13px;left:-1px;width:26px;height:2px;background:var(--blue);transform:rotate(38deg)}.mark:after{transform:rotate(-38deg)}.badge{color:var(--amber);font-size:12px;border:1px solid #6a573b;border-radius:20px;padding:4px 10px}.wrap{max-width:1450px;margin:auto;padding:24px 28px}.heading{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:17px}.heading h1{font-size:29px;letter-spacing:-.035em;margin:0 0 3px}.heading p{margin:0;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap}.work{display:grid;grid-template-columns:205px minmax(280px,1fr) 270px;gap:12px}.pane{border:1px solid var(--edge);border-radius:11px;background:var(--pane);min-width:0;overflow:hidden}.pane h2{font-size:15px;margin:0}.panehead{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--edge)}.inside{padding:14px}.rows{display:grid;gap:6px}.row{width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:8px;background:transparent}.row[aria-pressed=true]{border-color:var(--blue);background:#172e44}.row small{color:var(--muted)}.toolbox{display:grid;gap:8px;margin-top:18px}.toolbox button{width:100%;text-align:left}.maphead{gap:6px;flex-wrap:wrap}.map{position:relative;isolation:isolate;height:365px;overflow:hidden;background-color:#132533;background-image:linear-gradient(#7298aa17 1px,transparent 1px),linear-gradient(90deg,#7298aa17 1px,transparent 1px),radial-gradient(ellipse at 15% 74%,#214238 0%,#172d32 32%,transparent 55%);background-size:30px 30px,30px 30px,100% 100%}.map.adding{cursor:crosshair}.map:before,.map:after{content:"";position:absolute;pointer-events:none;z-index:-1;inset:11% -17% 25% 26%;border:2px solid #6c9ba53e;border-radius:53% 0 0 40%;transform:rotate(-24deg);box-shadow:0 13px 0 -1px #6c9ba527,0 26px 0 -1px #6c9ba525,0 39px 0 -1px #6c9ba51e,0 52px 0 -1px #6c9ba518}.map:after{inset:48% 45% -35% -24%;transform:rotate(13deg)}.north{position:absolute;top:13px;right:15px;color:var(--muted);font-size:12px;pointer-events:none}.mapnote{position:absolute;left:12px;bottom:11px;background:#0b1723d9;border:1px solid var(--edge);border-radius:5px;padding:4px 7px;font-size:11px;color:var(--muted);pointer-events:none}.pin{position:absolute;transform:translate(-50%,-50%);z-index:2;border:2px solid var(--blue);background:#0c2134;border-radius:50%;width:32px;height:32px;padding:0;font-weight:750;box-shadow:0 0 0 4px #69baff25}.pin[aria-pressed=true]{background:var(--blue);color:#0a1926}.spanline{position:absolute;z-index:1;transform-origin:0 center;height:14px;padding:0;border:0;background:transparent;border-radius:2px}.spanline:before{content:"";display:block;width:100%;height:3px;background:var(--teal);box-shadow:0 0 12px #7dd4c28a}.spanline[aria-pressed=true]:before{height:4px;background:var(--blue)}.status{min-height:46px;padding:11px 15px;color:var(--muted);border-top:1px solid var(--edge)}label{display:block;color:var(--muted);margin:14px 0 5px}.kv{display:flex;justify-content:space-between;gap:8px;margin:10px 0;color:var(--muted)}.kv strong{color:var(--fg)}input{width:100%;border:1px solid var(--edge);border-radius:7px;background:#0a1722;color:var(--fg);padding:8px 9px}.input-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.error{color:var(--amber);min-height:20px;margin:7px 0 0}.source{padding:10px;border:1px solid var(--edge);border-radius:7px;color:var(--muted);margin-top:12px}.source strong{display:block;color:var(--bright);margin-top:2px}.results{margin-top:12px}.resultbody{padding:13px 15px;min-height:70px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 4px}.metric{padding:10px;background:var(--soft);border-radius:7px;color:var(--muted)}.metric strong{display:block;color:var(--fg);font-size:17px}.foot{margin-top:12px;font-size:12px;color:var(--muted)}[hidden]{display:none!important}
+@media(max-width:960px){.work{grid-template-columns:160px minmax(220px,1fr) 215px}.wrap{padding:16px}.map{height:320px}}
+@media(max-width:720px){.mast{padding:13px 15px}.heading{align-items:start;flex-direction:column}.work{grid-template-columns:1fr}.topology{order:0}.map-pane{order:1}.inspector{order:2}.toolbox{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:9px}.map{height:275px}.metrics{grid-template-columns:1fr}.badge{white-space:nowrap}}
+</style>
+</head>
+<body>
+<header class="mast"><div class="brand"><i class="mark" aria-hidden="true"></i>Hyperion Planner</div><span class="badge">M0 · Interface prototype</span></header>
+<main class="wrap">
+  <div class="heading">
+    <div><h1>Two-site optical design</h1><p>Lay out a service path, review its span length, and try the simulation flow.</p></div>
+    <div class="actions"><button class="ghost" id="clear">Clear design</button><button id="sample">Load example</button><button class="primary" id="run">Run simulation</button></div>
+  </div>
+  <div class="work">
+    <section class="pane topology" aria-labelledby="network-title">
+      <div class="panehead"><h2 id="network-title">Network</h2></div>
+      <div class="inside">
+        <div class="rows" id="nodes"></div>
+        <div class="toolbox">
+          <button id="add">+ Place site</button>
+          <button id="keyboard-add">Place at preset point</button>
+          <button id="connect">Connect A and B</button>
+        </div>
+      </div>
+    </section>
+    <section class="pane map-pane" aria-labelledby="map-title">
+      <div class="panehead maphead"><h2 id="map-title">Route map</h2><span class="quiet" id="path">A → B</span></div>
+      <div id="map" class="map"><span class="north" aria-hidden="true">↑ N</span><span class="mapnote">Schematic map · illustrative scale</span><div id="map-points"></div></div>
+      <div class="status" id="status" role="status"></div>
+    </section>
+    <section class="pane inspector" aria-labelledby="span-title">
+      <div class="panehead"><h2 id="span-title">Span settings</h2></div>
+      <div class="inside">
+        <p id="span-placeholder" class="quiet">Select the fiber span to view its inputs.</p>
+        <form id="span-form" hidden novalidate>
+          <div class="kv"><span>Span</span><strong>A → B</strong></div>
+          <div class="kv"><span>Map estimate</span><strong id="estimate"></strong></div>
+          <label for="length">Engineered length (km)</label>
+          <input id="length" type="number" min="0" step="any" inputmode="decimal" placeholder="Use map estimate" aria-describedby="length-error">
+          <div class="input-actions"><button type="submit">Apply length</button><button type="button" class="ghost" id="use-map">Use map</button></div>
+          <div class="error" id="length-error" role="alert"></div>
+          <div class="source">Length used<strong id="source"></strong></div>
+        </form>
+      </div>
+    </section>
+  </div>
+  <section class="pane results" aria-labelledby="results-title">
+    <div class="panehead"><h2 id="results-title">Simulation results</h2><span class="badge">Illustrative values</span></div>
+    <div class="resultbody" id="results" role="status" aria-live="polite"></div>
+  </section>
+  <p class="foot">The simulation preview shows sample values. Optical results from GNPy are tracked separately in the M0 milestone record.</p>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const presets = [{x:.22,y:.69},{x:.73,y:.31}];
+const state = {nodes:[], connected:false, selection:null, adding:false, override:null, timer:null};
+const round = n => Number(n.toFixed(1));
+const estimate = () => round(Math.hypot((state.nodes[1].x-state.nodes[0].x)*120,(state.nodes[1].y-state.nodes[0].y)*70));
+const lengthText = n => n.toLocaleString(undefined,{maximumFractionDigits:4})+' km';
+const chosen = () => state.override ?? estimate();
+const origin = () => state.override === null ? 'map estimate' : 'engineered override';
+const pendingText = 'Ready. Run the simulation preview to see the results layout.';
+function status(message){ $('status').textContent=message; }
+function resetResult(message=pendingText){
+  clearTimeout(state.timer);
+  state.timer=null;
+  $('run').disabled=false;
+  $('run').textContent='Run simulation';
+  $('results').textContent=message;
+}
+function choice(label, value, onClick, css){
+  const el=document.createElement('button');
+  el.type='button'; el.className=css;
+  el.textContent=label; el.setAttribute('aria-pressed',String(state.selection===value));
+  el.addEventListener('click',onClick);
+  return el;
+}
+function select(value){
+  state.selection=value;
+  state.adding=false;
+  render();
+  status(value==='span'?'Fiber span selected. Review the estimate or apply an engineered length.':'Site '+value+' selected.');
+}
+function renderMap(){
+  const map=$('map'), layer=$('map-points');
+  layer.replaceChildren();
+  map.classList.toggle('adding',state.adding);
+  if(state.connected){
+    const [a,b]=state.nodes;
+    const dx=(b.x-a.x)*map.clientWidth, dy=(b.y-a.y)*map.clientHeight;
+    const span=choice('', 'span',()=>select('span'),'spanline');
+    span.setAttribute('aria-label','Select fiber span on map');
+    Object.assign(span.style,{left:a.x*100+'%',top:'calc('+a.y*100+'% - 7px)',width:Math.hypot(dx,dy)+'px',transform:'rotate('+Math.atan2(dy,dx)+'rad)'});
+    layer.append(span);
+  }
+  state.nodes.forEach(({x,y},i)=>{
+    const name='AB'[i], pin=choice(name,name,()=>select(name),'pin');
+    pin.setAttribute('aria-label','Select site '+name+' on map');
+    pin.style.left=x*100+'%'; pin.style.top=y*100+'%';
+    layer.append(pin);
+  });
+}
+function render(){
+  const list=$('nodes'); list.replaceChildren();
+  state.nodes.forEach((_,i)=>list.append(choice('Site '+'AB'[i],'AB'[i],()=>select('AB'[i]),'row')));
+  if(state.connected)list.append(choice('Fiber span A–B','span',()=>select('span'),'row'));
+  if(!state.nodes.length){ const empty=document.createElement('span'); empty.className='quiet'; empty.textContent='No sites placed.'; list.append(empty); }
+  $('add').disabled=$('keyboard-add').disabled=state.nodes.length===2;
+  $('connect').disabled=state.nodes.length!==2||state.connected;
+  $('path').textContent=state.connected?'Service A → B':'No connected service';
+  $('span-form').hidden=state.selection!=='span';
+  $('span-placeholder').hidden=state.selection==='span';
+  $('length').value=state.override??'';
+  $('length').removeAttribute('aria-invalid');
+  $('length-error').textContent='';
+  if(state.connected){
+    $('estimate').textContent=lengthText(estimate());
+    $('source').textContent=lengthText(chosen())+' · '+origin();
+  }
+  renderMap();
+}
+function load(withSample){
+  Object.assign(state,{nodes:withSample?[...presets]:[],connected:withSample,selection:withSample?'span':null,adding:false,override:null});
+  resetResult();
+  render();
+  status(withSample?'Example loaded. Select the span or change the engineered length.':'Place two sites, then connect them.');
+}
+function addPoint(point){
+  if(state.nodes.length===2)return;
+  if(state.nodes.some(node=>Math.hypot(node.x-point.x,node.y-point.y)<.06)){
+    status('Choose a point farther from the existing site.');
+    return;
+  }
+  state.nodes.push(point);
+  state.selection='AB'[state.nodes.length-1];
+  state.adding=false;
+  resetResult();render();
+  status(state.nodes.length===2?'Two sites placed. Connect A and B.':'Site A placed. Place site B.');
+}
+$('sample').addEventListener('click',()=>load(true));
+$('clear').addEventListener('click',()=>load(false));
+$('add').addEventListener('click',()=>{
+  state.adding=true;renderMap();
+  status('Click the map to place site '+'AB'[state.nodes.length]+'.');
+});
+$('keyboard-add').addEventListener('click',()=>{
+  const point=presets.find(p=>state.nodes.every(n=>Math.hypot(n.x-p.x,n.y-p.y)>=.06));
+  if(point)addPoint(point);
+});
+$('map').addEventListener('click',event=>{
+  if(!state.adding||event.target.closest('button'))return;
+  const rect=$('map').getBoundingClientRect();
+  const limit=n=>Math.min(.94,Math.max(.06,n));
+  addPoint({x:limit((event.clientX-rect.left)/rect.width),y:limit((event.clientY-rect.top)/rect.height)});
+});
+$('connect').addEventListener('click',()=>{
+  state.connected=true;resetResult();select('span');
+});
+function updateLength(value){
+  if(value===state.override)return;
+  state.override=value;
+  resetResult('Span length changed. Run again to refresh the preview.');
+  render();
+  status('Span updated to '+lengthText(chosen())+' ('+origin()+').');
+}
+$('span-form').addEventListener('submit',event=>{
+  event.preventDefault();
+  const field=$('length'), value=field.valueAsNumber;
+  if(field.validity.badInput||(field.value!==''&&(!Number.isFinite(value)||value<=0))){
+    field.setAttribute('aria-invalid','true');
+    $('length-error').textContent='Enter a positive length in kilometers.';
+    return;
+  }
+  field.removeAttribute('aria-invalid');
+  $('length-error').textContent='';
+  updateLength(field.value===''?null:value);
+});
+$('use-map').addEventListener('click',()=>{
+  $('length').value='';
+  $('length').removeAttribute('aria-invalid');
+  $('length-error').textContent='';
+  updateLength(null);
+});
+$('run').addEventListener('click',()=>{
+  if(!state.connected){
+    resetResult('Connect sites A and B before running a simulation.');
+    return;
+  }
+  $('run').disabled=true;
+  $('run').textContent='Running…';
+  $('results').textContent='Preparing the illustrative results…';
+  state.timer=setTimeout(()=>{
+    const results=$('results'); results.replaceChildren();
+    const heading=document.createElement('strong'); heading.textContent='Preview complete · A → B';
+    const metrics=document.createElement('div'); metrics.className='metrics';
+    for(const [name,value] of [['Length used',lengthText(chosen())+' · '+origin()],['Example OSNR','25.0 dB'],['Example GSNR','21.0 dB']]){
+      const cell=document.createElement('div');cell.className='metric';cell.textContent=name;
+      const strong=document.createElement('strong');strong.textContent=value;cell.append(strong);metrics.append(cell);
+    }
+    const note=document.createElement('small');note.className='quiet';
+    note.textContent='The OSNR and GSNR values are placeholders and do not change with the span settings.';
+    results.append(heading,metrics,note);
+    $('run').disabled=false;$('run').textContent='Run simulation';state.timer=null;
+  },450);
+});
+new ResizeObserver(renderMap).observe($('map'));
+load(true);
+</script>
+</body>
+</html>
