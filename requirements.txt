@@ -1,0 +1,2 @@
+gnpy==3.0.1
+XlsxWriter==3.3.1

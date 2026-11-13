@@ -1,0 +1,29 @@
+# Hyperion Planner M1
+
+Run the bundled GNPy 3.0.1 EDFA example from a local browser. The demo uses two sites, one SSMF span, one EDFA and 76 channels. It runs locally after installing the dependencies.
+
+## Download and start
+
+On GitHub, select the M1 branch or release and choose **Code → Download ZIP**, or clone the repository and switch to the M1 branch. Extract the ZIP and open a terminal in the folder containing this README.
+
+Use Python 3.12. The commands below are for Windows PowerShell.
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe hyperion.py
+```
+
+On macOS or Linux with Python 3.12, use `python3.12 -m venv .venv` and replace `.\.venv\Scripts\python.exe` with `.venv/bin/python`.
+
+Open **http://127.0.0.1:8765/** in a browser. Use Ctrl+C in the terminal to stop the app. If the port is occupied, start with `hyperion.py --port 8766` and open the corresponding address.
+
+## Run and export
+
+1. Select **Run simulation** for the bundled 80 km case.
+2. Enter **85.25** and select **Apply length**, then **Run simulation**.
+3. Drag A and B, or move a focused endpoint with the arrow keys. The schematic estimate updates. The applied engineering length continues to drive the optical simulation.
+4. Select **Download Excel** for the completed run. An engineered run includes bundled results and differences. Edits after a completed run require another simulation to update the workbook.
+5. Select **Use bundled** and rerun to restore the reference optical case.
+
+The workbook links are valid for the latest 32 runs in the current server session. Save the workbook locally to keep it. See the [M1 plan](Hyperion_M1_Plan.md) for baseline evidence and acceptance criteria.

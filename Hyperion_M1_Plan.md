@@ -1,6 +1,6 @@
 # Hyperion Planner M1
 
-November 12, 2026 HST. The standalone GNPy baseline and the engine adapter comparison passed. The M0 handoff records workflow approval as pending. Browser implementation and acceptance are pending that review.
+November 12, 2026 HST. Kevin approved the M0 workflow. The standalone GNPy baseline and engine adapter comparison passed. The browser demo and Excel download run from the local application described in the [README](README.md).
 
 ## GNPy evidence
 

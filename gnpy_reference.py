@@ -13,6 +13,7 @@ from tempfile import TemporaryDirectory
 
 GNPY_VERSION = "3.0.1"
 CHANNEL_HEADING = "The GSNR per channel at the end of the line is:"
+ANSI = re.compile(r"\x1b\[[0-9;]*m")
 NUMBER = r"(-?\d+\.\d+)"
 CHANNEL_ROW = re.compile(r"\s*(\d+)" + (r"\s+" + NUMBER) * 5 + r"\s*")
 
@@ -21,7 +22,7 @@ def run_reference(length_override_km=None):
     """Return destination channel values and the input used for this run."""
     if length_override_km is not None and (
         type(length_override_km) not in (int, float)
-        or not 0 < length_override_km
+        or not 0 < length_override_km <= sys.float_info.max
         or not math.isfinite(length_override_km)
     ):
         raise ValueError("Enter a finite, positive span length in km.")
@@ -61,12 +62,20 @@ def run_reference(length_override_km=None):
             detail = completed.stderr.strip() or completed.stdout.strip()
             raise RuntimeError(f"GNPy exited with status {completed.returncode}. {detail}")
 
+    output = ANSI.sub("", completed.stdout)
+    report, _, _ = output.partition(CHANNEL_HEADING)
     return {
         "engine_version": package.version,
         "span_length_km": span["params"]["length"],
         "topology_sha256": topology_hash,
+        "topology": topology["network_name"],
+        "equipment": "eqpt_config.json",
+        "equipment_sha256": hashlib.sha256((examples / "eqpt_config.json").read_bytes()).hexdigest(),
+        "spectrum": json.loads((examples / "eqpt_config.json").read_bytes())["SI"][0],
+        "length_source": "Bundled topology" if length_override_km is None else "Engineered override",
         "reference_bandwidth": "signal",
-        "channels": parse_channels(completed.stdout),
+        "channels": parse_channels(output),
+        "report": report.strip(),
     }
 
 
@@ -78,11 +87,13 @@ def parse_channels(output):
     for line in table.splitlines():
         row = CHANNEL_ROW.fullmatch(line)
         if row:
-            channel, frequency, _, osnr, _, gsnr = row.groups()
+            channel, frequency, power, osnr, nli, gsnr = row.groups()
             channels.append({
                 "channel": int(channel),
                 "frequency_thz": float(frequency),
+                "power_dbm": float(power),
                 "osnr_ase_db": float(osnr),
+                "snr_nli_db": float(nli),
                 "gsnr_db": float(gsnr),
             })
     if [row["channel"] for row in channels] != list(range(1, 77)):

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hyperion Planner</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="mast">
+    <div class="brand"><img src="/logo.png" alt="Hyperion Planner"></div>
+  </header>
+  <main class="wrap">
+    <div class="heading">
+      <div><h1>Two-site optical design</h1><p>Single-span EDFA example · GNPy 3.0.1</p></div>
+      <div class="actions">
+        <button id="sample">Reset example</button>
+        <button id="run" class="primary">Run simulation</button>
+      </div>
+    </div>
+    <div class="work">
+      <section class="pane" aria-labelledby="network-title">
+        <div class="panehead"><h2 id="network-title">Network</h2></div>
+        <div class="inside rows">
+          <span>A · Site_A</span>
+          <span>Span1 · SSMF</span>
+          <span>Edfa1 · std_low_gain</span>
+          <span>B · Site_B</span>
+        </div>
+      </section>
+      <section class="pane" aria-labelledby="map-title">
+        <div class="panehead"><h2 id="map-title">Route map</h2><span class="quiet">A → B</span></div>
+        <div id="map" class="map">
+          <svg class="route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line id="span-line"/></svg>
+          <button class="pin" id="point-a" aria-label="Move Site A with drag or arrow keys">A</button>
+          <button class="pin" id="point-b" aria-label="Move Site B with drag or arrow keys">B</button>
+          <span class="mapnote">Schematic map · Drag A or B to move</span>
+        </div>
+        <div class="status" id="status" role="status">Ready to run the bundled example.</div>
+      </section>
+      <section class="pane" aria-labelledby="span-title">
+        <div class="panehead"><h2 id="span-title">Span settings</h2></div>
+        <form class="inside" id="span-form" novalidate>
+          <div class="kv"><span>Map estimate</span><strong id="estimate"></strong></div>
+          <label for="length">Engineered length (km)</label>
+          <input id="length" type="number" step="any" inputmode="decimal" placeholder="80 km bundled" aria-describedby="length-error">
+          <div class="input-actions">
+            <button type="submit">Apply length</button>
+            <button type="button" id="clear-length">Use bundled</button>
+          </div>
+          <div class="error" id="length-error" role="alert"></div>
+          <div class="source">Next simulation length<strong id="source"></strong></div>
+        </form>
+      </section>
+    </div>
+    <section class="pane results" aria-labelledby="results-title">
+      <div class="panehead">
+        <h2 id="results-title">Simulation results</h2>
+        <a id="download" hidden>Download Excel</a>
+      </div>
+      <div class="resultbody">
+        <p id="result-summary" role="status">Run the simulation to see channel results.</p>
+        <p id="comparison" hidden></p>
+        <div class="table-scroll" id="channel-table" hidden tabindex="0">
+          <table aria-label="Channel results">
+            <thead><tr><th scope="col">Channel</th><th scope="col">Frequency (THz)</th><th scope="col">Power (dBm)</th><th scope="col">ASE OSNR (signal BW, dB)</th><th scope="col">SNR NLI (signal BW, dB)</th><th scope="col">GSNR (signal BW, dB)</th></tr></thead>
+            <tbody id="channels"></tbody>
+          </table>
+        </div>
+        <details id="transmission" hidden><summary>GNPy transmission details</summary><pre id="report"></pre></details>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
