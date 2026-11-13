@@ -36,6 +36,8 @@ Then open **http://127.0.0.1:8766/**. If PowerShell returns to the `PS ...>` pro
 4. Select **Download Excel** for the completed run. An engineered run includes bundled results and differences. Edits after a completed run require another simulation to update the workbook.
 5. Select **Use bundled** and rerun to restore the reference optical case.
 
+Edit **Site A name** and **Site B name** to label your design. Select **Use map estimate** to run the current schematic distance. Moving a site updates that distance in map mode. Select **Apply length** to use an engineered length that stays fixed when you drag a site. Site labels and the length source are captured in the workbook when you run.
+
 The workbook links are valid for the latest 32 runs in the current server session. Save the workbook locally to keep it. See the [M1 plan](Hyperion_M1_Plan.md) for baseline evidence and acceptance criteria.
 
 ## Verify the reference cases

@@ -2,12 +2,15 @@
 
 const $ = id => document.getElementById(id);
 const pins = [$("point-a"), $("point-b")];
+const nameInputs = [$("name-a"), $("name-b")];
+const siteNames = () => nameInputs.map((field, index) => field.value.trim() || ["Site_A", "Site_B"][index]);
 const metrics = ["power_dbm", "osnr_ase_db", "snr_nli_db", "gsnr_db"];
 const initialPoints = () => [[0.23, 0.66], [0.74, 0.28]];
 const input = $("length");
 const map = $("map");
 let points = initialPoints();
 let override = null;
+let useMap = false;
 let lastRun = null;
 let running = false;
 let drag = null;
@@ -25,8 +28,10 @@ function updateInputs() {
   for (const [attribute, value] of Object.entries({x1: a[0], y1: a[1], x2: b[0], y2: b[1]})) {
     $("span-line").setAttribute(attribute, value * 100);
   }
-  $("estimate").textContent = Math.hypot((b[0] - a[0]) * 120, (b[1] - a[1]) * 70).toFixed(1) + " km";
-  $("source").textContent = override === null ? "80 km · Bundled topology" : override + " km · Engineered override";
+  const estimate = Math.hypot((b[0] - a[0]) * 120, (b[1] - a[1]) * 70).toFixed(1);
+  $("estimate").textContent = estimate + " km";
+  $("source").textContent = useMap ? estimate + " km · Schematic map estimate" :
+    override === null ? "80 km · Bundled topology" : override + " km · Engineered override";
 }
 
 function refreshStatus() {
@@ -34,7 +39,9 @@ function refreshStatus() {
   if (input.validity.badInput || input.value !== (override === null ? "" : String(override))) {
     updateStatus("Apply the edited length, then rerun for updated results.");
   } else if (lastRun && (
-    lastRun.override !== override || JSON.stringify(lastRun.points) !== JSON.stringify(points)
+    lastRun.override !== override || lastRun.useMap !== useMap ||
+    JSON.stringify(lastRun.names) !== JSON.stringify(siteNames()) ||
+    JSON.stringify(lastRun.points) !== JSON.stringify(points)
   )) {
     updateStatus("Inputs changed. Rerun for updated results. Excel still exports the last completed run.");
   } else {
@@ -42,7 +49,8 @@ function refreshStatus() {
   }
 }
 
-function setOverride(value) {
+function setOverride(value, fromMap = false) {
+  useMap = fromMap;
   override = value;
   input.value = value === null ? "" : String(value);
   $("length-error").textContent = "";
@@ -61,9 +69,12 @@ $("span-form").addEventListener("submit", event => {
   setOverride(value);
 });
 input.addEventListener("input", refreshStatus);
+nameInputs.forEach(field => field.addEventListener("input", refreshStatus));
+$("use-map").addEventListener("click", () => setOverride(null, true));
 $("clear-length").addEventListener("click", () => setOverride(null));
 $("sample").addEventListener("click", () => {
   points = initialPoints();
+  nameInputs.forEach(field => { field.value = field.defaultValue; });
   setOverride(null);
 });
 
@@ -98,7 +109,7 @@ pins.forEach((pin, index) => {
 });
 
 function showResult(result) {
-  $("result-summary").textContent = result.channels.length + " channels · " +
+  $("result-summary").textContent = result.site_names.join(" → ") + " · " + result.channels.length + " channels · " +
     result.span_length_km + " km · " + result.length_source + " · GNPy " +
     result.engine_version + " · Map estimate at run: " + result.map_estimate_km.toFixed(1) + " km";
   $("channels").replaceChildren(...result.channels.map(channel => {
@@ -126,7 +137,7 @@ $("run").addEventListener("click", async () => {
     input.focus();
     return;
   }
-  const snapshot = {override, points: points.map(point => [...point])};
+  const snapshot = {override, useMap, names: siteNames(), points: points.map(point => [...point])};
   running = true;
   $("run").disabled = true;
   updateStatus("Running GNPy…");
@@ -134,7 +145,10 @@ $("run").addEventListener("click", async () => {
     const response = await fetch("/api/run", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({length_override_km: snapshot.override, points: snapshot.points}),
+      body: JSON.stringify({
+        length_override_km: snapshot.override, use_map_estimate: snapshot.useMap,
+        site_names: snapshot.names, points: snapshot.points,
+      }),
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error);

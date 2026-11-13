@@ -24,10 +24,12 @@
       <section class="pane" aria-labelledby="network-title">
         <div class="panehead"><h2 id="network-title">Network</h2></div>
         <div class="inside rows">
-          <span>A · Site_A</span>
+          <label for="name-a">Site A name</label>
+          <input id="name-a" value="Site_A" maxlength="60">
           <span>Span1 · SSMF</span>
           <span>Edfa1 · std_low_gain</span>
-          <span>B · Site_B</span>
+          <label for="name-b">Site B name</label>
+          <input id="name-b" value="Site_B" maxlength="60">
         </div>
       </section>
       <section class="pane" aria-labelledby="map-title">
@@ -48,10 +50,11 @@
           <input id="length" type="number" step="any" inputmode="decimal" placeholder="80 km bundled" aria-describedby="length-error">
           <div class="input-actions">
             <button type="submit">Apply length</button>
+            <button type="button" id="use-map">Use map estimate</button>
             <button type="button" id="clear-length">Use bundled</button>
           </div>
           <div class="error" id="length-error" role="alert"></div>
-          <div class="source">Next simulation length<strong id="source"></strong></div>
+          <div class="source">Length GNPy will use<strong id="source"></strong></div>
         </form>
       </section>
     </div>

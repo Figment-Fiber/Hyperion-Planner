@@ -51,11 +51,21 @@ def simulation(payload):
     ):
         raise ValueError("Provide two positions on the schematic map.")
     a, b = points
+    names = payload.get("site_names", ["Site_A", "Site_B"])
+    if (not isinstance(names, list) or len(names) != 2
+        or any(not isinstance(name, str) or not name.strip() or len(name) > 60 for name in names)):
+        raise ValueError("Provide two site names of up to 60 characters.")
+    estimate = round(math.hypot((b[0] - a[0]) * 120, (b[1] - a[1]) * 70), 1)
+    use_map = payload.get("use_map_estimate") is True
+    if use_map:
+        override = estimate
     result = bundled_run() if override is None else run_reference(override)
     return {
         **result,
         "points": points,
-        "map_estimate_km": round(math.hypot((b[0] - a[0]) * 120, (b[1] - a[1]) * 70), 1),
+        "site_names": [name.strip() for name in names],
+        "map_estimate_km": estimate,
+        "length_source": "Schematic map estimate" if use_map else result["length_source"],
         "baseline": bundled_run() if override is not None else None,
     }
 
@@ -73,6 +83,8 @@ def workbook(result):
         details = [
             ("GNPy version", result["engine_version"]),
             ("Path", "Site_A → Span1 → Edfa1 → Site_B"),
+            ("Site A name", result["site_names"][0]),
+            ("Site B name", result["site_names"][1]),
             ("Topology", result["topology"]),
             ("Topology SHA-256", result["topology_sha256"]),
             ("Equipment", result["equipment"]),
