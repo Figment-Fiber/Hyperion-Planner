@@ -16,6 +16,8 @@ py -3.12 -m venv .venv
 
 On macOS or Linux with Python 3.12, use `python3.12 -m venv .venv` and replace `.\.venv\Scripts\python.exe` with `.venv/bin/python`.
 
+On Windows, if Python 3.12 is managed by uv, use `uv venv --seed --python 3.12 .venv` for the first command. Windows with Python 3.12 and Edge is the tested configuration.
+
 Open **http://127.0.0.1:8765/** in a browser. Use Ctrl+C in the terminal to stop the app. If the port is occupied, start with `hyperion.py --port 8766` and open the corresponding address.
 
 ## Run and export
@@ -27,3 +29,7 @@ Open **http://127.0.0.1:8765/** in a browser. Use Ctrl+C in the terminal to stop
 5. Select **Use bundled** and rerun to restore the reference optical case.
 
 The workbook links are valid for the latest 32 runs in the current server session. Save the workbook locally to keep it. See the [M1 plan](Hyperion_M1_Plan.md) for baseline evidence and acceptance criteria.
+
+## Verify the reference cases
+
+With the app running, install Playwright in a separate test environment or make its module available via `PLAYWRIGHT_MODULE`. Install its Chromium browser, or set `HYPERION_BROWSER` to an installed Edge or Chromium executable. Run `node verify_browser.cjs` from this folder. The test compares all rendered channel rows with the two saved GNPy CLI runs, then exercises dragging, validation, reset and workbook downloads.
