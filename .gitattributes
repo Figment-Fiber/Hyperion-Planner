@@ -1,0 +1,4 @@
+# Preserve captured CLI output and the hashed override fixture byte for byte.
+evidence/gnpy-3.0.1/*.stdout.txt -text -whitespace
+evidence/gnpy-3.0.1/*.stderr.txt -text -whitespace
+evidence/gnpy-3.0.1/override-85.25-km.json -text
