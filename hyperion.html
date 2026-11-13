@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hyperion Planner</title>
   <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/leaflet.css">
   <link rel="stylesheet" href="/app.css">
+  <script src="/leaflet.js" defer></script>
   <script src="/app.js" defer></script>
 </head>
 <body>
@@ -14,7 +16,7 @@
   </header>
   <main class="wrap">
     <div class="heading">
-      <div><h1>Two-site optical design</h1><p>Single-span EDFA example · GNPy 3.0.1</p></div>
+      <div><h1>Oʻahu optical route planner</h1><p>Geographic span planning · GNPy 3.0.1</p></div>
       <div class="actions">
         <button id="sample">Reset example</button>
         <button id="run" class="primary">Run simulation</button>
@@ -25,27 +27,29 @@
         <div class="panehead"><h2 id="network-title">Network</h2></div>
         <div class="inside rows">
           <label for="name-a">Site A name</label>
-          <input id="name-a" value="Site_A" maxlength="60">
-          <span>Span1 · SSMF</span>
-          <span>Edfa1 · std_low_gain</span>
+          <input id="name-a" value="Kapolei" maxlength="60">
+          <div id="roadm-fields" hidden>
+            <label for="name-c">Site C name · ROADM</label>
+            <input id="name-c" value="ROADM C" maxlength="60">
+          </div>
           <label for="name-b">Site B name</label>
-          <input id="name-b" value="Site_B" maxlength="60">
+          <input id="name-b" value="Honolulu" maxlength="60">
+          <button type="button" id="add-roadm">Place ROADM C</button>
+          <button type="button" id="remove-roadm" hidden>Remove ROADM C</button>
         </div>
       </section>
       <section class="pane" aria-labelledby="map-title">
-        <div class="panehead"><h2 id="map-title">Route map</h2><span class="quiet">A → B</span></div>
-        <div id="map" class="map">
-          <svg class="route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line id="span-line"/></svg>
-          <button class="pin" id="point-a" aria-label="Move Site A with drag or arrow keys">A</button>
-          <button class="pin" id="point-b" aria-label="Move Site B with drag or arrow keys">B</button>
-          <span class="mapnote">Schematic map · Drag A or B to move</span>
-        </div>
-        <div class="status" id="status" role="status">Ready to run the bundled example.</div>
+        <div class="panehead"><h2 id="map-title">Route map</h2><span class="quiet" id="route-order">A → B</span></div>
+        <div id="map" class="map geographic" aria-label="Interactive Oʻahu route map"></div>
+        <div class="status" id="status" role="status">Drag a site to move it. Scroll or use + and − to zoom.</div>
       </section>
       <section class="pane" aria-labelledby="span-title">
         <div class="panehead"><h2 id="span-title">Span settings</h2></div>
         <form class="inside" id="span-form" novalidate>
+          <label for="span-choice">Span</label>
+          <select id="span-choice"></select>
           <div class="kv"><span>Map estimate</span><strong id="estimate"></strong></div>
+          <p class="quiet">Straight-line distance. Enter a measured fiber length when available.</p>
           <label for="length">Engineered length (km)</label>
           <input id="length" type="number" step="any" inputmode="decimal" placeholder="80 km bundled" aria-describedby="length-error">
           <div class="input-actions">

@@ -1,4 +1,10 @@
-# Hyperion Planner M1
+# Hyperion Planner · Oʻahu route prototype
+
+The map opens on Oʻahu with two draggable endpoints. Scroll, pinch, or use the zoom controls to change scale. Span estimates are WGS84 straight-line distances between site coordinates. Use an engineered length for surveyed fiber, conduit routing, or slack. Map tiles require internet access and are credited in the map. The local simulation and distance calculations can run without tiles.
+
+Select **Place ROADM C**, then click the map to insert an intermediate express ROADM between A and B. The span dropdown switches between A → C and C → B. Each span can use its geographic distance or an independent engineered length. The GNPy report shows both spans, the generic ROADM, and any amplifiers GNPy adds during auto-design. Excel includes the coordinates, distance, effective length, and source per span.
+
+This route uses one unidirectional service and the bundled spectrum and equipment models. The next engineering milestone is editable transceiver and ROADM profiles, fixed-grid and flex-grid allocations, and overlap and guard-band validation on both spans.
 
 Run the bundled GNPy 3.0.1 EDFA example from a local browser. The demo uses two sites, one SSMF span, one EDFA and 76 channels. It runs locally after installing the dependencies.
 
@@ -30,7 +36,7 @@ Then open **http://127.0.0.1:8766/**. If PowerShell returns to the `PS ...>` pro
 
 ## Run and export
 
-1. Select **Run simulation** for the bundled 80 km case.
+1. Select **Use bundled**, then **Run simulation** for the original 80 km reference case. Select **Use map estimate** to return to geographic mode.
 2. Enter **85.25** and select **Apply length**, then **Run simulation**.
 3. Drag A and B, or move a focused endpoint with the arrow keys. The schematic estimate updates. The applied engineering length continues to drive the optical simulation.
 4. Select **Download Excel** for the completed run. An engineered run includes bundled results and differences. Edits after a completed run require another simulation to update the workbook.

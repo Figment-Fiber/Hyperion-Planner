@@ -26,6 +26,7 @@ async function main() {
     };
     const rows = () => page.locator("#channels tr").evaluateAll(elements =>
       elements.map(row => Array.from(row.cells, cell => cell.textContent)));
+    await page.getByRole("button", {name: "Use bundled"}).click();
     const bundled = await run();
     assert.equal(bundled.span_length_km, 80);
     assert.deepEqual(await rows(), cliRows("bundled"));
@@ -77,6 +78,28 @@ async function main() {
     await page.getByRole("button", {name: "Use bundled"}).click();
     assert.equal((await run()).span_length_km, 80);
     assert.deepEqual(await rows(), cliRows("bundled"));
+    await page.getByRole("button", {name: "Use map estimate"}).click();
+    const geographic = await run();
+    assert.equal(geographic.spans[0].source, "WGS84 geodesic");
+    assert.equal(geographic.span_length_km, geographic.spans[0].geodesic_km);
+    const beforeZoom = await page.locator("#point-a").boundingBox();
+    await page.locator(".leaflet-control-zoom-in").click();
+    await page.waitForFunction(x => Math.abs(document.getElementById("point-a").getBoundingClientRect().x - x) > 2, beforeZoom.x);
+    await page.getByRole("button", {name: "Place ROADM C"}).click();
+    await page.locator("#map").click({position: {x: 260, y: 175}});
+    await page.locator("#name-c").fill("Intermediate");
+    await page.locator("#span-choice").selectOption("1");
+    await page.locator("#length").fill("23");
+    await page.getByRole("button", {name: "Apply length"}).click();
+    const roadm = await run();
+    assert.equal(roadm.site_names[1], "Intermediate");
+    assert.equal(roadm.spans[1].simulation_km, 23);
+    assert.equal(roadm.spans[0].simulation_km, roadm.spans[0].geodesic_km);
+    assert.match(roadm.report, /Roadm Roadm_C/);
+    assert.equal((await rows()).length, 76);
+    if (process.env.HYPERION_ROADM_JSON) fs.writeFileSync(process.env.HYPERION_ROADM_JSON, JSON.stringify({roadm, rows: await rows()}));
+    await page.getByRole("button", {name: "Remove ROADM C"}).click();
+    assert.equal((await run()).spans.length, 1);
     console.log("Passed browser CLI parity for 76 channels in both cases, A/B drag, stale and fresh downloads, validation and reset.");
   } finally {
     await browser.close();

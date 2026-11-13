@@ -66,3 +66,9 @@ th{position:sticky;top:0;background:var(--soft)}
 th:first-child,td:first-child{text-align:left}
 pre{overflow:auto;color:var(--muted)}
 summary{cursor:pointer;margin:14px 0}
+.geographic{background:#162b38;isolation:isolate}
+.geographic::before,.geographic::after{display:none}
+.geographic .leaflet-control-attribution{background:#fff;color:#222;color-scheme:light}
+.site-marker{display:grid;place-items:center;background:#14394f;color:#fff;border:2px solid #9ee0f9;border-radius:50%;font-weight:750}
+.site-marker.roadm{border-color:#ffd08b;background:#554022}
+#span-choice{font:inherit;color:inherit;background:var(--soft);border:1px solid var(--edge);border-radius:7px;padding:6px;width:100%}

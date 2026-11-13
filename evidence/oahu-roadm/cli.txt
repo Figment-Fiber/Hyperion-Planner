@@ -1,0 +1,183 @@
+Power mode is set to True
+=> it can be modified in eqpt_config.json - Span
+
+There are 2 fiber spans over 35 km between Site_A and Site_B
+
+Now propagating between Site_A and Site_B:
+Reference used for design: (Input optical power reference in span = 0.00dBm,
+                            spacing = 50.00GHz
+                            nb_channels = 76)
+
+Channels propagating: (Input optical power deviation in span = 0.00dB,
+                       spacing = 50.00GHz,
+                       transceiver output power = 0.00dBm,
+                       nb_channels = 76)
+Input optical power reference in span = [1;36;40m0.00 dBm[0m:
+Transceiver Site_A
+  GSNR (0.1nm, dB):          40.00
+  GSNR (signal bw, dB):      35.92
+  OSNR ASE (0.1nm, dB):      40.00
+  OSNR ASE (signal bw, dB):  35.92
+  CD (ps/nm):                0.00
+  PMD (ps):                  0.00
+  PDL (dB):                  0.00
+  Latency (ms):              0.00
+  Actual pch out (dBm):      0.00
+Fiber          Span1
+  type_variety:                SSMF
+  length (km):                 12.22
+  pad att_in (dB):             6.56
+  total loss (dB):             10.00
+  (includes conn loss (dB) in: 0.50 out: 0.50)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  reference pch out (dBm):     -10.00
+  actual pch out (dBm):        -10.00
+Edfa Edfa1
+  type_variety:           std_low_gain
+  effective gain(dB):     10.00
+  (before att_in and before output VOA)
+  tilt-target(dB)         0.00
+  noise figure (dB):      8.79
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         8.81
+  Power Out (dBm):        18.81
+  Delta_P (dB):           0.00
+  target pch (dBm):       0.00
+  actual pch out (dBm):   0.00
+  output VOA (dB):        0.00
+Roadm Roadm_C
+  Type_variety:            default
+  Reference loss (dB):     20.00
+  Actual loss (dB):        20.00
+  Reference pch out (dBm): -20.00
+  Actual pch out (dBm):    -20.00
+Edfa Edfa_booster_Roadm_C_to_Span2
+  type_variety:           std_low_gain
+  effective gain(dB):     18.00
+  (before att_in and before output VOA)
+  tilt-target(dB)         0.00
+  noise figure (dB):      6.42
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         -1.19
+  Power Out (dBm):        16.82
+  Delta_P (dB):           -2.00
+  target pch (dBm):       -2.00
+  actual pch out (dBm):   -1.99
+  output VOA (dB):        0.00
+Fiber          Span2
+  type_variety:                SSMF
+  length (km):                 23.00
+  pad att_in (dB):             4.40
+  total loss (dB):             10.00
+  (includes conn loss (dB) in: 0.50 out: 0.50)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  reference pch out (dBm):     -12.00
+  actual pch out (dBm):        -11.99
+Edfa Edfa2
+  type_variety:           std_low_gain
+  effective gain(dB):     10.00
+  (before att_in and before output VOA)
+  tilt-target(dB)         0.00
+  noise figure (dB):      8.79
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         6.82
+  Power Out (dBm):        16.82
+  Delta_P (dB):           -2.00
+  target pch (dBm):       -2.00
+  actual pch out (dBm):   -1.99
+  output VOA (dB):        0.00
+Transceiver Site_B
+  GSNR (0.1nm, dB):          29.48
+  GSNR (signal bw, dB):      25.40
+  OSNR ASE (0.1nm, dB):      29.52
+  OSNR ASE (signal bw, dB):  25.44
+  CD (ps/nm):                588.17
+  PMD (ps):                  0.56
+  PDL (dB):                  0.00
+  Latency (ms):              0.17
+  Actual pch out (dBm):      0.00
+
+Transmission result for input optical power reference in span = 0.00 dBm:
+  Final GSNR (0.1 nm): [1;36;40m29.48 dB[0m
+
+The GSNR per channel at the end of the line is:
+Ch. #   Channel frequency (THz)       Channel power (dBm)    OSNR ASE (signal bw, dB)     SNR NLI (signal bw, dB)        GSNR (signal bw, dB)
+    1                 191.35000                     -2.00                       25.48                       47.68                       25.45
+    2                 191.40000                     -2.00                       25.48                       47.12                       25.45
+    3                 191.45000                     -2.00                       25.48                       46.87                       25.45
+    4                 191.50000                     -2.00                       25.48                       46.71                       25.44
+    5                 191.55000                     -2.00                       25.47                       46.59                       25.44
+    6                 191.60000                     -2.00                       25.47                       46.50                       25.44
+    7                 191.65000                     -2.00                       25.47                       46.43                       25.44
+    8                 191.70000                     -2.00                       25.47                       46.37                       25.44
+    9                 191.75000                     -2.00                       25.47                       46.31                       25.44
+   10                 191.80000                     -2.00                       25.47                       46.27                       25.43
+   11                 191.85000                     -2.00                       25.47                       46.22                       25.43
+   12                 191.90000                     -2.00                       25.47                       46.19                       25.43
+   13                 191.95000                     -2.00                       25.47                       46.15                       25.43
+   14                 192.00000                     -2.00                       25.47                       46.12                       25.43
+   15                 192.05000                     -2.00                       25.46                       46.09                       25.43
+   16                 192.10000                     -2.00                       25.46                       46.07                       25.43
+   17                 192.15000                     -2.00                       25.46                       46.04                       25.42
+   18                 192.20000                     -2.00                       25.46                       46.02                       25.42
+   19                 192.25000                     -2.00                       25.46                       46.00                       25.42
+   20                 192.30000                     -2.00                       25.46                       45.98                       25.42
+   21                 192.35000                     -2.00                       25.46                       45.96                       25.42
+   22                 192.40000                     -2.00                       25.46                       45.94                       25.42
+   23                 192.45000                     -2.00                       25.46                       45.92                       25.42
+   24                 192.50000                     -2.00                       25.46                       45.91                       25.42
+   25                 192.55000                     -2.00                       25.45                       45.89                       25.42
+   26                 192.60000                     -2.00                       25.45                       45.88                       25.41
+   27                 192.65000                     -2.00                       25.45                       45.87                       25.41
+   28                 192.70000                     -2.00                       25.45                       45.86                       25.41
+   29                 192.75000                     -2.00                       25.45                       45.84                       25.41
+   30                 192.80000                     -2.00                       25.45                       45.83                       25.41
+   31                 192.85000                     -2.00                       25.45                       45.82                       25.41
+   32                 192.90000                     -2.00                       25.45                       45.81                       25.41
+   33                 192.95000                     -2.00                       25.45                       45.80                       25.41
+   34                 193.00000                     -2.00                       25.44                       45.80                       25.41
+   35                 193.05000                     -2.00                       25.44                       45.79                       25.40
+   36                 193.10000                     -2.00                       25.44                       45.78                       25.40
+   37                 193.15000                     -2.00                       25.44                       45.77                       25.40
+   38                 193.20000                     -2.00                       25.44                       45.77                       25.40
+   39                 193.25000                     -2.00                       25.44                       45.76                       25.40
+   40                 193.30000                     -2.00                       25.44                       45.76                       25.40
+   41                 193.35000                     -2.00                       25.44                       45.75                       25.40
+   42                 193.40000                     -2.00                       25.44                       45.75                       25.40
+   43                 193.45000                     -2.00                       25.44                       45.75                       25.40
+   44                 193.50000                     -2.00                       25.43                       45.74                       25.39
+   45                 193.55000                     -2.00                       25.43                       45.74                       25.39
+   46                 193.60000                     -2.00                       25.43                       45.74                       25.39
+   47                 193.65000                     -2.00                       25.43                       45.74                       25.39
+   48                 193.70000                     -2.00                       25.43                       45.74                       25.39
+   49                 193.75000                     -2.00                       25.43                       45.74                       25.39
+   50                 193.80000                     -2.00                       25.43                       45.74                       25.39
+   51                 193.85000                     -2.00                       25.43                       45.74                       25.39
+   52                 193.90000                     -2.00                       25.43                       45.74                       25.39
+   53                 193.95000                     -2.00                       25.43                       45.75                       25.39
+   54                 194.00000                     -2.00                       25.42                       45.75                       25.38
+   55                 194.05000                     -2.00                       25.42                       45.76                       25.38
+   56                 194.10000                     -2.00                       25.42                       45.76                       25.38
+   57                 194.15000                     -2.00                       25.42                       45.77                       25.38
+   58                 194.20000                     -2.00                       25.42                       45.78                       25.38
+   59                 194.25000                     -2.00                       25.42                       45.79                       25.38
+   60                 194.30000                     -2.00                       25.42                       45.80                       25.38
+   61                 194.35000                     -2.00                       25.42                       45.81                       25.38
+   62                 194.40000                     -2.00                       25.42                       45.83                       25.38
+   63                 194.45000                     -2.00                       25.42                       45.85                       25.38
+   64                 194.50000                     -2.00                       25.41                       45.87                       25.38
+   65                 194.55000                     -2.00                       25.41                       45.89                       25.37
+   66                 194.60000                     -2.00                       25.41                       45.92                       25.37
+   67                 194.65000                     -2.00                       25.41                       45.95                       25.37
+   68                 194.70000                     -2.00                       25.41                       45.98                       25.37
+   69                 194.75000                     -2.00                       25.41                       46.02                       25.37
+   70                 194.80000                     -2.00                       25.41                       46.08                       25.37
+   71                 194.85000                     -2.00                       25.41                       46.14                       25.37
+   72                 194.90000                     -2.00                       25.41                       46.22                       25.37
+   73                 194.95000                     -2.00                       25.41                       46.32                       25.37
+   74                 195.00000                     -2.00                       25.40                       46.47                       25.37
+   75                 195.05000                     -2.00                       25.40                       46.71                       25.37
+   76                 195.10000                     -2.00                       25.40                       47.26                       25.37

@@ -12,6 +12,7 @@ from threading import Lock
 from uuid import uuid4
 
 import xlsxwriter
+from geographiclib.geodesic import Geodesic
 
 from gnpy_reference import run_reference
 
@@ -21,6 +22,8 @@ STATIC = {
     "/": ("hyperion.html", "text/html; charset=utf-8"),
     "/app.js": ("hyperion.js", "text/javascript; charset=utf-8"),
     "/app.css": ("hyperion.css", "text/css; charset=utf-8"),
+    "/leaflet.js": ("assets/leaflet/leaflet.js", "text/javascript; charset=utf-8"),
+    "/leaflet.css": ("assets/leaflet/leaflet.css", "text/css; charset=utf-8"),
     "/logo.png": ("assets/branding/Hyperion_Planner_Logo.png", "image/png"),
     "/favicon.ico": ("assets/branding/Hyperion_Planner.ico", "image/x-icon"),
 }
@@ -40,7 +43,23 @@ def bundled_run():
     return run_reference()
 
 
+def geographic_spans(points):
+    if (
+        not isinstance(points, list) or len(points) not in (2, 3)
+        or any(not isinstance(point, list) or len(point) != 2 for point in points)
+        or any(type(lat) not in (int, float) or type(lon) not in (int, float)
+               or not -90 <= lat <= 90 or not -180 <= lon <= 180 for lat, lon in points)
+    ):
+        raise ValueError("Provide two or three valid latitude/longitude pairs.")
+    return [
+        round(Geodesic.WGS84.Inverse(*start, *end)["s12"] / 1000, 6)
+        for start, end in zip(points, points[1:])
+    ]
+
+
 def simulation(payload):
+    if "coordinates" in payload:
+        return geographic_simulation(payload)
     override = payload.get("length_override_km")
     points = payload["points"]
     if (
@@ -70,6 +89,36 @@ def simulation(payload):
     }
 
 
+def geographic_simulation(payload):
+    points = payload["coordinates"]
+    estimates = geographic_spans(points)
+    names = payload.get("site_names")
+    if (not isinstance(names, list) or len(names) != len(points)
+        or any(not isinstance(name, str) or not name.strip() or len(name) > 60 for name in names)):
+        raise ValueError("Enter a name of up to 60 characters for each site.")
+    overrides = payload.get("span_overrides", [None] * len(estimates))
+    if not isinstance(overrides, list) or len(overrides) != len(estimates):
+        raise ValueError("Provide one length setting per span.")
+    reference = len(points) == 2 and payload.get("bundled") is True and overrides == [None]
+    lengths = [estimate if override is None else override for estimate, override in zip(estimates, overrides)]
+    result = bundled_run() if reference else run_reference(*lengths)
+    spans = [
+        {"from": names[index], "to": names[index + 1], "geodesic_km": estimate,
+         "simulation_km": result["span_lengths_km"][index],
+         "source": "Bundled topology" if reference else "WGS84 geodesic" if overrides[index] is None else "Engineered override"}
+        for index, estimate in enumerate(estimates)
+    ]
+    return {
+        **result,
+        "points": points,
+        "site_names": [name.strip() for name in names],
+        "map_estimate_km": sum(estimates),
+        "length_source": "Per-span lengths" if len(spans) > 1 else spans[0]["source"],
+        "spans": spans,
+        "baseline": bundled_run() if len(points) == 2 and not reference else None,
+    }
+
+
 def workbook(result):
     output = BytesIO()
     with xlsxwriter.Workbook(output, {"in_memory": True, "strings_to_formulas": False}) as book:
@@ -82,7 +131,7 @@ def workbook(result):
         summary.write_row(0, 0, ("Input", "Value"), heading)
         details = [
             ("GNPy version", result["engine_version"]),
-            ("Path", "Site_A → Span1 → Edfa1 → Site_B"),
+            ("Path", " → ".join(result["site_names"])),
             ("Site A name", result["site_names"][0]),
             ("Site B name", result["site_names"][1]),
             ("Topology", result["topology"]),
@@ -91,9 +140,7 @@ def workbook(result):
             ("Equipment SHA-256", result["equipment_sha256"]),
             ("Length source", result["length_source"]),
             ("Simulation length (km)", result["span_length_km"]),
-            ("Schematic map estimate (km)", result["map_estimate_km"]),
-            ("A map position (x, y)", str(result["points"][0])),
-            ("B map position (x, y)", str(result["points"][1])),
+            ("Map estimate (km)", result["map_estimate_km"]),
             ("Channel reference bandwidth", "Signal bandwidth"),
         ]
         spectrum = result["spectrum"]
@@ -114,6 +161,16 @@ def workbook(result):
             ])
         for index, row in enumerate(details, 1):
             summary.write_row(index, 0, row)
+        if "spans" in result:
+            spans = book.add_worksheet("Route Spans")
+            spans.set_column("A:E", 25)
+            spans.write_row(0, 0, ("From", "To", "Geodesic (km)", "Simulation (km)", "Length source"), heading)
+            for index, span in enumerate(result["spans"], 1):
+                spans.write_row(index, 0, list(span.values()))
+            start = len(result["spans"]) + 3
+            spans.write_row(start, 0, ("Site", "Latitude", "Longitude"), heading)
+            for index, (name, point) in enumerate(zip(result["site_names"], result["points"]), start + 1):
+                spans.write_row(index, 0, [name, *point])
         channels = book.add_worksheet("Channel Results")
         headers = ["Channel", "Frequency (THz)", *METRICS.values()]
         if baseline:
@@ -176,7 +233,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_error(404)
 
     def do_POST(self):
-        if self.path != "/api/run":
+        if self.path not in ("/api/run", "/api/distances"):
             self.send_error(404)
             return
         if self.headers.get_content_type() != "application/json":
@@ -189,6 +246,9 @@ class Handler(BaseHTTPRequestHandler):
             payload = json.loads(self.rfile.read(size))
             if not isinstance(payload, dict):
                 raise ValueError("Invalid simulation inputs.")
+            if self.path == "/api/distances":
+                self.json_response(200, geographic_spans(payload["coordinates"]))
+                return
             result = simulation(payload)
         except (ValueError, KeyError, TypeError) as error:
             self.json_response(400, {"error": str(error)})

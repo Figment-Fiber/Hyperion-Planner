@@ -1,5 +1,6 @@
 """Run the fixed Hyperion reference case through GNPy's transmission CLI."""
 
+from copy import deepcopy
 import hashlib
 import json
 import math
@@ -18,14 +19,14 @@ NUMBER = r"(-?\d+\.\d+)"
 CHANNEL_ROW = re.compile(r"\s*(\d+)" + (r"\s+" + NUMBER) * 5 + r"\s*")
 
 
-def run_reference(length_override_km=None):
+def run_reference(length_override_km=None, second_span_km=None):
     """Return destination channel values and the input used for this run."""
-    if length_override_km is not None and (
-        type(length_override_km) not in (int, float)
-        or not 0 < length_override_km <= sys.float_info.max
-        or not math.isfinite(length_override_km)
-    ):
-        raise ValueError("Enter a finite, positive span length in km.")
+    for length in (length_override_km, second_span_km):
+        if length is not None and (
+            type(length) not in (int, float) or not 0 < length <= sys.float_info.max
+            or not math.isfinite(length)
+        ):
+            raise ValueError("Enter a finite, positive span length in km.")
 
     package = distribution("gnpy")
     if package.version != GNPY_VERSION:
@@ -34,11 +35,24 @@ def run_reference(length_override_km=None):
     bundled = examples / "edfa_example_network.json"
     topology = json.loads(bundled.read_bytes())
     span = next(element for element in topology["elements"] if element["uid"] == "Span1")
+    if second_span_km is not None:
+        topology["network_name"] = "Oahu two-span express ROADM"
+        second = deepcopy(span)
+        second["uid"] = "Span2"
+        second["params"]["length"] = second_span_km
+        amplifier = deepcopy(next(element for element in topology["elements"] if element["uid"] == "Edfa1"))
+        amplifier["uid"] = "Edfa2"
+        topology["elements"].extend([{"uid": "Roadm_C", "type": "Roadm", "type_variety": "default"}, second, amplifier])
+        route = ["Site_A", "Span1", "Edfa1", "Roadm_C", "Span2", "Edfa2", "Site_B"]
+        topology["connections"] = [
+            {"from_node": left, "to_node": right} for left, right in zip(route, route[1:])
+        ]
 
     with TemporaryDirectory() as run_dir:
         topology_path = bundled
-        if length_override_km is not None:
-            span["params"]["length"] = length_override_km
+        if length_override_km is not None or second_span_km is not None:
+            if length_override_km is not None:
+                span["params"]["length"] = length_override_km
             topology_path = Path(run_dir) / bundled.name
             topology_path.write_text(json.dumps(topology, indent=2) + "\n", encoding="utf-8")
         topology_hash = hashlib.sha256(topology_path.read_bytes()).hexdigest()
@@ -66,7 +80,9 @@ def run_reference(length_override_km=None):
     report, _, _ = output.partition(CHANNEL_HEADING)
     return {
         "engine_version": package.version,
-        "span_length_km": span["params"]["length"],
+        "span_length_km": round(span["params"]["length"] + (second_span_km or 0), 6),
+        "span_lengths_km": [span["params"]["length"]] + ([second_span_km] if second_span_km is not None else []),
+        "topology_input": topology,
         "topology_sha256": topology_hash,
         "topology": topology["network_name"],
         "equipment": "eqpt_config.json",

@@ -1,117 +1,196 @@
 "use strict";
 
 const $ = id => document.getElementById(id);
-const pins = [$("point-a"), $("point-b")];
-const nameInputs = [$("name-a"), $("name-b")];
-const siteNames = () => nameInputs.map((field, index) => field.value.trim() || ["Site_A", "Site_B"][index]);
 const metrics = ["power_dbm", "osnr_ase_db", "snr_nli_db", "gsnr_db"];
-const initialPoints = () => [[0.23, 0.66], [0.74, 0.28]];
 const input = $("length");
-const map = $("map");
-let points = initialPoints();
-let override = null;
-let useMap = false;
+const choice = $("span-choice");
+const start = [[21.335, -158.058], [21.307, -157.858]];
+const map = L.map("map", {maxZoom: 18}).setView([21.47, -157.98], 10);
+const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
+const route = L.polyline([], {color: "#147cc0", weight: 4}).addTo(map);
+const markers = {};
+let ids = ["a", "b"];
+let overrides = [null];
+let estimates = [];
+let bundled = false;
+let selected = 0;
+let placing = false;
 let lastRun = null;
 let running = false;
-let drag = null;
+let distanceRequest = 0;
 
 function updateStatus(message) {
   $("status").textContent = message;
 }
 
-function updateInputs() {
-  const [a, b] = points;
-  pins.forEach((pin, index) => {
-    pin.style.left = (points[index][0] * 100) + "%";
-    pin.style.top = (points[index][1] * 100) + "%";
-  });
-  for (const [attribute, value] of Object.entries({x1: a[0], y1: a[1], x2: b[0], y2: b[1]})) {
-    $("span-line").setAttribute(attribute, value * 100);
-  }
-  const estimate = Math.hypot((b[0] - a[0]) * 120, (b[1] - a[1]) * 70).toFixed(1);
-  $("estimate").textContent = estimate + " km";
-  $("source").textContent = useMap ? estimate + " km · Schematic map estimate" :
-    override === null ? "80 km · Bundled topology" : override + " km · Engineered override";
+tiles.once("tileerror", () => {
+  $("map-title").textContent = "Route map · some tiles unavailable";
+});
+
+function currentDesign() {
+  return {
+    coordinates: ids.map(id => {
+      const point = markers[id].getLatLng();
+      return [point.lat, point.lng];
+    }),
+    site_names: ids.map(id => $("name-" + id).value.trim() || $("name-" + id).defaultValue),
+    span_overrides: [...overrides],
+    bundled,
+  };
+}
+
+function unapplied() {
+  return input.validity.badInput || input.value !== String(overrides[selected] ?? "");
 }
 
 function refreshStatus() {
   if (running) return;
-  if (input.validity.badInput || input.value !== (override === null ? "" : String(override))) {
-    updateStatus("Apply the edited length, then rerun for updated results.");
-  } else if (lastRun && (
-    lastRun.override !== override || lastRun.useMap !== useMap ||
-    JSON.stringify(lastRun.names) !== JSON.stringify(siteNames()) ||
-    JSON.stringify(lastRun.points) !== JSON.stringify(points)
-  )) {
-    updateStatus("Inputs changed. Rerun for updated results. Excel still exports the last completed run.");
+  if (placing) {
+    updateStatus("Click the map to place the intermediate ROADM.");
+  } else if (unapplied()) {
+    updateStatus("Apply the edited length, then rerun.");
+  } else if (lastRun && JSON.stringify(lastRun) !== JSON.stringify(currentDesign())) {
+    updateStatus("Inputs changed. Rerun to update results and Excel.");
   } else {
-    updateStatus(lastRun ? "Simulation complete." : "Ready to run the simulation.");
+    updateStatus(lastRun ? "Simulation complete." : "Drag a site to move it. Scroll or use + and − to zoom.");
   }
 }
 
-function setOverride(value, fromMap = false) {
-  useMap = fromMap;
-  override = value;
-  input.value = value === null ? "" : String(value);
+function renderLength() {
+  const estimate = estimates[selected];
+  $("estimate").textContent = estimate === undefined ? "—" : estimate.toFixed(3) + " km";
+  $("source").textContent = bundled ? "80 km · Bundled topology" :
+    overrides[selected] !== null ? overrides[selected] + " km · Engineered override" :
+    estimate === undefined ? "Calculating geographic distance…" : estimate.toFixed(3) + " km · WGS84 geodesic";
+}
+
+function selectSpan(index) {
+  selected = index;
+  choice.value = String(index);
+  input.value = String(overrides[index] ?? "");
   $("length-error").textContent = "";
-  updateInputs();
+  renderLength();
   refreshStatus();
 }
 
+function updateSpanOptions() {
+  choice.replaceChildren(...ids.slice(1).map((id, index) =>
+    new Option(ids[index].toUpperCase() + " → " + id.toUpperCase(), index)));
+  $("clear-length").hidden = ids.length > 2;
+  $("route-order").textContent = ids.map(id => id.toUpperCase()).join(" → ");
+  selectSpan(0);
+}
+
+async function updateRoute() {
+  const design = currentDesign();
+  route.setLatLngs(design.coordinates);
+  estimates = [];
+  renderLength();
+  refreshStatus();
+  const request = ++distanceRequest;
+  try {
+    const response = await fetch("/api/distances", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({coordinates: design.coordinates}),
+    });
+    if (!response.ok) throw new Error("Distance request failed.");
+    const distances = await response.json();
+    if (request === distanceRequest) {
+      estimates = distances;
+      renderLength();
+    }
+  } catch (error) {
+    if (request === distanceRequest) $("estimate").textContent = "Unavailable";
+  }
+}
+
+function addMarker(id, point) {
+  const label = id.toUpperCase();
+  const icon = L.divIcon({className: "site-marker " + (id === "c" ? "roadm" : ""),
+    html: label, iconSize: [30, 30]});
+  const marker = L.marker(point, {icon, draggable: true, title: "Site " + label}).addTo(map);
+  marker.getElement().id = "point-" + id;
+  marker.on("drag", () => route.setLatLngs(currentDesign().coordinates));
+  marker.on("dragend", updateRoute);
+  markers[id] = marker;
+}
+
+function removeRoadm() {
+  if (markers.c) map.removeLayer(markers.c);
+  delete markers.c;
+  ids = ["a", "b"];
+  overrides = [null];
+  bundled = false;
+  placing = false;
+  $("roadm-fields").hidden = true;
+  $("remove-roadm").hidden = true;
+  $("add-roadm").hidden = false;
+  updateSpanOptions();
+  updateRoute();
+}
+
+addMarker("a", start[0]);
+addMarker("b", start[1]);
+$("add-roadm").addEventListener("click", () => {
+  placing = !placing;
+  refreshStatus();
+});
+map.on("click", event => {
+  if (!placing) return;
+  placing = false;
+  addMarker("c", event.latlng);
+  ids = ["a", "c", "b"];
+  overrides = [null, null];
+  bundled = false;
+  $("roadm-fields").hidden = false;
+  $("remove-roadm").hidden = false;
+  $("add-roadm").hidden = true;
+  updateSpanOptions();
+  updateRoute();
+});
+$("remove-roadm").addEventListener("click", removeRoadm);
+choice.addEventListener("change", () => selectSpan(Number(choice.value)));
+input.addEventListener("input", refreshStatus);
+for (const id of ["a", "b", "c"]) $("name-" + id).addEventListener("input", refreshStatus);
 $("span-form").addEventListener("submit", event => {
   event.preventDefault();
   const value = input.valueAsNumber;
   if (!Number.isFinite(value) || value <= 0) {
     $("length-error").textContent = "Enter a finite, positive length.";
-    input.focus();
     return;
   }
-  setOverride(value);
+  bundled = false;
+  overrides[selected] = value;
+  selectSpan(selected);
 });
-input.addEventListener("input", refreshStatus);
-nameInputs.forEach(field => field.addEventListener("input", refreshStatus));
-$("use-map").addEventListener("click", () => setOverride(null, true));
-$("clear-length").addEventListener("click", () => setOverride(null));
+$("use-map").addEventListener("click", () => {
+  bundled = false;
+  overrides[selected] = null;
+  selectSpan(selected);
+});
+$("clear-length").addEventListener("click", () => {
+  bundled = true;
+  overrides = [null];
+  selectSpan(0);
+});
 $("sample").addEventListener("click", () => {
-  points = initialPoints();
-  nameInputs.forEach(field => { field.value = field.defaultValue; });
-  setOverride(null);
+  markers.a.setLatLng(start[0]);
+  markers.b.setLatLng(start[1]);
+  for (const id of ["a", "b", "c"]) $("name-" + id).value = $("name-" + id).defaultValue;
+  map.setView([21.47, -157.98], 10);
+  removeRoadm();
 });
 
-function movePoint(index, x, y) {
-  const clamp = value => Math.max(0.04, Math.min(0.96, value));
-  points[index] = [clamp(x), clamp(y)];
-  updateInputs();
-  refreshStatus();
-}
-
-pins.forEach((pin, index) => {
-  pin.addEventListener("pointerdown", event => {
-    if (event.button !== 0 || drag) return;
-    pin.setPointerCapture(event.pointerId);
-    drag = {id: event.pointerId, index};
-  });
-  pin.addEventListener("pointermove", event => {
-    if (drag?.id !== event.pointerId || drag.index !== index) return;
-    const box = map.getBoundingClientRect();
-    movePoint(index, (event.clientX - box.left) / box.width, (event.clientY - box.top) / box.height);
-  });
-  pin.addEventListener("lostpointercapture", event => {
-    if (drag?.id === event.pointerId) drag = null;
-  });
-  pin.addEventListener("keydown", event => {
-    const offsets = {ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0]};
-    const offset = offsets[event.key];
-    if (!offset) return;
-    event.preventDefault();
-    movePoint(index, points[index][0] + offset[0] * 0.02, points[index][1] + offset[1] * 0.02);
-  });
-});
+updateSpanOptions();
 
 function showResult(result) {
   $("result-summary").textContent = result.site_names.join(" → ") + " · " + result.channels.length + " channels · " +
     result.span_length_km + " km · " + result.length_source + " · GNPy " +
     result.engine_version + " · Map estimate at run: " + result.map_estimate_km.toFixed(1) + " km";
+  $("result-summary").textContent += " · " + result.spans.map(span => span.from + " → " + span.to + " " + span.simulation_km.toFixed(2) + " km (" + span.source + ")").join(" / ");
   $("channels").replaceChildren(...result.channels.map(channel => {
     const row = document.createElement("tr");
     const values = [channel.channel, channel.frequency_thz.toFixed(5), ...metrics.map(key => channel[key].toFixed(2))];
@@ -132,12 +211,12 @@ function showResult(result) {
 }
 
 $("run").addEventListener("click", async () => {
-  if (input.validity.badInput || input.value !== (override === null ? "" : String(override))) {
+  if (unapplied()) {
     refreshStatus();
     input.focus();
     return;
   }
-  const snapshot = {override, useMap, names: siteNames(), points: points.map(point => [...point])};
+  const snapshot = currentDesign();
   running = true;
   $("run").disabled = true;
   updateStatus("Running GNPy…");
@@ -145,10 +224,7 @@ $("run").addEventListener("click", async () => {
     const response = await fetch("/api/run", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        length_override_km: snapshot.override, use_map_estimate: snapshot.useMap,
-        site_names: snapshot.names, points: snapshot.points,
-      }),
+      body: JSON.stringify(snapshot),
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error);
@@ -164,4 +240,4 @@ $("run").addEventListener("click", async () => {
   }
 });
 
-updateInputs();
+updateRoute();
