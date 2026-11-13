@@ -18,7 +18,15 @@ On macOS or Linux with Python 3.12, use `python3.12 -m venv .venv` and replace `
 
 On Windows, if Python 3.12 is managed by uv, use `uv venv --seed --python 3.12 .venv` for the first command. Windows with Python 3.12 and Edge is the tested configuration.
 
-Open **http://127.0.0.1:8765/** in a browser. Use Ctrl+C in the terminal to stop the app. If the port is occupied, start with `hyperion.py --port 8766` and open the corresponding address.
+Wait for **Hyperion Planner is ready** in PowerShell. Keep the server running in that window and open the printed address in your browser. The default is **http://127.0.0.1:8765/**. Use Ctrl+C in the terminal to stop the app.
+
+If you need a different port, start the app with the full Python command:
+
+```powershell
+.\.venv\Scripts\python.exe hyperion.py --port 8766
+```
+
+Then open **http://127.0.0.1:8766/**. If PowerShell returns to the `PS ...>` prompt, the foreground server has stopped. Check the terminal output and rerun the full launch command.
 
 ## Run and export
 
