@@ -39,3 +39,20 @@ The existing M0 preset computes a schematic map estimate of 66.7 km. Keep that e
 ## Bundled GNPy demo coverage
 
 The M1 reference is the GNPy 3.0.1 single-span EDFA transmission example. In addition to the per-channel OSNR and GSNR acceptance metrics, expose the example's channel power and SNR NLI, destination summaries with their reported bandwidths, and per-element transmission details. Include those results in the workbook and verify their units and values against the CLI. The same run and export workflow applies to the bundled case and an engineered length. Mesh path requests and custom equipment or spectrum authoring are separate GNPy workflows.
+
+## Roadmap — Spectrum allocation and guard-band validation
+
+Start with the existing two-site route and mixed channel profiles. Extend the same checks to every shared fiber segment and direction when multi-span routing is available.
+
+- **Spectrum overlay.** Show center frequency, assigned slot edges, occupied signal edges, and guard space in GHz. Identify the specific channels and span where slots overlap, a signal exceeds its slot, the guard falls below policy, or a slot exceeds the equipment passband. Display both the measured gap between occupied signal edges and the required minimum. Adjacent slots may touch when the signal edges still have sufficient separation.
+- **Profiles and defaults.** Offer a 50 GHz fixed-grid preset and an ITU-T G.694.1 flex-grid preset with 6.25 GHz center steps from 193.1 THz and 12.5 GHz slot-width steps. Show the guard policy and its source. Use a supported equipment or transceiver profile first, with a labeled, editable planning default when none is specified. For the first generic demo, propose 5 GHz of total separation between neighboring occupied signals as a configurable planning assumption. Require an explicit zero setting and show the resulting actual gap. Mark generic estimates as requiring equipment validation.
+- **Automatic placement.** Capture line rate in Gb/s, baud rate in GBd, modulation, roll-off or vendor spectral mask, and supported slot widths. Use the vendor profile when available. For a raised-cosine estimate, occupied width in GHz is baud rate in GBd multiplied by (1 + roll-off). Propose the smallest supported slot and a free grid-aligned center that meet the guard policy across the route. Allow users to shift frequency or adjust guard settings and revalidate immediately. A 400 Gb/s selection requires a specific mode or explicit signal parameters before Hyperion can size the slot.
+- **GNPy and Excel.** Validate the plan before simulation and pass the accepted centers, slot widths, baud rates, and roll-off to GNPy. Report spectrum validity and optical feasibility as distinct results. Export the channel plan, guard policy and source, measured gaps, conflict locations, and the exact inputs used for the completed run.
+
+### Acceptance
+
+1. Load the M1 spectrum. At 32 GBd and 0.15 roll-off, the nominal occupied width is 36.8 GHz. With 50 GHz center spacing, show 13.2 GHz between adjacent occupied edges and pass the demo's 5 GHz planning policy.
+2. Use a synthetic 400 Gb/s mode at 60 GBd and 0.10 roll-off. Show that its nominal 66 GHz signal fails the 50 GHz slot check. With an equipment fixture allowing 75 GHz slots, propose a valid flex-grid placement that meets the configured guard. Move it onto an occupied slot and verify the overlap flag identifies both channels. Exercise a case with no slot overlap but insufficient guard.
+3. Exercise exact slot-edge adjacency, explicit zero guard, missing mode data, band edges, and a route where a slot is free on one segment but occupied on another. Verify that accepted allocation inputs and all exported values agree with the submitted plan. Compare optical output against a separately run GNPy CLI case using the same mixed spectrum.
+
+[ITU-T G.694.1](https://www.itu.int/rec/T-REC-G.694.1-202010-I/en) · [GNPy spectrum inputs](https://gnpy.readthedocs.io/en/master/json.html)
