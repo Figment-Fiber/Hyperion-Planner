@@ -34,6 +34,10 @@ Use the same route to test fixed- and flex-grid allocation with editable generic
 
 ### Route settings and equipment placement
 
+**Implementation status, November 13.** The Oʻahu build has editable site names, draggable locations, WGS84 endpoint distances, an optional generic express ROADM and per-span length overrides. The route-wide equipment editor and map settings popups, fiber selector, bends, splice placement, editable amplifier placement, and modern spectrum simulation remain planned. The current ROADM run may include GNPy auto-designed amplification.
+
+**Initial equipment catalog.** [equipment_catalog.json](equipment_catalog.json) seeds the future selector with the generic GNPy reference, Ciena 6500-S14 with WaveLogic 6 Extreme 1.6T MOTR, and Nokia 1830 PSS-HC with 4CP4T8/PSE-6s. Vendor entries carry published product information for equipment selection and documentation. Before enabling vendor simulation, require a specific operating mode with sourced launch power, slot width or spectral mask, receiver threshold and reference bandwidth, and relevant line-system amplifier and WSS characteristics. Keep vendor catalog labels distinct from the model used for a run.
+
 - **Editable defaults and change flags.** Prefill a new fusion splice with a visibly labeled 0.10 dB planning assumption. Prefill an amplifier from the selected generic or sourced equipment profile, with a suggested gain based on its role and span budget when available. Track defaults, user overrides and effective GNPy settings. Flag each affected node or span after an edit, and flag results as stale until a new run completes. Keep the current route file round-trip compatible when adding these settings.
 
 - **One settings panel for the route.** List nodes and spans in route order, with expandable equipment and loss sections. Let the user collapse and reopen the panel while retaining selection and edits. Clicking a map node opens a compact summary with its role, equipment and key settings, plus an action that focuses the same item in the panel. Edits and map summaries read from one route model.

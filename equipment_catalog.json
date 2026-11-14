@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {
+      "id": "generic-gnpy-reference",
+      "label": "Generic · GNPy reference",
+      "status": "simulation_reference",
+      "gnpy_equipment": "eqpt_config.json",
+      "description": "Bundled GNPy 3.0.1 reference equipment and spectrum."
+    },
+    {
+      "id": "ciena-6500-s14-wl6e-motr",
+      "label": "Ciena 6500-S14 · WaveLogic 6 Extreme 1.6T MOTR",
+      "status": "catalog_reference",
+      "vendor": "Ciena",
+      "platform": "6500-S14",
+      "card": "WaveLogic 6 Extreme 1.6T MOTR",
+      "published_max_payload_gbps_per_carrier": 1600,
+      "published_electro_optics_gbaud": 200,
+      "sources": [
+        "https://www.ciena.com/insights/data-sheets/6500-S14-packet-optical-platform",
+        "https://www.ciena.com/insights/data-sheets/1-6t-wavelogic-6-extreme-motr"
+      ]
+    },
+    {
+      "id": "nokia-1830-pss-hc-4cp4t8",
+      "label": "Nokia 1830 PSS-HC · 4CP4T8 / PSE-6s",
+      "status": "catalog_reference",
+      "vendor": "Nokia",
+      "platform": "1830 PSS-HC",
+      "card": "4CP4T8",
+      "coherent_engine": "PSE-6s",
+      "published_max_line_rate_gbps_per_carrier": 1200,
+      "published_line_interface_gbaud": 140,
+      "published_supported_bands": ["C", "L"],
+      "sources": [
+        "https://www.nokia.com/optical-networks/1830-photonic-service-switch/",
+        "https://www.nokia.com/asset/i/215113/"
+      ]
+    }
+  ]
+}
