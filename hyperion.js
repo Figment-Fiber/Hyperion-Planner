@@ -38,11 +38,21 @@ function currentDesign() {
     site_names: ids.map(id => $("name-" + id).value.trim() || $("name-" + id).defaultValue),
     span_overrides: [...overrides],
     bundled,
+    booster_gain_db: $("booster-gain").value === "" ? null : $("booster-gain").valueAsNumber,
+    quality_limits: $("quality-threshold").value === "" ? null : {
+      threshold: $("quality-threshold").valueAsNumber,
+      reserve: $("quality-reserve").valueAsNumber,
+      warning: $("quality-warning").valueAsNumber,
+    },
   };
 }
 
 function unapplied() {
   return input.validity.badInput || input.value !== String(overrides[selected] ?? "");
+}
+
+for (const id of ["quality-threshold", "quality-reserve", "quality-warning", "booster-gain"]) {
+  $(id).addEventListener("input", refreshStatus);
 }
 
 function refreshStatus() {
@@ -264,6 +274,10 @@ function applyRoute(design) {
   });
   overrides = [...design.span_overrides];
   bundled = design.bundled;
+  $("booster-gain").value = design.booster_gain_db ?? "";
+  $("quality-threshold").value = design.quality_limits?.threshold ?? "";
+  $("quality-reserve").value = design.quality_limits?.reserve ?? 2;
+  $("quality-warning").value = design.quality_limits?.warning ?? 1;
   updateSpanOptions();
   map.fitBounds(L.latLngBounds(design.coordinates), {padding: [35, 35], maxZoom: 12});
   updateRoute();
@@ -319,6 +333,14 @@ $("route-file").addEventListener("change", async event => {
 updateSpanOptions();
 
 function showResult(result) {
+  const check = result.quality_check;
+  const quality = $("quality-result");
+  quality.hidden = false;
+  quality.dataset.verdict = check.status;
+  quality.textContent = "GSNR planning check · " + check.status + " · " +
+    (check.reason || ("Channel " + check.channel + " at " + check.frequency_thz.toFixed(5) +
+      " THz · " + check.gsnr_db.toFixed(2) + " dB signal BW · " + check.remaining_db.toFixed(2) +
+      " dB remaining after the " + check.threshold_db + " dB threshold and " + check.reserve_db + " dB reserve."));
   $("result-summary").textContent = result.site_names.join(" → ") + " · " + result.channels.length + " channels · " +
     result.span_length_km + " km · " + result.length_source + " · GNPy " +
     result.engine_version + " · Map estimate at run: " + result.map_estimate_km.toFixed(1) + " km";
@@ -343,6 +365,7 @@ function showResult(result) {
 }
 
 $("run").addEventListener("click", async () => {
+  if (["quality-threshold", "quality-reserve", "quality-warning", "booster-gain"].some(id => !$(id).reportValidity())) return;
   if (unapplied()) {
     refreshStatus();
     input.focus();

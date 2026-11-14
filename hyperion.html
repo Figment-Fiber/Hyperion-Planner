@@ -50,6 +50,9 @@
             <label for="name-a">Site A name</label>
             <input id="name-a" value="Kapolei" maxlength="60">
             <p class="quiet">Generic GNPy transceiver. The reference spectrum launches 76 channels at 0 dBm/channel, 32 GBd, with 50 GHz spacing.</p>
+            <label for="booster-gain">Add generic booster · Gain target (dB)</label>
+            <input id="booster-gain" type="number" min="10" max="18" step="any" placeholder="No explicit booster">
+            <p class="quiet">Enter 10–18 dB to place User_Booster_A. The transmission report shows effective settings after auto-design.</p>
           </details>
           <details id="roadm-fields" hidden>
             <summary>Site C · Express ROADM</summary>
@@ -89,6 +92,15 @@
             <select id="catalog-profile"></select>
             <p id="catalog-description" class="quiet" role="status"></p>
           </details>
+          <details>
+            <summary>GSNR planning limits</summary>
+            <label for="quality-threshold">Required GSNR (signal BW, dB)</label>
+            <input id="quality-threshold" type="number" step="any" placeholder="Optional">
+            <label for="quality-reserve">Design reserve (dB)</label>
+            <input id="quality-reserve" type="number" min="0" step="any" value="2">
+            <label for="quality-warning">Review band (dB)</label>
+            <input id="quality-warning" type="number" min="0" step="any" value="1">
+          </details>
         </div>
       </details>
     </div>
@@ -99,6 +111,7 @@
       </div>
       <div class="resultbody">
         <p id="result-summary" role="status">Run the simulation to see channel results.</p>
+        <p id="quality-result" role="status" hidden></p>
         <p id="comparison" hidden></p>
         <div class="table-scroll" id="channel-table" hidden tabindex="0">
           <table aria-label="Channel results">

@@ -1,5 +1,7 @@
 # Hyperion Planner · Oʻahu route prototype
 
+M3 adds an explicit generic Terminal A booster and a user-defined GSNR planning check. Open Terminal A to enter a booster gain target. The transmission report shows the actual GNPy element and effective gain, which auto-design can change. In **GSNR planning limits**, enter a required GSNR at signal bandwidth and a design reserve. Results identify the limiting channel and remaining margin. This is one planning check. Vendor-mode feasibility, receive-power limits and spectrum validation are separate work.
+
 The map opens on Oʻahu with two draggable endpoints. Scroll, pinch, or use the zoom controls to change scale. Span estimates are WGS84 straight-line distances between site coordinates. Use an engineered length for surveyed fiber, conduit routing, or slack. Map tiles require internet access and are credited in the map. The local simulation and distance calculations can run without tiles.
 
 Use **Save route** to download a JSON file with the current sites, coordinates and span overrides. **Load route** restores that design. **New route** opens an editable two-site starter in Oʻahu. Apply pending span edits before saving. Changing a completed design flags the results for a rerun. Excel continues to export the completed simulation.

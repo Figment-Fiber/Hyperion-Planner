@@ -89,4 +89,8 @@ tbody tr:nth-child(even){background:#172a43}
 #span-list button[aria-pressed=true]{border-color:var(--blue)}
 #catalog-profile{width:100%;font:inherit;background:var(--soft);color:inherit;padding:7px}
 .leaflet-popup-content button{margin-top:8px}
+#quality-result{padding:12px;border:1px solid var(--edge);border-radius:8px}
+#quality-result[data-verdict="Pass"]{border-color:var(--teal);color:var(--teal)}
+#quality-result[data-verdict="Review"]{border-color:var(--amber);color:var(--amber)}
+#quality-result[data-verdict="Fail"]{border-color:#ff9c9c;color:#ffb4b4}
 @media(max-width:720px){.mast .actions{gap:6px}.mast button{padding-inline:9px}}

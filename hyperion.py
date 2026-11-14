@@ -102,7 +102,10 @@ def geographic_simulation(payload):
         raise ValueError("Provide one length setting per span.")
     reference = len(points) == 2 and payload.get("bundled") is True and overrides == [None]
     lengths = [estimate if override is None else override for estimate, override in zip(estimates, overrides)]
-    result = bundled_run() if reference else run_reference(*lengths)
+    booster = payload.get("booster_gain_db")
+    effective_lengths = [80] if reference else lengths
+    result = (bundled_run() if reference and booster is None else
+              run_reference(*effective_lengths, booster_gain_db=booster))
     spans = [
         {"from": names[index], "to": names[index + 1], "geodesic_km": estimate,
          "simulation_km": result["span_lengths_km"][index],
@@ -116,7 +119,28 @@ def geographic_simulation(payload):
         "map_estimate_km": sum(estimates),
         "length_source": "Per-span lengths" if len(spans) > 1 else spans[0]["source"],
         "spans": spans,
+        "booster_gain_db": booster,
         "baseline": bundled_run() if len(points) == 2 and not reference else None,
+    }
+
+
+def quality_check(channels, limits):
+    if limits is None:
+        return {"status": "Not evaluated", "reason": "Enter a GSNR planning threshold at signal bandwidth."}
+    if not isinstance(limits, dict):
+        raise ValueError("Provide a GSNR threshold and reserves in dB.")
+    threshold, reserve, warning = (limits.get(key) for key in ("threshold", "reserve", "warning"))
+    if any(type(value) not in (int, float) or not -100 <= value <= 100
+           for value in (threshold, reserve, warning)) or min(reserve, warning) < 0:
+        raise ValueError("Enter a finite GSNR threshold and nonnegative reserves in dB.")
+    channel = min(channels, key=lambda row: row["gsnr_db"])
+    margin = round(channel["gsnr_db"] - threshold - reserve, 6)
+    return {
+        "status": "Fail" if margin < 0 else "Review" if margin < warning else "Pass",
+        "channel": channel["channel"], "frequency_thz": channel["frequency_thz"],
+        "gsnr_db": channel["gsnr_db"], "threshold_db": threshold, "reserve_db": reserve,
+        "warning_db": warning, "remaining_db": margin,
+        "scope": "User-entered GSNR planning check at signal bandwidth",
     }
 
 
@@ -162,6 +186,10 @@ def workbook(result):
             ])
         for index, row in enumerate(details, 1):
             summary.write_row(index, 0, row)
+        if result.get("booster_gain_db") is not None:
+            summary.write_row(len(details) + 1, 0, ("Terminal A requested booster gain (dB)", result["booster_gain_db"]))
+        for index, (key, value) in enumerate(result.get("quality_check", {}).items(), len(details) + 2):
+            summary.write_row(index, 0, ("GSNR check · " + key.replace("_", " "), value))
         if "spans" in result:
             spans = book.add_worksheet("Route Spans")
             spans.set_column("A:E", 25)
@@ -251,6 +279,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.json_response(200, geographic_spans(payload["coordinates"]))
                 return
             result = simulation(payload)
+            result["quality_check"] = quality_check(result["channels"], payload.get("quality_limits"))
         except (ValueError, KeyError, TypeError) as error:
             self.json_response(400, {"error": str(error)})
         except Exception as error:

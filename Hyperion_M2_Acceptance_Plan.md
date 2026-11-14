@@ -28,6 +28,15 @@ Save the fixture, CLI output, browser comparison and sample workbook together. T
 
 ## First M3 benchmark
 
+The separate **Titan Route Atlas** project will maintain source-dated screening data for North America and the Pacific. A future Hyperion integration should intersect a designed route with versioned public GeoJSON or a live endpoint and retain the source, activity-specific restriction, date, geometry precision and reviewer status. Treat verified prohibitions, permit review, natural hazards, community reports and existing infrastructure as separate layers. Keep the route-screening result independent of optical feasibility.
+
+### Configuration results and feasibility alerts
+
+- Give each placed amplifier a stable ID and an expandable settings entry under its terminal or inline span. Save its position, direction, profile and requested settings with the route. On rerun link it to the actual GNPy element and show effective gain, noise figure, and input/output power. List engine-inserted equipment separately and flag adjustments to requested settings.
+- Show **Pass**, **Fail**, **Review**, or **Not evaluated** for each check and summarize the limiting channel, frequency, measured value, limit and remaining margin. Fail if a verified hard limit is violated. Use Review for a passing result within an explicitly configured warning margin. Use Not evaluated when required inputs or a validated limit are missing. An overall Pass requires all required checks to be evaluated and passed.
+- Use the selected receiver mode and GNPy's feasibility metric at its stated reference bandwidth. For a conventional mode, compare the engine's generalized SNR after applicable penalties with the mode requirement and configured design reserve. Track receiver power limits, spectrum and guard-band conflicts, and equipment operating limits as independent checks. Show passive loss by component and correlate it with power and noise results. Any passive-loss limit must come from an explicit design constraint.
+- Mark existing alerts stale when route inputs change. Export the run's findings, limits and sources alongside the actual topology and readings. Test an adequate case, a borderline case, a negative-margin case, a receiver overload case and a missing-mode case. Compare the optical inputs and available feasibility results with independent GNPy CLI runs.
+
 Use the same route to test fixed- and flex-grid allocation with editable generic transceiver profiles. Reuse the [M1 spectrum acceptance cases](Hyperion_M1_Plan.md#acceptance), including the synthetic 400 Gb/s mode that exceeds a 50 GHz slot. Add a candidate slot that is clear on four spans but occupied on the fifth, and require the validator to identify the blocking span and both channels. Compare the accepted mixed spectrum with an independent GNPy run and export its slot and guard-band decisions.
 
 ## Next build requirements from the prototype walkthrough
