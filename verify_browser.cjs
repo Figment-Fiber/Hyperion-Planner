@@ -16,6 +16,14 @@ async function main() {
     const page = await browser.newPage({viewport: {width: 1280, height: 850}});
     await page.goto(process.env.HYPERION_URL || "http://127.0.0.1:8765/");
     assert(await page.locator(".brand img").evaluate(img => img.complete && img.naturalWidth > 0));
+    await page.locator("#route-settings > summary").click();
+    assert(!(await page.locator("#span-choice").isVisible()));
+    await page.locator("#point-a").click();
+    await page.getByRole("button", {name: "Open site settings"}).click();
+    assert(await page.locator("#name-a").isVisible());
+    await page.getByText("Equipment catalog", {exact: true}).click();
+    await page.locator("#catalog-profile").selectOption("nokia-1830-pss-hc-4cp4t8");
+    assert.match(await page.locator("#catalog-description").innerText(), /generic GNPy equipment/);
     const run = async () => {
       const pending = page.waitForResponse(response => response.url().endsWith("/api/run"), {timeout: 100000});
       await page.getByRole("button", {name: "Run simulation"}).click();
@@ -87,6 +95,8 @@ async function main() {
     await page.waitForFunction(x => Math.abs(document.getElementById("point-a").getBoundingClientRect().x - x) > 2, beforeZoom.x);
     await page.getByRole("button", {name: "Place ROADM C"}).click();
     await page.locator("#map").click({position: {x: 260, y: 175}});
+    await page.locator("#point-c").click();
+    await page.getByRole("button", {name: "Open site settings"}).click();
     await page.locator("#name-c").fill("Intermediate");
     await page.locator("#span-choice").selectOption("1");
     await page.locator("#length").fill("23");

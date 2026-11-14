@@ -66,6 +66,11 @@ function renderLength() {
   $("source").textContent = bundled ? "80 km · Bundled topology" :
     overrides[selected] !== null ? overrides[selected] + " km · Engineered override" :
     estimate === undefined ? "Calculating geographic distance…" : estimate.toFixed(3) + " km · WGS84 geodesic";
+  Array.from($("span-list").children).forEach((button, index) => {
+    const length = bundled ? 80 : overrides[index] ?? estimates[index];
+    button.textContent = choice.options[index].text + (length === undefined ? "" : " · " + length.toFixed(2) + " km");
+    button.setAttribute("aria-pressed", String(index === selected));
+  });
 }
 
 function selectSpan(index) {
@@ -80,6 +85,12 @@ function selectSpan(index) {
 function updateSpanOptions() {
   choice.replaceChildren(...ids.slice(1).map((id, index) =>
     new Option(ids[index].toUpperCase() + " → " + id.toUpperCase(), index)));
+  $("span-list").replaceChildren(...Array.from(choice.options, (_, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.addEventListener("click", () => selectSpan(index));
+    return button;
+  }));
   $("clear-length").hidden = ids.length > 2;
   $("route-order").textContent = ids.map(id => id.toUpperCase()).join(" → ");
   selectSpan(0);
@@ -109,12 +120,64 @@ async function updateRoute() {
   }
 }
 
+function openSettings(section) {
+  $("route-settings").open = true;
+  if (section) $(section).open = true;
+  $(section || "route-settings").querySelector("summary").focus();
+}
+
+$("open-settings").addEventListener("click", () => openSettings());
+
+async function loadCatalog() {
+  const select = $("catalog-profile");
+  const description = $("catalog-description");
+  try {
+    const response = await fetch("/equipment-catalog.json");
+    if (!response.ok) throw new Error("Catalog unavailable.");
+    const {profiles} = await response.json();
+    select.replaceChildren(...profiles.map(profile => new Option(profile.label, profile.id)));
+    const show = () => {
+      const profile = profiles[select.selectedIndex];
+      description.textContent = profile.description ||
+        "Published equipment reference. Simulations use the generic GNPy equipment.";
+      for (const source of profile.sources || []) {
+        const link = document.createElement("a");
+        link.href = source;
+        link.textContent = " Datasheet";
+        description.append(link);
+      }
+    };
+    select.addEventListener("change", show);
+    show();
+  } catch {
+    select.disabled = true;
+    description.textContent = "Equipment catalog unavailable.";
+  }
+}
+
 function addMarker(id, point) {
   const label = id.toUpperCase();
   const icon = L.divIcon({className: "site-marker " + (id === "c" ? "roadm" : ""),
     html: label, iconSize: [30, 30]});
   const marker = L.marker(point, {icon, draggable: true, title: "Site " + label}).addTo(map);
   marker.getElement().id = "point-" + id;
+  marker.bindPopup(() => {
+    const content = document.createElement("div");
+    const title = document.createElement("strong");
+    title.textContent = $("name-" + id).value.trim() || $("name-" + id).defaultValue;
+    const role = document.createElement("div");
+    role.textContent = {a: "Transmit · 0 dBm/channel", b: "Receive · Generic GNPy transceiver",
+      c: "Express ROADM · −20 dBm/channel target"}[id];
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Open site settings";
+    button.addEventListener("click", () => {
+      marker.closePopup();
+      openSettings(id === "c" ? "roadm-fields" : "settings-" + id);
+    });
+    content.append(title, role, button);
+    return content;
+  });
   marker.on("drag", () => route.setLatLngs(currentDesign().coordinates));
   marker.on("dragend", updateRoute);
   markers[id] = marker;
@@ -310,3 +373,4 @@ $("run").addEventListener("click", async () => {
 });
 
 updateRoute();
+loadCatalog();

@@ -82,4 +82,11 @@ button,input,#span-choice{min-height:40px}
 .pane{box-shadow:0 8px 24px #040b1633}
 tbody tr:nth-child(even){background:#172a43}
 #stale-results{color:#ffd08b;font-weight:650;font-size:14px}
+.route-settings>summary{margin:0;padding:13px 15px;background:#162943;font-weight:700}
+.settings-items>details{border-bottom:1px solid var(--edge);padding-bottom:8px}
+.settings-items summary{font-weight:650}
+#span-list button{white-space:normal;text-align:left}
+#span-list button[aria-pressed=true]{border-color:var(--blue)}
+#catalog-profile{width:100%;font:inherit;background:var(--soft);color:inherit;padding:7px}
+.leaflet-popup-content button{margin-top:8px}
 @media(max-width:720px){.mast .actions{gap:6px}.mast button{padding-inline:9px}}

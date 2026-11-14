@@ -32,16 +32,9 @@
       <section class="pane" aria-labelledby="network-title">
         <div class="panehead"><h2 id="network-title">Network</h2></div>
         <div class="inside rows">
-          <label for="name-a">Site A name</label>
-          <input id="name-a" value="Kapolei" maxlength="60">
-          <div id="roadm-fields" hidden>
-            <label for="name-c">Site C name · ROADM</label>
-            <input id="name-c" value="ROADM C" maxlength="60">
-          </div>
-          <label for="name-b">Site B name</label>
-          <input id="name-b" value="Honolulu" maxlength="60">
           <button type="button" id="add-roadm">Place ROADM C</button>
           <button type="button" id="remove-roadm" hidden>Remove ROADM C</button>
+          <button type="button" id="open-settings">Open route settings</button>
         </div>
       </section>
       <section class="pane" aria-labelledby="map-title">
@@ -49,11 +42,34 @@
         <div id="map" class="map geographic" aria-label="Interactive Oʻahu route map"></div>
         <div class="status" id="status" role="status">Drag a site to move it. Scroll or use + and − to zoom.</div>
       </section>
-      <section class="pane" aria-labelledby="span-title">
-        <div class="panehead"><h2 id="span-title">Span settings</h2></div>
+      <details id="route-settings" class="pane route-settings" open>
+        <summary>Route settings</summary>
+        <div class="inside settings-items">
+          <details id="settings-a">
+            <summary>Terminal A · Transmit</summary>
+            <label for="name-a">Site A name</label>
+            <input id="name-a" value="Kapolei" maxlength="60">
+            <p class="quiet">Generic GNPy transceiver. The reference spectrum launches 76 channels at 0 dBm/channel, 32 GBd, with 50 GHz spacing.</p>
+          </details>
+          <details id="roadm-fields" hidden>
+            <summary>Site C · Express ROADM</summary>
+            <label for="name-c">Site C name · ROADM</label>
+            <input id="name-c" value="ROADM C" maxlength="60">
+            <p class="quiet">Generic express path from A toward B. Output target −20 dBm/channel. GNPy can insert a booster during auto-design.</p>
+          </details>
+          <details id="settings-b">
+            <summary>Terminal B · Receive</summary>
+            <label for="name-b">Site B name</label>
+            <input id="name-b" value="Honolulu" maxlength="60">
+            <p class="quiet">Generic GNPy receiver. See Simulation results for channel power, ASE OSNR, nonlinear SNR, and GSNR.</p>
+          </details>
+          <details id="settings-spans" open>
+            <summary>Fiber spans</summary>
+            <div id="span-list" class="rows"></div>
         <form class="inside" id="span-form" novalidate>
           <label for="span-choice">Span</label>
           <select id="span-choice"></select>
+          <p class="quiet">Generic SSMF · 0.20 dB/km · 0.50 dB connector loss at each end. GNPy reports effective loss and gain after auto-design.</p>
           <div class="kv"><span>Map estimate</span><strong id="estimate"></strong></div>
           <p class="quiet">Straight-line distance. Enter a measured fiber length when available.</p>
           <label for="length">Engineered length (km)</label>
@@ -66,7 +82,15 @@
           <div class="error" id="length-error" role="alert"></div>
           <div class="source">Length GNPy will use<strong id="source"></strong></div>
         </form>
-      </section>
+          </details>
+          <details>
+            <summary>Equipment catalog</summary>
+            <label for="catalog-profile">Browse profiles</label>
+            <select id="catalog-profile"></select>
+            <p id="catalog-description" class="quiet" role="status"></p>
+          </details>
+        </div>
+      </details>
     </div>
     <section class="pane results" aria-labelledby="results-title">
       <div class="panehead">
