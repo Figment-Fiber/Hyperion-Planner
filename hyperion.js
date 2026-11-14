@@ -46,6 +46,8 @@ function unapplied() {
 }
 
 function refreshStatus() {
+  $("stale-results").hidden = !lastRun || (!unapplied() &&
+    JSON.stringify(lastRun) === JSON.stringify(currentDesign()));
   if (running) return;
   if (placing) {
     updateStatus("Click the map to place the intermediate ROADM.");
@@ -182,6 +184,73 @@ $("sample").addEventListener("click", () => {
   for (const id of ["a", "b", "c"]) $("name-" + id).value = $("name-" + id).defaultValue;
   map.setView([21.47, -157.98], 10);
   removeRoadm();
+});
+
+function applyRoute(design) {
+  removeRoadm();
+  if (design.coordinates.length === 3) {
+    addMarker("c", design.coordinates[1]);
+    ids = ["a", "c", "b"];
+    $("roadm-fields").hidden = false;
+    $("remove-roadm").hidden = false;
+    $("add-roadm").hidden = true;
+  }
+  ids.forEach((id, index) => {
+    markers[id].setLatLng(design.coordinates[index]);
+    $("name-" + id).value = design.site_names[index];
+  });
+  overrides = [...design.span_overrides];
+  bundled = design.bundled;
+  updateSpanOptions();
+  map.fitBounds(L.latLngBounds(design.coordinates), {padding: [35, 35], maxZoom: 12});
+  updateRoute();
+}
+
+function validRoute(design) {
+  if (!design || design.version !== 1 || !Array.isArray(design.coordinates)) return false;
+  const count = design.coordinates.length;
+  return [2, 3].includes(count) &&
+    design.coordinates.every(point => Array.isArray(point) && point.length === 2 &&
+      point.every(Number.isFinite) && Math.abs(point[0]) <= 85 && Math.abs(point[1]) <= 180) &&
+    Array.isArray(design.site_names) && design.site_names.length === count &&
+    design.site_names.every(name => typeof name === "string" && name.trim() && name.length <= 60) &&
+    Array.isArray(design.span_overrides) && design.span_overrides.length === count - 1 &&
+    design.span_overrides.every(value => value === null || (Number.isFinite(value) && value > 0)) &&
+    typeof design.bundled === "boolean" &&
+    (!design.bundled || (count === 2 && design.span_overrides[0] === null));
+}
+
+$("new-route").addEventListener("click", () => {
+  applyRoute({coordinates: start, site_names: ["Site A", "Site B"], span_overrides: [null], bundled: false});
+});
+$("save-route").addEventListener("click", () => {
+  if (unapplied()) {
+    updateStatus("Apply the edited length before saving the route.");
+    input.focus();
+    return;
+  }
+  const url = URL.createObjectURL(new Blob(
+    [JSON.stringify({version: 1, ...currentDesign()}, null, 2)], {type: "application/json"}));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "hyperion-route.json";
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  updateStatus("Route file downloaded.");
+});
+$("load-route").addEventListener("click", () => $("route-file").click());
+$("route-file").addEventListener("change", async event => {
+  const file = event.target.files[0];
+  event.target.value = "";
+  if (!file) return;
+  try {
+    if (file.size > 65536) throw new Error("Route file is too large.");
+    const design = JSON.parse(await file.text());
+    if (!validRoute(design)) throw new Error("Choose a valid Hyperion route JSON file.");
+    applyRoute(design);
+  } catch (error) {
+    updateStatus("Could not load route. " + error.message);
+  }
 });
 
 updateSpanOptions();

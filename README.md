@@ -2,6 +2,8 @@
 
 The map opens on Oʻahu with two draggable endpoints. Scroll, pinch, or use the zoom controls to change scale. Span estimates are WGS84 straight-line distances between site coordinates. Use an engineered length for surveyed fiber, conduit routing, or slack. Map tiles require internet access and are credited in the map. The local simulation and distance calculations can run without tiles.
 
+Use **Save route** to download a JSON file with the current sites, coordinates and span overrides. **Load route** restores that design. **New route** opens an editable two-site starter in Oʻahu. Apply pending span edits before saving. Changing a completed design flags the results for a rerun. Excel continues to export the completed simulation.
+
 Select **Place ROADM C**, then click the map to insert an intermediate express ROADM between A and B. The span dropdown switches between A → C and C → B. Each span can use its geographic distance or an independent engineered length. The GNPy report shows both spans, the generic ROADM, and any amplifiers GNPy adds during auto-design. Excel includes the coordinates, distance, effective length, and source per span.
 
 This route uses one unidirectional service and the bundled spectrum and equipment models. The next engineering milestone is editable transceiver and ROADM profiles, fixed-grid and flex-grid allocations, and overlap and guard-band validation on both spans.

@@ -13,6 +13,12 @@
 <body>
   <header class="mast">
     <div class="brand"><img src="/logo.png" alt="Hyperion Planner"></div>
+    <nav class="actions" aria-label="Route files">
+      <button id="new-route">New route</button>
+      <button id="load-route">Load route</button>
+      <button id="save-route">Save route</button>
+      <input id="route-file" type="file" accept=".json,application/json" hidden>
+    </nav>
   </header>
   <main class="wrap">
     <div class="heading">
@@ -64,7 +70,7 @@
     </div>
     <section class="pane results" aria-labelledby="results-title">
       <div class="panehead">
-        <h2 id="results-title">Simulation results</h2>
+        <div><h2 id="results-title">Simulation results</h2><span id="stale-results" hidden>Inputs changed · Rerun required</span></div>
         <a id="download" hidden>Download Excel</a>
       </div>
       <div class="resultbody">

@@ -97,6 +97,20 @@ async function main() {
     assert.equal(roadm.spans[0].simulation_km, roadm.spans[0].geodesic_km);
     assert.match(roadm.report, /Roadm Roadm_C/);
     assert.equal((await rows()).length, 76);
+    const saved = page.waitForEvent("download");
+    await page.getByRole("button", {name: "Save route"}).click();
+    const routeFile = await saved;
+    const routeContents = fs.readFileSync(await routeFile.path());
+    await page.getByRole("button", {name: "New route"}).click();
+    assert.equal(await page.locator("#route-order").innerText(), "A → B");
+    assert(await page.locator("#stale-results").isVisible());
+    await page.locator("#route-file").setInputFiles({
+      name: "route.json", mimeType: "application/json", buffer: routeContents,
+    });
+    await page.waitForFunction(() => document.getElementById("route-order").textContent === "A → C → B");
+    assert.equal(await page.locator("#name-c").inputValue(), "Intermediate");
+    await page.locator("#span-choice").selectOption("1");
+    assert.equal(await page.locator("#length").inputValue(), "23");
     if (process.env.HYPERION_ROADM_JSON) fs.writeFileSync(process.env.HYPERION_ROADM_JSON, JSON.stringify({roadm, rows: await rows()}));
     await page.getByRole("button", {name: "Remove ROADM C"}).click();
     assert.equal((await run()).spans.length, 1);

@@ -72,3 +72,14 @@ summary{cursor:pointer;margin:14px 0}
 .site-marker{display:grid;place-items:center;background:#14394f;color:#fff;border:2px solid #9ee0f9;border-radius:50%;font-weight:750}
 .site-marker.roadm{border-color:#ffd08b;background:#554022}
 #span-choice{font:inherit;color:inherit;background:var(--soft);border:1px solid var(--edge);border-radius:7px;padding:6px;width:100%}
+:root{--bg:#091526;--pane:#122239;--soft:#1a304b;--edge:#45607b;--fg:#f4f8ff;--muted:#bfd0e3;--blue:#78c9ff;--bright:#b9e5ff}
+body{font-size:15px;line-height:1.55}
+.mast{flex-wrap:wrap;background:#102039;padding-block:10px}
+.panehead{background:#162943}
+.pane h2{font-size:16px}
+.heading h1{font-size:clamp(26px,4vw,36px)}
+button,input,#span-choice{min-height:40px}
+.pane{box-shadow:0 8px 24px #040b1633}
+tbody tr:nth-child(even){background:#172a43}
+#stale-results{color:#ffd08b;font-weight:650;font-size:14px}
+@media(max-width:720px){.mast .actions{gap:6px}.mast button{padding-inline:9px}}
