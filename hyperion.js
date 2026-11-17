@@ -15,6 +15,9 @@ const markers = {};
 let ids = ["a", "b"];
 let overrides = [null];
 let spanSplices = [[]];
+let inlineGains = [null];
+let marine = [];
+const spanWarnings = L.layerGroup().addTo(map);
 let estimates = [];
 let bundled = false;
 let selected = 0;
@@ -40,6 +43,8 @@ function currentDesign() {
     site_names: ids.map(id => $("name-" + id).value.trim() || $("name-" + id).defaultValue),
     span_overrides: [...overrides],
     span_splices: spanSplices.map(losses => [...losses]),
+    inline_gains: [...inlineGains],
+    preamp_gain_db: $("preamp-gain").value === "" ? null : $("preamp-gain").valueAsNumber,
     roadm_connectors: roadmConnectorFields.map(id =>
       ids.includes("c") && $(id).value !== "" ? $(id).valueAsNumber : null),
     bundled,
@@ -52,6 +57,8 @@ function currentDesign() {
       reserve: $("quality-reserve").valueAsNumber,
       warning: $("quality-warning").valueAsNumber,
     },
+    ase_threshold_db: $("ase-threshold").value === "" ? null : $("ase-threshold").valueAsNumber,
+    ase_warning_db: $("quality-warning").valueAsNumber,
   };
 }
 
@@ -62,7 +69,59 @@ function unapplied() {
 for (const id of ["quality-threshold", "quality-reserve", "quality-warning", "booster-gain", "tx-power", "catalog-rate"]) {
   $(id).addEventListener("input", refreshStatus);
 }
-roadmConnectorFields.forEach(id => $(id).addEventListener("input", refreshStatus));
+roadmConnectorFields.forEach(id => $(id).addEventListener("input", () => {
+  renderSpanWarnings();
+  refreshStatus();
+}));
+$("preamp-gain").addEventListener("input", refreshStatus);
+$("ase-threshold").addEventListener("input", refreshStatus);
+
+function spanLength(index) {
+  return bundled ? 80 : overrides[index] ?? estimates[index];
+}
+
+function suggestedGain(index) {
+  const ingress = index === 1 ? $("roadm-egress-loss").valueAsNumber : 0.5;
+  return Math.max(8, Math.round((spanLength(index) * 0.1 + (Number.isFinite(ingress) ? ingress : 0.5)) * 10) / 10);
+}
+
+function renderSpanWarnings() {
+  spanWarnings.clearLayers();
+  ids.slice(1).forEach((id, index) => {
+    const configured = inlineGains[index] !== null;
+    if (!configured && !(spanLength(index) > 80)) return;
+    const from = markers[ids[index]].getLatLng();
+    const to = markers[id].getLatLng();
+    const midpoint = [((from.lat + to.lat) / 2), ((from.lng + to.lng) / 2)];
+    const icon = L.divIcon({className: configured ? "map-span-amplifier" : "map-span-warning",
+      html: configured ? "▲" : "!", iconSize: [24, 24]});
+    L.marker(midpoint, {icon, title: configured ? "Midpoint inline EDFA" : "Over 80 km · Review amplification"}).addTo(spanWarnings)
+      .on("click", () => { openSettings("settings-spans"); selectSpan(index); });
+  });
+  const warning = $("amplifier-warning");
+  warning.hidden = !(spanLength(selected) > 80) || inlineGains[selected] !== null;
+  const gain = suggestedGain(selected);
+  warning.textContent = gain > 35
+    ? "! Over 80 km · Split the route into shorter sections. Half-span loss exceeds the generic EDFA gain range."
+    : "! Over 80 km · Review amplification. Midpoint starting target: " + gain + " dB from first-half fiber and ingress loss.";
+  $("suggest-gain").hidden = warning.hidden || gain > 35;
+  const note = $("marine-note");
+  note.hidden = marine[selected] === false;
+  note.textContent = marine[selected] === true
+    ? "Potential ocean crossing · Review single and double armor for exposed sections and landfalls. Deep water may use lightweight cable. Verify with bathymetry and a marine survey."
+    : "Coastline screening pending or unavailable.";
+}
+
+$("inline-gain").addEventListener("input", event => {
+  const field = event.target;
+  if (field.validity.valid) inlineGains[selected] = field.value === "" ? null : field.valueAsNumber;
+  renderSpanWarnings();
+  refreshStatus();
+});
+$("suggest-gain").onclick = () => {
+  $("inline-gain").value = suggestedGain(selected);
+  $("inline-gain").dispatchEvent(new Event("input"));
+};
 
 function refreshStatus() {
   $("stale-results").hidden = !lastRun || (!unapplied() &&
@@ -90,12 +149,14 @@ function renderLength() {
     button.textContent = choice.options[index].text + (length === undefined ? "" : " · " + length.toFixed(2) + " km");
     button.setAttribute("aria-pressed", String(index === selected));
   });
+  renderSpanWarnings();
 }
 
 function selectSpan(index) {
   selected = index;
   choice.value = String(index);
   input.value = String(overrides[index] ?? "");
+  $("inline-gain").value = inlineGains[index] ?? "";
   $("length-error").textContent = "";
   renderLength();
   renderSplices();
@@ -163,6 +224,7 @@ async function updateRoute() {
   const design = currentDesign();
   route.setLatLngs(design.coordinates);
   estimates = [];
+  marine = [];
   renderLength();
   refreshStatus();
   const request = ++distanceRequest;
@@ -175,7 +237,8 @@ async function updateRoute() {
     if (!response.ok) throw new Error("Distance request failed.");
     const distances = await response.json();
     if (request === distanceRequest) {
-      estimates = distances;
+      estimates = distances.km;
+      marine = distances.marine;
       renderLength();
     }
   } catch (error) {
@@ -250,6 +313,7 @@ function removeRoadm() {
   ids = ["a", "b"];
   overrides = [null];
   spanSplices = [spanSplices.flat()];
+  inlineGains = [null];
   roadmConnectorFields.forEach(id => { $(id).value = ""; });
   bundled = false;
   placing = false;
@@ -273,6 +337,7 @@ map.on("click", event => {
   ids = ["a", "c", "b"];
   overrides = [null, null];
   spanSplices = [spanSplices[0], []];
+  inlineGains = [null, null];
   bundled = false;
   $("roadm-fields").hidden = false;
   $("remove-roadm").hidden = false;
@@ -311,6 +376,7 @@ $("sample").addEventListener("click", () => {
   for (const id of ["a", "b", "c"]) $("name-" + id).value = $("name-" + id).defaultValue;
   map.setView([21.47, -157.98], 10);
   spanSplices = [[]];
+  $("preamp-gain").value = "";
   removeRoadm();
 });
 
@@ -329,6 +395,9 @@ function applyRoute(design) {
   });
   overrides = [...design.span_overrides];
   spanSplices = design.span_splices || overrides.map(() => []);
+  inlineGains = design.inline_gains || overrides.map(() => null);
+  $("preamp-gain").value = design.preamp_gain_db ?? "";
+  $("ase-threshold").value = design.ase_threshold_db ?? "";
   roadmConnectorFields.forEach((id, index) => {
     $(id).value = design.roadm_connectors?.[index] ?? "";
   });
@@ -340,7 +409,7 @@ function applyRoute(design) {
   $("booster-gain").value = design.booster_gain_db ?? "";
   $("quality-threshold").value = design.quality_limits?.threshold ?? "";
   $("quality-reserve").value = design.quality_limits?.reserve ?? 2;
-  $("quality-warning").value = design.quality_limits?.warning ?? 1;
+  $("quality-warning").value = design.ase_warning_db ?? design.quality_limits?.warning ?? 1;
   updateSpanOptions();
   map.fitBounds(L.latLngBounds(design.coordinates), {padding: [35, 35], maxZoom: 12});
   updateRoute();
@@ -356,6 +425,9 @@ function validRoute(design) {
     design.site_names.every(name => typeof name === "string" && name.trim() && name.length <= 60) &&
     Array.isArray(design.span_overrides) && design.span_overrides.length === count - 1 &&
     design.span_overrides.every(value => value === null || (Number.isFinite(value) && value > 0)) &&
+    (design.inline_gains === undefined || (Array.isArray(design.inline_gains) &&
+      design.inline_gains.length === count - 1 && design.inline_gains.every(gain =>
+        gain === null || (Number.isFinite(gain) && gain >= 8 && gain <= 35)))) &&
     (design.span_splices === undefined || (Array.isArray(design.span_splices) &&
       design.span_splices.length === count - 1 && design.span_splices.every(losses =>
         Array.isArray(losses) && losses.length <= 100 &&
@@ -412,6 +484,10 @@ function showResult(result) {
       " splices, " + span.splice_total_db.toFixed(2) + " dB · " +
       span.connector_loss_db.toFixed(2) + " dB connectors · " +
       span.passive_loss_db.toFixed(2) + " dB passive loss before GNPy design adjustments";
+    if (span.inline_gain_db !== null) row.textContent += " · Midpoint EDFA target " + span.inline_gain_db + " dB";
+    if (span.amplifier_warning) row.textContent += " · Over 80 km: review amplification";
+    if (span.marine_screening) row.textContent += " · Review submarine cable armor";
+    row.classList.toggle("span-warning", span.amplifier_warning || span.marine_screening);
     return row;
   }));
   const equipment = $("equipment-checks");
@@ -419,6 +495,7 @@ function showResult(result) {
   equipment.replaceChildren(...result.catalog_checks.map(check => {
     const row = document.createElement("li");
     row.textContent = check.check + " · " + check.status + " · " + check.detail;
+    row.classList.toggle("span-warning", ["Fail", "Review"].includes(check.status));
     return row;
   }));
   const check = result.quality_check;
@@ -429,6 +506,15 @@ function showResult(result) {
     (check.reason || ("Channel " + check.channel + " at " + check.frequency_thz.toFixed(5) +
       " THz · " + check.gsnr_db.toFixed(2) + " dB signal BW · " + check.remaining_db.toFixed(2) +
       " dB remaining after the " + check.threshold_db + " dB threshold and " + check.reserve_db + " dB reserve."));
+  if (check.action) quality.textContent += " " + check.action;
+  const ase = result.ase_check;
+  $("ase-result").hidden = false;
+  $("ase-result").dataset.verdict = ase.status;
+  $("fec-result").hidden = false;
+  $("ase-result").textContent = "ASE OSNR planning check · " + ase.status +
+    (ase.channel === undefined ? "" : " · Channel " + ase.channel + " · " + ase.osnr_ase_db.toFixed(2) +
+      " dB vs " + ase.threshold_db + " dB (signal BW) · Margin " + ase.remaining_db.toFixed(2) + " dB");
+  if (ase.action) $("ase-result").textContent += ". " + ase.action;
   $("result-summary").textContent = result.site_names.join(" → ") + " · " + result.channels.length + " channels · " +
     result.span_length_km + " km · " + result.length_source + " · GNPy " +
     result.engine_version + " · Map estimate at run: " + result.map_estimate_km.toFixed(1) + " km";
@@ -453,7 +539,7 @@ function showResult(result) {
 }
 
 function validSplices() {
-  const fields = [...$("splices").querySelectorAll("input")];
+  const fields = [$("inline-gain"), $("preamp-gain"), $("ase-threshold"), ...$("splices").querySelectorAll("input")];
   if (ids.includes("c")) fields.push(...roadmConnectorFields.map($));
   return fields.every(field => field.reportValidity());
 }
@@ -470,6 +556,7 @@ $("run").addEventListener("click", async () => {
   running = true;
   $("run").disabled = true;
   updateStatus("Running GNPy…");
+  $("simulation-error").hidden = true;
   try {
     const response = await fetch("/api/run", {
       method: "POST",
@@ -484,6 +571,8 @@ $("run").addEventListener("click", async () => {
     refreshStatus();
   } catch (error) {
     updateStatus("Simulation failed. " + error.message);
+    $("simulation-error").textContent = "Simulation failed. " + error.message;
+    $("simulation-error").hidden = false;
   } finally {
     running = false;
     $("run").disabled = false;

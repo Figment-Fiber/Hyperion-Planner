@@ -20,7 +20,7 @@ CHANNEL_ROW = re.compile(r"\s*(\d+)" + (r"\s+" + NUMBER) * 5 + r"\s*")
 
 
 def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=None, tx_power_dbm=None,
-                  span_splices=None, roadm_connectors=None):
+                  span_splices=None, roadm_connectors=None, inline_gains=None, preamp_gain_db=None):
     """Return destination channel values and the input used for this run."""
     for length in (length_override_km, second_span_km):
         if length is not None and (
@@ -73,19 +73,50 @@ def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=
             fiber = next(element for element in topology["elements"] if element["uid"] == f"Span{index}")
             fiber["params"]["con_out"] += math.fsum(losses)
 
+    if length_override_km is not None:
+        span["params"]["length"] = length_override_km
+    spans = [element for element in topology["elements"] if element["type"] == "Fiber"]
+    lengths = [element["params"]["length"] for element in spans]
+    for fiber, gain in zip(spans, inline_gains or []):
+        if gain is None:
+            continue
+        uid = fiber["uid"]
+        downstream = deepcopy(fiber)
+        downstream["uid"] = uid + "_After_ILA"
+        downstream["params"]["length"] /= 2
+        fiber["params"]["length"] /= 2
+        fiber["params"]["con_out"] = 0
+        downstream["params"]["con_in"] = 0
+        amplifier = configured_edfa(uid + "_User_ILA", gain)
+        outgoing = next(link for link in topology["connections"] if link["from_node"] == uid)
+        destination = outgoing["to_node"]
+        outgoing["to_node"] = amplifier["uid"]
+        topology["elements"].extend([amplifier, downstream])
+        topology["connections"].extend([
+            {"from_node": amplifier["uid"], "to_node": downstream["uid"]},
+            {"from_node": downstream["uid"], "to_node": destination},
+        ])
+    if preamp_gain_db is not None:
+        uid = f"Edfa{len(spans)}"
+        receiver_stage = next(element for element in topology["elements"] if element["uid"] == uid)
+        receiver_stage.update(configured_edfa(uid, preamp_gain_db))
+
     with TemporaryDirectory() as run_dir:
         topology_path = bundled
-        if length_override_km is not None or second_span_km is not None or booster_gain_db is not None or span_splices:
-            if length_override_km is not None:
-                span["params"]["length"] = length_override_km
+        if (length_override_km is not None or second_span_km is not None or booster_gain_db is not None
+                or span_splices or inline_gains or preamp_gain_db is not None):
             topology_path = Path(run_dir) / bundled.name
             topology_path.write_text(json.dumps(topology, indent=2) + "\n", encoding="utf-8")
         topology_hash = hashlib.sha256(topology_path.read_bytes()).hexdigest()
         options = []
+        manual_gain_mode = any(gain is not None for gain in inline_gains or []) or preamp_gain_db is not None
         if tx_power_dbm is not None:
             if type(tx_power_dbm) not in (int, float) or not -20 <= tx_power_dbm <= 8:
                 raise ValueError("Enter a generic transmitter output between −20 and +8 dBm/channel.")
             equipment["SI"][0]["tx_power_dbm"] = tx_power_dbm
+        if manual_gain_mode:
+            equipment["Span"][0]["power_mode"] = False
+        if tx_power_dbm is not None or manual_gain_mode:
             equipment_path = Path(run_dir) / equipment_path.name
             equipment_path.write_text(json.dumps(equipment), encoding="utf-8")
             options = ["-e", str(equipment_path)]
@@ -115,19 +146,29 @@ def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=
     report, _, _ = output.partition(CHANNEL_HEADING)
     return {
         "engine_version": package.version,
-        "span_length_km": round(span["params"]["length"] + (second_span_km or 0), 6),
-        "span_lengths_km": [span["params"]["length"]] + ([second_span_km] if second_span_km is not None else []),
+        "span_length_km": round(math.fsum(lengths), 6),
+        "span_lengths_km": lengths,
         "topology_input": topology,
         "topology_sha256": topology_hash,
         "topology": topology["network_name"],
         "equipment": "eqpt_config.json",
         "equipment_sha256": equipment_hash,
+        "manual_gain_mode": manual_gain_mode,
+        "equipment_input": equipment if options else None,
         "spectrum": equipment["SI"][0],
         "length_source": "Bundled topology" if length_override_km is None else "Engineered override",
         "reference_bandwidth": "signal",
         "channels": parse_channels(output),
         "report": report.strip(),
     }
+
+
+def configured_edfa(uid, gain):
+    if type(gain) not in (int, float) or not 8 <= gain <= 35:
+        raise ValueError("Enter an amplifier gain between 8 and 35 dB.")
+    variety = "std_low_gain" if gain <= 16 else "std_medium_gain" if gain <= 26 else "std_high_gain"
+    return {"uid": uid, "type": "Edfa", "type_variety": variety,
+            "operational": {"gain_target": gain, "tilt_target": 0, "out_voa": 0}}
 
 
 def parse_channels(output):

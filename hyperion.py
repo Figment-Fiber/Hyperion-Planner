@@ -58,6 +58,48 @@ def geographic_spans(points):
     ]
 
 
+@lru_cache(maxsize=1)
+def land_rings():
+    features = json.loads((ROOT / "assets/land-50m.geojson").read_bytes())["features"]
+    rings = []
+    for feature in features:
+        geometry = feature["geometry"]
+        polygons = [geometry["coordinates"]] if geometry["type"] == "Polygon" else geometry["coordinates"]
+        for polygon in polygons:
+            ring = polygon[0]
+            longitudes, latitudes = zip(*ring)
+            rings.append((min(longitudes), max(longitudes), min(latitudes), max(latitudes), ring))
+    return rings
+
+
+def on_land(lat, lon):
+    for west, east, south, north, ring in land_rings():
+        if not west <= lon <= east or not south <= lat <= north:
+            continue
+        inside = False
+        for (x1, y1), (x2, y2) in zip(ring, ring[1:]):
+            if (y1 > lat) != (y2 > lat) and lon < (x2 - x1) * (lat - y1) / (y2 - y1) + x1:
+                inside = not inside
+        if inside:
+            return True
+    return False
+
+
+def marine_screening(points):
+    results = []
+    for start, end in zip(points, points[1:]):
+        line = Geodesic.WGS84.InverseLine(*start, *end)
+        intervals = max(1, min(256, math.ceil(line.s13 / 2000)))
+        crossing = False
+        for index in range(intervals):
+            point = line.Position(line.s13 * (index + 0.5) / intervals)
+            if not on_land(point["lat2"], point["lon2"]):
+                crossing = True
+                break
+        results.append(crossing)
+    return results
+
+
 def simulation(payload):
     if "coordinates" in payload:
         return geographic_simulation(payload)
@@ -93,6 +135,7 @@ def simulation(payload):
 def geographic_simulation(payload):
     points = payload["coordinates"]
     estimates = geographic_spans(points)
+    marine = marine_screening(points)
     names = payload.get("site_names")
     if (not isinstance(names, list) or len(names) != len(points)
         or any(not isinstance(name, str) or not name.strip() or len(name) > 60 for name in names)):
@@ -106,6 +149,10 @@ def geographic_simulation(payload):
     transmitter_power = payload.get("tx_power_dbm")
     effective_lengths = [80] if reference else lengths
     splices = payload.get("span_splices", [[] for _ in estimates])
+    inline_gains = payload.get("inline_gains", [None] * len(estimates))
+    preamp = payload.get("preamp_gain_db")
+    if not isinstance(inline_gains, list) or len(inline_gains) != len(estimates):
+        raise ValueError("Provide one inline amplifier setting per span.")
     connectors = payload.get("roadm_connectors", [None, None])
     if (not isinstance(connectors, list) or len(connectors) != 2
         or any(value is not None and (type(value) not in (int, float) or not 0 <= value <= 10)
@@ -117,9 +164,12 @@ def geographic_simulation(payload):
         or any(type(loss) not in (int, float) or not 0 <= loss <= 10
                for losses in splices for loss in losses)):
         raise ValueError("Enter up to 100 splice losses per span, each between 0 and 10 dB.")
-    result = (bundled_run() if reference and booster is None and transmitter_power is None and not any(splices) else
+    customized = booster is not None or transmitter_power is not None or any(splices) or any(
+        gain is not None for gain in inline_gains) or preamp is not None
+    result = (bundled_run() if reference and not customized else
               run_reference(*effective_lengths, booster_gain_db=booster, tx_power_dbm=transmitter_power,
-                            span_splices=splices if any(splices) else None, roadm_connectors=connectors))
+                            span_splices=splices if any(splices) else None, roadm_connectors=connectors,
+                            inline_gains=inline_gains, preamp_gain_db=preamp))
     connector_losses = [1.0] if len(estimates) == 1 else [
         0.5 + (0.5 if value is None else value) for value in connectors
     ]
@@ -130,6 +180,9 @@ def geographic_simulation(payload):
          "splice_losses_db": splices[index],
          "splice_total_db": round(math.fsum(splices[index]), 6),
          "connector_loss_db": connector_losses[index],
+         "inline_gain_db": inline_gains[index],
+         "amplifier_warning": result["span_lengths_km"][index] > 80 and inline_gains[index] is None,
+         "marine_screening": marine[index],
          "passive_loss_db": round(0.2 * result["span_lengths_km"][index] + connector_losses[index] + math.fsum(splices[index]), 6)}
         for index, estimate in enumerate(estimates)
     ]
@@ -141,7 +194,8 @@ def geographic_simulation(payload):
         "length_source": "Per-span lengths" if len(spans) > 1 else spans[0]["source"],
         "spans": spans,
         "booster_gain_db": booster,
-        "baseline": bundled_run() if len(points) == 2 and (not reference or any(splices)) else None,
+        "preamp_gain_db": preamp,
+        "baseline": bundled_run() if len(points) == 2 and (not reference or customized) else None,
     }
 
 
@@ -156,13 +210,36 @@ def quality_check(channels, limits):
         raise ValueError("Enter a finite GSNR threshold and nonnegative reserves in dB.")
     channel = min(channels, key=lambda row: row["gsnr_db"])
     margin = round(channel["gsnr_db"] - threshold - reserve, 6)
+    action = (
+        "ASE-side noise is the larger modeled contribution at the limiting channel. Review amplifier noise figure, "
+        "unnecessary stages and passive loss ahead of gain."
+        if channel["osnr_ase_db"] <= channel["snr_nli_db"] else
+        "Nonlinear interference is the larger modeled contribution at the limiting channel. "
+        "Test lower span launch power and rerun to check the ASE trade-off."
+    )
     return {
         "status": "Fail" if margin < 0 else "Review" if margin < warning else "Pass",
         "channel": channel["channel"], "frequency_thz": channel["frequency_thz"],
         "gsnr_db": channel["gsnr_db"], "threshold_db": threshold, "reserve_db": reserve,
         "warning_db": warning, "remaining_db": margin,
         "scope": "User-entered GSNR planning check at signal bandwidth",
+        "action": action if margin < warning else "",
     }
+
+def ase_check(channels, threshold, warning=1):
+    if threshold is None:
+        return {"status": "Not evaluated"}
+    if type(threshold) not in (int, float) or not -100 <= threshold <= 100:
+        raise ValueError("Enter a finite ASE OSNR threshold in dB.")
+    if type(warning) not in (int, float) or not 0 <= warning <= 100:
+        raise ValueError("Enter a nonnegative margin review band in dB.")
+    channel = min(channels, key=lambda row: row["osnr_ase_db"])
+    margin = round(channel["osnr_ase_db"] - threshold, 6)
+    return {"status": "Fail" if margin < 0 else "Review" if margin < warning else "Pass", "channel": channel["channel"],
+            "frequency_thz": channel["frequency_thz"], "osnr_ase_db": channel["osnr_ase_db"],
+            "threshold_db": threshold, "remaining_db": margin, "reference_bandwidth": "signal",
+            "review_band_db": warning,
+            "action": "Review amplifier noise figure, passive loss ahead of gain, and unnecessary gain stages." if margin < warning else ""}
 
 
 def catalog_checks(result, profile_id, rate):
@@ -202,6 +279,7 @@ def workbook(result):
     output = BytesIO()
     with xlsxwriter.Workbook(output, {"in_memory": True, "strings_to_formulas": False}) as book:
         heading = book.add_format({"bold": True, "bg_color": "#15364D", "font_color": "#FFFFFF"})
+        alert = book.add_format({"bold": True, "font_color": "#9C0006", "bg_color": "#FFC7CE"})
         frequency = book.add_format({"num_format": "0.00000"})
         measurement = book.add_format({"num_format": "0.00"})
         summary = book.add_worksheet("Run Summary")
@@ -218,6 +296,8 @@ def workbook(result):
             ("Equipment", result["equipment"]),
             ("Equipment SHA-256", result["equipment_sha256"]),
             ("Length source", result["length_source"]),
+            ("Terminal B requested preamp gain (dB)", result.get("preamp_gain_db")),
+            ("Amplifier design mode", "Gain mode" if result.get("manual_gain_mode") else "Power mode"),
             ("Simulation length (km)", result["span_length_km"]),
             ("Map estimate (km)", result["map_estimate_km"]),
             ("Channel reference bandwidth", "Signal bandwidth"),
@@ -244,7 +324,8 @@ def workbook(result):
         if result.get("booster_gain_db") is not None:
             summary.write_row(len(details) + 1, 0, ("Terminal A requested booster gain (dB)", result["booster_gain_db"]))
         for index, (key, value) in enumerate(result.get("quality_check", {}).items(), len(details) + 2):
-            summary.write_row(index, 0, ("GSNR check · " + key.replace("_", " "), value))
+            summary.write_row(index, 0, ("GSNR check · " + key.replace("_", " "), value),
+                              alert if result["quality_check"]["status"] in ("Fail", "Review") else None)
         if result.get("catalog_checks"):
             catalog = book.add_worksheet("Equipment Checks")
             catalog.set_column("A:B", 30)
@@ -252,18 +333,29 @@ def workbook(result):
             catalog.write_row(0, 0, ("Check", "Status", "Evidence"), heading)
             catalog.write(1, 0, result["catalog_profile"])
             for index, check in enumerate(result["catalog_checks"], 2):
-                catalog.write_row(index, 0, [check["check"], check["status"], check["detail"]])
+                catalog.write_row(index, 0, [check["check"], check["status"], check["detail"]],
+                                  alert if check["status"] in ("Fail", "Review") else None)
+        for index, (key, value) in enumerate(result.get("ase_check", {}).items(), len(details) + 15):
+            summary.write_row(index, 0, ("ASE OSNR check · " + key.replace("_", " "), value),
+                              alert if result["ase_check"]["status"] in ("Fail", "Review") else None)
+        summary.write_row(len(details) + 25, 0, ("FEC margin", "Not evaluated · Requires a validated modem mode"))
         if "spans" in result:
             spans = book.add_worksheet("Route Spans")
-            spans.set_column("A:I", 25)
+            spans.set_column("A:L", 25)
             spans.write_row(0, 0, ("From", "To", "Geodesic (km)", "Simulation (km)", "Length source",
-                                    "Individual splices (dB)", "Splice total (dB)", "Connector loss (dB)", "Passive budget (dB)"), heading)
+                                    "Individual splices (dB)", "Splice total (dB)", "Connector loss (dB)", "Passive budget (dB)",
+                                    "Midpoint EDFA target (dB)", "Over-80 km warning", "Marine screening"), heading)
             for index, span in enumerate(result["spans"], 1):
                 spans.write_row(index, 0, [
                     span["from"], span["to"], span["geodesic_km"], span["simulation_km"], span["source"],
                     ", ".join(str(loss) for loss in span["splice_losses_db"]),
                     span["splice_total_db"], span["connector_loss_db"], span["passive_loss_db"],
+                    span["inline_gain_db"],
                 ])
+                if span["amplifier_warning"]:
+                    spans.write(index, 10, "Review amplification", alert)
+                if span["marine_screening"]:
+                    spans.write(index, 11, "Potential ocean crossing · review cable armor", alert)
             start = len(result["spans"]) + 3
             spans.write_row(start, 0, ("Site", "Latitude", "Longitude"), heading)
             for index, (name, point) in enumerate(zip(result["site_names"], result["points"]), start + 1):
@@ -344,10 +436,12 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(payload, dict):
                 raise ValueError("Invalid simulation inputs.")
             if self.path == "/api/distances":
-                self.json_response(200, geographic_spans(payload["coordinates"]))
+                points = payload["coordinates"]
+                self.json_response(200, {"km": geographic_spans(points), "marine": marine_screening(points)})
                 return
             result = simulation(payload)
             result["quality_check"] = quality_check(result["channels"], payload.get("quality_limits"))
+            result["ase_check"] = ase_check(result["channels"], payload.get("ase_threshold_db"), payload.get("ase_warning_db", 1))
             result["catalog_profile"] = payload.get("catalog_profile", "generic-gnpy-reference")
             result["catalog_checks"] = catalog_checks(result, result["catalog_profile"], payload.get("catalog_rate"))
         except (ValueError, KeyError, TypeError) as error:

@@ -143,6 +143,19 @@ async function main() {
     assert.match(configured.report, /transceiver output power = -3\.00dBm/);
     assert.match(await page.locator("#equipment-checks").innerText(), /Symbol rate range · Fail/);
     assert.match(await page.locator("#equipment-checks").innerText(), /-12 dBm/);
+    await page.locator("#length").fill("100");
+    await page.getByRole("button", {name: "Apply length"}).click();
+    assert(await page.locator("#amplifier-warning").isVisible());
+    assert.equal(await page.locator(".map-span-warning").count(), 1);
+    await page.getByRole("button", {name: "Apply suggested gain"}).click();
+    assert(!(await page.locator("#amplifier-warning").isVisible()));
+    assert.equal(await page.locator(".map-span-amplifier").count(), 1);
+    await page.getByText("GSNR planning limits", {exact:true}).click();
+    await page.locator("#ase-threshold").fill("45");
+    const amplified = await run();
+    assert.equal(amplified.spans[0].inline_gain_db, 10.5);
+    assert.match(amplified.report, /Span1_User_ILA/);
+    assert.match(await page.locator("#ase-result").innerText(), /Fail/);
     console.log("Passed browser CLI parity for 76 channels in both cases, A/B drag, stale and fresh downloads, validation and reset.");
   } finally {
     await browser.close();

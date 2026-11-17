@@ -70,6 +70,8 @@
             <summary>Terminal B · Receive</summary>
             <label for="name-b">Site B name</label>
             <input id="name-b" value="Honolulu" maxlength="60">
+            <label for="preamp-gain">Receive-side EDFA target (dB)</label>
+            <input id="preamp-gain" type="number" min="8" max="35" step="any" placeholder="Use reference stage">
             <p class="quiet">Generic GNPy receiver. See Simulation results for channel power, ASE OSNR, nonlinear SNR, and GSNR.</p>
           </details>
           <details id="settings-spans" open>
@@ -91,6 +93,14 @@
           <div class="error" id="length-error" role="alert"></div>
           <div class="source">Length GNPy will use<strong id="source"></strong></div>
         </form>
+            <div class="inside">
+              <p id="amplifier-warning" class="span-warning" role="status" hidden></p>
+              <p id="marine-note" class="quiet" hidden></p>
+              <label for="inline-gain">Midpoint inline EDFA target (dB)</label>
+              <input id="inline-gain" type="number" min="8" max="35" step="any" placeholder="No explicit midpoint EDFA">
+              <p class="quiet">An explicit inline or receive-side target switches the run to GNPy gain mode.</p>
+              <button type="button" id="suggest-gain" hidden>Apply suggested gain</button>
+            </div>
             <div class="inside">
               <h3>Splices</h3>
               <p class="quiet">New fusion splices start at 0.10 dB. This build models their combined loss at the span output.</p>
@@ -115,6 +125,8 @@
             <input id="quality-reserve" type="number" min="0" step="any" value="2">
             <label for="quality-warning">Review band (dB)</label>
             <input id="quality-warning" type="number" min="0" step="any" value="1">
+            <label for="ase-threshold">Required ASE OSNR (signal BW, dB)</label>
+            <input id="ase-threshold" type="number" min="-100" max="100" step="any" placeholder="Optional">
           </details>
         </div>
       </details>
@@ -126,7 +138,10 @@
       </div>
       <div class="resultbody">
         <p id="result-summary" role="status">Run the simulation to see channel results.</p>
+        <p id="simulation-error" class="span-warning" role="alert" hidden></p>
         <p id="quality-result" role="status" hidden></p>
+        <p id="ase-result" role="status" hidden></p>
+        <p id="fec-result" class="quiet" hidden>FEC margin · Not evaluated · Requires a validated modem mode.</p>
         <ul id="equipment-checks" hidden></ul>
         <ul id="span-losses" hidden></ul>
         <p id="comparison" hidden></p>

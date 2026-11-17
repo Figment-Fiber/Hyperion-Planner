@@ -1,5 +1,13 @@
 # Hyperion Routes · M4 development build
 
+**Amplification.** Above 80 km, the active span length triggers an amplification review marker on the map and in Settings. Apply or edit the suggested midpoint EDFA target to clear that placement alert. The target estimates first-half fiber and ingress-connector loss, bounded by the generic amplifier range. Terminal B can configure the existing receive-side EDFA. Explicit midpoint or receive-side targets switch the entire run to gain mode. GNPy still determines effective gain and output under its equipment model. See the transmission report and per-channel ASE OSNR, SNR NLI and GSNR for the completed run.
+
+**Marine screening.** Moving sites updates an approximate coastline check along the geographic path, using Natural Earth 1:50m land polygons. A potential water crossing adds a cable armor review note. It does not determine depth, cable construction or wet-plant repeater placement. See [ITU-T G.978](https://www.itu.int/epublications/publication/itu-t-g-978-2025-05-characteristics-of-optical-fibre-submarine-cables) and [Natural Earth terms](https://www.naturalearthdata.com/about/terms-of-use/).
+
+**Known check for engineering changes.** For every changed input, inspect the actual engine topology and equipment, compare the affected loss, power and noise readings, and verify the browser and workbook against the completed run. Use an independent CLI run for new simulation paths. A placement alert and an optical verdict are evaluated independently.
+
+Under **GSNR planning limits**, set optional GSNR and ASE OSNR thresholds at signal bandwidth. The review band defaults to 1 dB. Results report the limiting channel, remaining margin and corrective action when near or below a threshold. Review and Fail entries appear in red in the browser and Excel. FEC margin requires validated modem data and is shown as Not evaluated. Excel downloads remain tied to the last successful run.
+
 On the M4 branch, **Equipment catalog** selections are saved with the route and evaluated against the completed run. Ciena checks include tuning range, baud range, and an optional rate-specific receive-power comparison. Nokia shows its published spacing reference. The **Equipment Checks** sheet carries the same findings. These comparisons use the generic propagated spectrum. Vendor optical feasibility remains unevaluated until a validated mode is available.
 
 **Generic transmitter output** under Terminal A changes the actual GNPy transmitter setting. The transmission report and Excel show the transmitter output separately from the span design reference.
