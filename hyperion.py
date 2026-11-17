@@ -1,4 +1,4 @@
-"""Local HTTP entry point for Hyperion Planner M1."""
+"""Local HTTP entry point for Hyperion Routes."""
 
 import argparse
 from collections import OrderedDict
@@ -105,12 +105,32 @@ def geographic_simulation(payload):
     booster = payload.get("booster_gain_db")
     transmitter_power = payload.get("tx_power_dbm")
     effective_lengths = [80] if reference else lengths
-    result = (bundled_run() if reference and booster is None and transmitter_power is None else
-              run_reference(*effective_lengths, booster_gain_db=booster, tx_power_dbm=transmitter_power))
+    splices = payload.get("span_splices", [[] for _ in estimates])
+    connectors = payload.get("roadm_connectors", [None, None])
+    if (not isinstance(connectors, list) or len(connectors) != 2
+        or any(value is not None and (type(value) not in (int, float) or not 0 <= value <= 10)
+               for value in connectors)
+        or (len(estimates) == 1 and connectors != [None, None])):
+        raise ValueError("ROADM connector losses require Site C and must be between 0 and 10 dB.")
+    if (not isinstance(splices, list) or len(splices) != len(estimates)
+        or any(not isinstance(losses, list) or len(losses) > 100 for losses in splices)
+        or any(type(loss) not in (int, float) or not 0 <= loss <= 10
+               for losses in splices for loss in losses)):
+        raise ValueError("Enter up to 100 splice losses per span, each between 0 and 10 dB.")
+    result = (bundled_run() if reference and booster is None and transmitter_power is None and not any(splices) else
+              run_reference(*effective_lengths, booster_gain_db=booster, tx_power_dbm=transmitter_power,
+                            span_splices=splices if any(splices) else None, roadm_connectors=connectors))
+    connector_losses = [1.0] if len(estimates) == 1 else [
+        0.5 + (0.5 if value is None else value) for value in connectors
+    ]
     spans = [
         {"from": names[index], "to": names[index + 1], "geodesic_km": estimate,
          "simulation_km": result["span_lengths_km"][index],
-         "source": "Bundled topology" if reference else "WGS84 geodesic" if overrides[index] is None else "Engineered override"}
+         "source": "Bundled topology" if reference else "WGS84 geodesic" if overrides[index] is None else "Engineered override",
+         "splice_losses_db": splices[index],
+         "splice_total_db": round(math.fsum(splices[index]), 6),
+         "connector_loss_db": connector_losses[index],
+         "passive_loss_db": round(0.2 * result["span_lengths_km"][index] + connector_losses[index] + math.fsum(splices[index]), 6)}
         for index, estimate in enumerate(estimates)
     ]
     return {
@@ -121,7 +141,7 @@ def geographic_simulation(payload):
         "length_source": "Per-span lengths" if len(spans) > 1 else spans[0]["source"],
         "spans": spans,
         "booster_gain_db": booster,
-        "baseline": bundled_run() if len(points) == 2 and not reference else None,
+        "baseline": bundled_run() if len(points) == 2 and (not reference or any(splices)) else None,
     }
 
 
@@ -235,10 +255,15 @@ def workbook(result):
                 catalog.write_row(index, 0, [check["check"], check["status"], check["detail"]])
         if "spans" in result:
             spans = book.add_worksheet("Route Spans")
-            spans.set_column("A:E", 25)
-            spans.write_row(0, 0, ("From", "To", "Geodesic (km)", "Simulation (km)", "Length source"), heading)
+            spans.set_column("A:I", 25)
+            spans.write_row(0, 0, ("From", "To", "Geodesic (km)", "Simulation (km)", "Length source",
+                                    "Individual splices (dB)", "Splice total (dB)", "Connector loss (dB)", "Passive budget (dB)"), heading)
             for index, span in enumerate(result["spans"], 1):
-                spans.write_row(index, 0, list(span.values()))
+                spans.write_row(index, 0, [
+                    span["from"], span["to"], span["geodesic_km"], span["simulation_km"], span["source"],
+                    ", ".join(str(loss) for loss in span["splice_losses_db"]),
+                    span["splice_total_db"], span["connector_loss_db"], span["passive_loss_db"],
+                ])
             start = len(result["spans"]) + 3
             spans.write_row(start, 0, ("Site", "Latitude", "Longitude"), heading)
             for index, (name, point) in enumerate(zip(result["site_names"], result["points"]), start + 1):
@@ -344,7 +369,7 @@ def main():
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
     with ThreadingHTTPServer(("127.0.0.1", args.port), Handler) as server:
-        print(f"Hyperion Planner is ready at http://127.0.0.1:{server.server_port}/", flush=True)
+        print(f"Hyperion Routes is ready at http://127.0.0.1:{server.server_port}/", flush=True)
         try:
             server.serve_forever()
         except KeyboardInterrupt:

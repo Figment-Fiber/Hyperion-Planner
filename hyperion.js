@@ -3,6 +3,7 @@
 const $ = id => document.getElementById(id);
 const metrics = ["power_dbm", "osnr_ase_db", "snr_nli_db", "gsnr_db"];
 const input = $("length");
+const roadmConnectorFields = ["roadm-ingress-loss", "roadm-egress-loss"];
 const choice = $("span-choice");
 const start = [[21.335, -158.058], [21.307, -157.858]];
 const map = L.map("map", {maxZoom: 18}).setView([21.47, -157.98], 10);
@@ -13,6 +14,7 @@ const route = L.polyline([], {color: "#147cc0", weight: 4}).addTo(map);
 const markers = {};
 let ids = ["a", "b"];
 let overrides = [null];
+let spanSplices = [[]];
 let estimates = [];
 let bundled = false;
 let selected = 0;
@@ -37,6 +39,9 @@ function currentDesign() {
     }),
     site_names: ids.map(id => $("name-" + id).value.trim() || $("name-" + id).defaultValue),
     span_overrides: [...overrides],
+    span_splices: spanSplices.map(losses => [...losses]),
+    roadm_connectors: roadmConnectorFields.map(id =>
+      ids.includes("c") && $(id).value !== "" ? $(id).valueAsNumber : null),
     bundled,
     catalog_profile: $("catalog-profile").value || "generic-gnpy-reference",
     catalog_rate: $("catalog-rate").value || null,
@@ -57,6 +62,7 @@ function unapplied() {
 for (const id of ["quality-threshold", "quality-reserve", "quality-warning", "booster-gain", "tx-power", "catalog-rate"]) {
   $(id).addEventListener("input", refreshStatus);
 }
+roadmConnectorFields.forEach(id => $(id).addEventListener("input", refreshStatus));
 
 function refreshStatus() {
   $("stale-results").hidden = !lastRun || (!unapplied() &&
@@ -92,8 +98,52 @@ function selectSpan(index) {
   input.value = String(overrides[index] ?? "");
   $("length-error").textContent = "";
   renderLength();
+  renderSplices();
   refreshStatus();
 }
+
+function updateSpliceTotal() {
+  const total = spanSplices[selected].reduce((sum, loss) => sum + loss, 0);
+  $("splice-total").textContent = "Total splice loss · " + total.toFixed(2) + " dB";
+  refreshStatus();
+}
+
+function renderSplices() {
+  $("splices").replaceChildren(...spanSplices[selected].map((loss, index) => {
+    const row = document.createElement("div");
+    const label = document.createElement("label");
+    label.htmlFor = "splice-" + index;
+    label.textContent = "Splice " + (index + 1) + " loss (dB)";
+    const field = document.createElement("input");
+    field.id = label.htmlFor;
+    field.type = "number";
+    field.min = "0";
+    field.max = "10";
+    field.step = "any";
+    field.required = true;
+    field.value = loss;
+    field.oninput = () => {
+      if (field.validity.valid) spanSplices[selected][index] = field.valueAsNumber;
+      updateSpliceTotal();
+    };
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "Remove splice " + (index + 1);
+    remove.onclick = () => {
+      spanSplices[selected].splice(index, 1);
+      renderSplices();
+    };
+    row.append(label, field, remove);
+    return row;
+  }));
+  $("add-splice").disabled = spanSplices[selected].length >= 100;
+  updateSpliceTotal();
+}
+
+$("add-splice").onclick = () => {
+  spanSplices[selected].push(0.1);
+  renderSplices();
+};
 
 function updateSpanOptions() {
   choice.replaceChildren(...ids.slice(1).map((id, index) =>
@@ -138,8 +188,6 @@ function openSettings(section) {
   if (section) $(section).open = true;
   $(section || "route-settings").querySelector("summary").focus();
 }
-
-$("open-settings").addEventListener("click", () => openSettings());
 
 async function loadCatalog() {
   const select = $("catalog-profile");
@@ -201,6 +249,8 @@ function removeRoadm() {
   delete markers.c;
   ids = ["a", "b"];
   overrides = [null];
+  spanSplices = [spanSplices.flat()];
+  roadmConnectorFields.forEach(id => { $(id).value = ""; });
   bundled = false;
   placing = false;
   $("roadm-fields").hidden = true;
@@ -222,6 +272,7 @@ map.on("click", event => {
   addMarker("c", event.latlng);
   ids = ["a", "c", "b"];
   overrides = [null, null];
+  spanSplices = [spanSplices[0], []];
   bundled = false;
   $("roadm-fields").hidden = false;
   $("remove-roadm").hidden = false;
@@ -259,6 +310,7 @@ $("sample").addEventListener("click", () => {
   markers.b.setLatLng(start[1]);
   for (const id of ["a", "b", "c"]) $("name-" + id).value = $("name-" + id).defaultValue;
   map.setView([21.47, -157.98], 10);
+  spanSplices = [[]];
   removeRoadm();
 });
 
@@ -276,6 +328,10 @@ function applyRoute(design) {
     $("name-" + id).value = design.site_names[index];
   });
   overrides = [...design.span_overrides];
+  spanSplices = design.span_splices || overrides.map(() => []);
+  roadmConnectorFields.forEach((id, index) => {
+    $(id).value = design.roadm_connectors?.[index] ?? "";
+  });
   bundled = design.bundled;
   $("catalog-profile").value = design.catalog_profile || "generic-gnpy-reference";
   $("catalog-profile").dispatchEvent(new Event("change"));
@@ -300,6 +356,13 @@ function validRoute(design) {
     design.site_names.every(name => typeof name === "string" && name.trim() && name.length <= 60) &&
     Array.isArray(design.span_overrides) && design.span_overrides.length === count - 1 &&
     design.span_overrides.every(value => value === null || (Number.isFinite(value) && value > 0)) &&
+    (design.span_splices === undefined || (Array.isArray(design.span_splices) &&
+      design.span_splices.length === count - 1 && design.span_splices.every(losses =>
+        Array.isArray(losses) && losses.length <= 100 &&
+        losses.every(loss => Number.isFinite(loss) && loss >= 0 && loss <= 10)))) &&
+    (design.roadm_connectors === undefined || (Array.isArray(design.roadm_connectors) &&
+      design.roadm_connectors.length === 2 && design.roadm_connectors.every(value =>
+        value === null || (count === 3 && Number.isFinite(value) && value >= 0 && value <= 10)))) &&
     typeof design.bundled === "boolean" &&
     (!design.bundled || (count === 2 && design.span_overrides[0] === null));
 }
@@ -308,6 +371,7 @@ $("new-route").addEventListener("click", () => {
   applyRoute({coordinates: start, site_names: ["Site A", "Site B"], span_overrides: [null], bundled: false});
 });
 $("save-route").addEventListener("click", () => {
+  if (!validSplices()) return;
   if (unapplied()) {
     updateStatus("Apply the edited length before saving the route.");
     input.focus();
@@ -340,6 +404,16 @@ $("route-file").addEventListener("change", async event => {
 updateSpanOptions();
 
 function showResult(result) {
+  const losses = $("span-losses");
+  losses.hidden = false;
+  losses.replaceChildren(...result.spans.map(span => {
+    const row = document.createElement("li");
+    row.textContent = span.from + " → " + span.to + " · " + span.splice_losses_db.length +
+      " splices, " + span.splice_total_db.toFixed(2) + " dB · " +
+      span.connector_loss_db.toFixed(2) + " dB connectors · " +
+      span.passive_loss_db.toFixed(2) + " dB passive loss before GNPy design adjustments";
+    return row;
+  }));
   const equipment = $("equipment-checks");
   equipment.hidden = !result.catalog_checks.length;
   equipment.replaceChildren(...result.catalog_checks.map(check => {
@@ -378,7 +452,14 @@ function showResult(result) {
   $("download").hidden = false;
 }
 
+function validSplices() {
+  const fields = [...$("splices").querySelectorAll("input")];
+  if (ids.includes("c")) fields.push(...roadmConnectorFields.map($));
+  return fields.every(field => field.reportValidity());
+}
+
 $("run").addEventListener("click", async () => {
+  if (!validSplices()) return;
   if (["quality-threshold", "quality-reserve", "quality-warning", "booster-gain", "tx-power"].some(id => !$(id).reportValidity())) return;
   if (unapplied()) {
     refreshStatus();

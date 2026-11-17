@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hyperion Planner</title>
+  <title>Hyperion Routes</title>
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="/leaflet.css">
   <link rel="stylesheet" href="/app.css">
@@ -12,7 +12,7 @@
 </head>
 <body>
   <header class="mast">
-    <div class="brand"><img src="/logo.png" alt="Hyperion Planner"></div>
+    <div class="brand"><img src="/logo.png" alt=""><span>Hyperion Routes</span></div>
     <nav class="actions" aria-label="Route files">
       <button id="new-route">New route</button>
       <button id="load-route">Load route</button>
@@ -34,7 +34,6 @@
         <div class="inside rows">
           <button type="button" id="add-roadm">Place ROADM C</button>
           <button type="button" id="remove-roadm" hidden>Remove ROADM C</button>
-          <button type="button" id="open-settings">Open route settings</button>
         </div>
       </section>
       <section class="pane" aria-labelledby="map-title">
@@ -61,6 +60,11 @@
             <label for="name-c">Site C name · ROADM</label>
             <input id="name-c" value="ROADM C" maxlength="60">
             <p class="quiet">Generic express path from A toward B. Output target −20 dBm/channel. GNPy can insert a booster during auto-design.</p>
+            <label for="roadm-ingress-loss">A-side connector loss (dB)</label>
+            <input id="roadm-ingress-loss" type="number" min="0" max="10" step="any" placeholder="0.50 default">
+            <label for="roadm-egress-loss">B-side connector loss (dB)</label>
+            <input id="roadm-egress-loss" type="number" min="0" max="10" step="any" placeholder="0.50 default">
+            <p class="quiet">An entered value replaces that side’s span connector allowance. Enter field splices separately under Fiber spans.</p>
           </details>
           <details id="settings-b">
             <summary>Terminal B · Receive</summary>
@@ -87,6 +91,13 @@
           <div class="error" id="length-error" role="alert"></div>
           <div class="source">Length GNPy will use<strong id="source"></strong></div>
         </form>
+            <div class="inside">
+              <h3>Splices</h3>
+              <p class="quiet">New fusion splices start at 0.10 dB. This build models their combined loss at the span output.</p>
+              <div id="splices"></div>
+              <button type="button" id="add-splice">Add splice</button>
+              <p id="splice-total" role="status"></p>
+            </div>
           </details>
           <details>
             <summary>Equipment catalog</summary>
@@ -117,6 +128,7 @@
         <p id="result-summary" role="status">Run the simulation to see channel results.</p>
         <p id="quality-result" role="status" hidden></p>
         <ul id="equipment-checks" hidden></ul>
+        <ul id="span-losses" hidden></ul>
         <p id="comparison" hidden></p>
         <div class="table-scroll" id="channel-table" hidden tabindex="0">
           <table aria-label="Channel results">

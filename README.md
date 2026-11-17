@@ -4,6 +4,8 @@ On the M4 branch, **Equipment catalog** selections are saved with the route and 
 
 **Generic transmitter output** under Terminal A changes the actual GNPy transmitter setting. The transmission report and Excel show the transmitter output separately from the span design reference.
 
+Under **Fiber spans**, select a span and add, edit or remove fusion splices. Each starts at 0.10 dB. GNPy applies their combined loss at the span output. Site C accepts separate A-side and B-side connector losses that replace the 0.50 dB default for each side. The passive budget in the results and Excel itemizes those losses before auto-design adjustments. Enter actual pigtail splices separately where they exist.
+
 M3 adds an explicit generic Terminal A booster and a user-defined GSNR planning check. Open Terminal A to enter a booster gain target. The transmission report shows the actual GNPy element and effective gain, which auto-design can change. In **GSNR planning limits**, enter a required GSNR at signal bandwidth and a design reserve. Results identify the limiting channel and remaining margin. This is one planning check. Vendor-mode feasibility, receive-power limits and spectrum validation are separate work.
 
 The map opens on Oʻahu with two draggable endpoints. Scroll, pinch, or use the zoom controls to change scale. Span estimates are WGS84 straight-line distances between site coordinates. Use an engineered length for surveyed fiber, conduit routing, or slack. Map tiles require internet access and are credited in the map. The local simulation and distance calculations can run without tiles.
@@ -39,7 +41,7 @@ On macOS or Linux with Python 3.12, use `python3.12 -m venv .venv` and replace `
 
 On Windows, if Python 3.12 is managed by uv, use `uv venv --seed --python 3.12 .venv` for the first command. Windows with Python 3.12 and Edge is the tested configuration.
 
-Wait for **Hyperion Planner is ready** in PowerShell. Keep the server running in that window and open the printed address in your browser. The default is **http://127.0.0.1:8765/**. Use Ctrl+C in the terminal to stop the app.
+Wait for **Hyperion Routes is ready** in PowerShell. Keep the server running in that window and open the printed address in your browser. The default is **http://127.0.0.1:8765/**. Use Ctrl+C in the terminal to stop the app.
 
 If you need a different port, start the app with the full Python command:
 

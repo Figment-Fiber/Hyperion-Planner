@@ -19,7 +19,8 @@ NUMBER = r"(-?\d+\.\d+)"
 CHANNEL_ROW = re.compile(r"\s*(\d+)" + (r"\s+" + NUMBER) * 5 + r"\s*")
 
 
-def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=None, tx_power_dbm=None):
+def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=None, tx_power_dbm=None,
+                  span_splices=None, roadm_connectors=None):
     """Return destination channel values and the input used for this run."""
     for length in (length_override_km, second_span_km):
         if length is not None and (
@@ -49,6 +50,12 @@ def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=
         topology["connections"] = [
             {"from_node": left, "to_node": right} for left, right in zip(route, route[1:])
         ]
+        if roadm_connectors:
+            ingress, egress = roadm_connectors
+            if ingress is not None:
+                span["params"]["con_out"] = ingress
+            if egress is not None:
+                second["params"]["con_in"] = egress
     if booster_gain_db is not None:
         if type(booster_gain_db) not in (int, float) or not 10 <= booster_gain_db <= 18:
             raise ValueError("Enter a generic booster gain target between 10 and 18 dB.")
@@ -61,9 +68,14 @@ def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=
         first["to_node"] = "User_Booster_A"
         topology["connections"].append({"from_node": "User_Booster_A", "to_node": destination})
 
+    if span_splices:
+        for index, losses in enumerate(span_splices, 1):
+            fiber = next(element for element in topology["elements"] if element["uid"] == f"Span{index}")
+            fiber["params"]["con_out"] += math.fsum(losses)
+
     with TemporaryDirectory() as run_dir:
         topology_path = bundled
-        if length_override_km is not None or second_span_km is not None or booster_gain_db is not None:
+        if length_override_km is not None or second_span_km is not None or booster_gain_db is not None or span_splices:
             if length_override_km is not None:
                 span["params"]["length"] = length_override_km
             topology_path = Path(run_dir) / bundled.name

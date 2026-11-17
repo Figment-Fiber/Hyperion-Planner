@@ -107,6 +107,17 @@ async function main() {
     assert.equal(roadm.spans[1].simulation_km, 23);
     assert.equal(roadm.spans[0].simulation_km, roadm.spans[0].geodesic_km);
     assert.match(roadm.report, /Roadm Roadm_C/);
+    await page.locator("#roadm-ingress-loss").fill("0.8");
+    await page.locator("#roadm-egress-loss").fill("0.9");
+    await page.getByRole("button", {name: "Add splice", exact: true}).click();
+    assert.equal(await page.locator("#splice-0").inputValue(), "0.1");
+    await page.locator("#splice-0").fill("0.2");
+    const patched = await run();
+    assert.equal(patched.spans[1].splice_total_db, 0.2);
+    assert.equal(patched.spans[0].connector_loss_db, 1.3);
+    assert.equal(patched.spans[1].connector_loss_db, 1.4);
+    await page.getByRole("button", {name: "Remove splice 1"}).click();
+    assert.match(await page.locator("#splice-total").innerText(), /0\.00 dB/);
     assert.equal((await rows()).length, 76);
     const saved = page.waitForEvent("download");
     await page.getByRole("button", {name: "Save route"}).click();
