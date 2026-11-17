@@ -1,4 +1,4 @@
-# Hyperion Planner · Oʻahu route prototype
+# Hyperion Routes · M03 Oʻahu prototype
 
 M3 adds an explicit generic Terminal A booster and a user-defined GSNR planning check. Open Terminal A to enter a booster gain target. The transmission report shows the actual GNPy element and effective gain, which auto-design can change. In **GSNR planning limits**, enter a required GSNR at signal bandwidth and a design reserve. Results identify the limiting channel and remaining margin. This is one planning check. Vendor-mode feasibility, receive-power limits and spectrum validation are separate work.
 
@@ -16,9 +16,14 @@ Run the bundled GNPy 3.0.1 EDFA example from a local browser. The demo uses two 
 
 ## Download and start
 
-On GitHub, select the M1 branch or release and choose **Code → Download ZIP**, or clone the repository and switch to the M1 branch. Extract the ZIP and open a terminal in the folder containing this README.
+[Download the M03 ZIP](https://github.com/Figment-Fiber/Hyperion-Planner/archive/refs/heads/metis/m3.zip) or select **Code → Download ZIP** on the [`metis/m3` branch](https://github.com/Figment-Fiber/Hyperion-Planner/tree/metis/m3). Extract the ZIP. In File Explorer, open the extracted folder that contains `hyperion.py` and `requirements.txt`, type `powershell` in the address bar, and press Enter. Git users can clone the M03 branch directly:
 
-Use Python 3.12. The commands below are for Windows PowerShell.
+```powershell
+git clone --branch metis/m3 https://github.com/Figment-Fiber/Hyperion-Planner.git
+cd Hyperion-Planner
+```
+
+Use Python 3.12. In Windows PowerShell, run each line separately and wait for it to finish before running the next. For an existing virtual environment, start with the dependency install so it includes the M03 requirements.
 
 ```powershell
 py -3.12 -m venv .venv
@@ -44,11 +49,11 @@ Then open **http://127.0.0.1:8766/**. If PowerShell returns to the `PS ...>` pro
 
 1. Select **Use bundled**, then **Run simulation** for the original 80 km reference case. Select **Use map estimate** to return to geographic mode.
 2. Enter **85.25** and select **Apply length**, then **Run simulation**.
-3. Drag A and B, or move a focused endpoint with the arrow keys. The schematic estimate updates. The applied engineering length continues to drive the optical simulation.
+3. Drag A and B, or move a focused endpoint with the arrow keys. The geographic estimate updates. The applied engineering length continues to drive the optical simulation.
 4. Select **Download Excel** for the completed run. An engineered run includes bundled results and differences. Edits after a completed run require another simulation to update the workbook.
 5. Select **Use bundled** and rerun to restore the reference optical case.
 
-Edit **Site A name** and **Site B name** to label your design. Select **Use map estimate** to run the current schematic distance. Moving a site updates that distance in map mode. Select **Apply length** to use an engineered length that stays fixed when you drag a site. Site labels and the length source are captured in the workbook when you run.
+Edit **Site A name** and **Site B name** to label your design. Select **Use map estimate** to run the current geographic distance. Moving a site updates that distance in map mode. Select **Apply length** to use an engineered length that stays fixed when you drag a site. Site labels and the length source are captured in the workbook when you run.
 
 The workbook links are valid for the latest 32 runs in the current server session. Save the workbook locally to keep it. See the [M1 plan](Hyperion_M1_Plan.md) for baseline evidence and acceptance criteria.
 
