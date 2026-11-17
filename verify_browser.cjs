@@ -36,6 +36,7 @@ async function main() {
       elements.map(row => Array.from(row.cells, cell => cell.textContent)));
     await page.getByRole("button", {name: "Use bundled"}).click();
     const bundled = await run();
+    assert(bundled.catalog_checks.some(check => check.detail.includes("150 GHz")));
     assert.equal(bundled.span_length_km, 80);
     assert.deepEqual(await rows(), cliRows("bundled"));
     await page.locator("#length").fill("85.25");
@@ -124,6 +125,13 @@ async function main() {
     if (process.env.HYPERION_ROADM_JSON) fs.writeFileSync(process.env.HYPERION_ROADM_JSON, JSON.stringify({roadm, rows: await rows()}));
     await page.getByRole("button", {name: "Remove ROADM C"}).click();
     assert.equal((await run()).spans.length, 1);
+    await page.locator("#catalog-profile").selectOption("ciena-6500-s14-wl6e-motr");
+    await page.locator("#catalog-rate").selectOption("1600");
+    await page.locator("#tx-power").fill("-3");
+    const configured = await run();
+    assert.match(configured.report, /transceiver output power = -3\.00dBm/);
+    assert.match(await page.locator("#equipment-checks").innerText(), /Symbol rate range · Fail/);
+    assert.match(await page.locator("#equipment-checks").innerText(), /-12 dBm/);
     console.log("Passed browser CLI parity for 76 channels in both cases, A/B drag, stale and fresh downloads, validation and reset.");
   } finally {
     await browser.close();

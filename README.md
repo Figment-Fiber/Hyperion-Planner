@@ -1,4 +1,8 @@
-# Hyperion Routes · M03 Oʻahu prototype
+# Hyperion Routes · M4 development build
+
+On the M4 branch, **Equipment catalog** selections are saved with the route and evaluated against the completed run. Ciena checks include tuning range, baud range, and an optional rate-specific receive-power comparison. Nokia shows its published spacing reference. The **Equipment Checks** sheet carries the same findings. These comparisons use the generic propagated spectrum. Vendor optical feasibility remains unevaluated until a validated mode is available.
+
+**Generic transmitter output** under Terminal A changes the actual GNPy transmitter setting. The transmission report and Excel show the transmitter output separately from the span design reference.
 
 M3 adds an explicit generic Terminal A booster and a user-defined GSNR planning check. Open Terminal A to enter a booster gain target. The transmission report shows the actual GNPy element and effective gain, which auto-design can change. In **GSNR planning limits**, enter a required GSNR at signal bandwidth and a design reserve. Results identify the limiting channel and remaining margin. This is one planning check. Vendor-mode feasibility, receive-power limits and spectrum validation are separate work.
 
@@ -16,14 +20,14 @@ Run the bundled GNPy 3.0.1 EDFA example from a local browser. The demo uses two 
 
 ## Download and start
 
-[Download the M03 ZIP](https://github.com/Figment-Fiber/Hyperion-Planner/archive/refs/heads/metis/m3.zip) or select **Code → Download ZIP** on the [`metis/m3` branch](https://github.com/Figment-Fiber/Hyperion-Planner/tree/metis/m3). Extract the ZIP. In File Explorer, open the extracted folder that contains `hyperion.py` and `requirements.txt`, type `powershell` in the address bar, and press Enter. Git users can clone the M03 branch directly:
+[Download the M4 ZIP](https://github.com/Figment-Fiber/Hyperion-Planner/archive/refs/heads/metis/m4.zip) or select **Code → Download ZIP** on the [`metis/m4` branch](https://github.com/Figment-Fiber/Hyperion-Planner/tree/metis/m4). Extract the ZIP. In File Explorer, open the extracted folder that contains `hyperion.py` and `requirements.txt`, type `powershell` in the address bar, and press Enter. Git users can clone the M4 branch directly:
 
 ```powershell
-git clone --branch metis/m3 https://github.com/Figment-Fiber/Hyperion-Planner.git
+git clone --branch metis/m4 https://github.com/Figment-Fiber/Hyperion-Planner.git
 cd Hyperion-Planner
 ```
 
-Use Python 3.12. In Windows PowerShell, run each line separately and wait for it to finish before running the next. For an existing virtual environment, start with the dependency install so it includes the M03 requirements.
+Use Python 3.12. In Windows PowerShell, run each line separately and wait for it to finish before running the next. For an existing virtual environment, start with the dependency install so it includes the M4 requirements.
 
 ```powershell
 py -3.12 -m venv .venv

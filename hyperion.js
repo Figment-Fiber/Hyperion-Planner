@@ -38,6 +38,9 @@ function currentDesign() {
     site_names: ids.map(id => $("name-" + id).value.trim() || $("name-" + id).defaultValue),
     span_overrides: [...overrides],
     bundled,
+    catalog_profile: $("catalog-profile").value || "generic-gnpy-reference",
+    catalog_rate: $("catalog-rate").value || null,
+    tx_power_dbm: $("tx-power").value === "" ? null : $("tx-power").valueAsNumber,
     booster_gain_db: $("booster-gain").value === "" ? null : $("booster-gain").valueAsNumber,
     quality_limits: $("quality-threshold").value === "" ? null : {
       threshold: $("quality-threshold").valueAsNumber,
@@ -51,7 +54,7 @@ function unapplied() {
   return input.validity.badInput || input.value !== String(overrides[selected] ?? "");
 }
 
-for (const id of ["quality-threshold", "quality-reserve", "quality-warning", "booster-gain"]) {
+for (const id of ["quality-threshold", "quality-reserve", "quality-warning", "booster-gain", "tx-power", "catalog-rate"]) {
   $(id).addEventListener("input", refreshStatus);
 }
 
@@ -157,7 +160,7 @@ async function loadCatalog() {
         description.append(link);
       }
     };
-    select.addEventListener("change", show);
+    select.addEventListener("change", () => { show(); refreshStatus(); });
     show();
   } catch {
     select.disabled = true;
@@ -274,6 +277,10 @@ function applyRoute(design) {
   });
   overrides = [...design.span_overrides];
   bundled = design.bundled;
+  $("catalog-profile").value = design.catalog_profile || "generic-gnpy-reference";
+  $("catalog-profile").dispatchEvent(new Event("change"));
+  $("catalog-rate").value = design.catalog_rate ?? "";
+  $("tx-power").value = design.tx_power_dbm ?? "";
   $("booster-gain").value = design.booster_gain_db ?? "";
   $("quality-threshold").value = design.quality_limits?.threshold ?? "";
   $("quality-reserve").value = design.quality_limits?.reserve ?? 2;
@@ -333,6 +340,13 @@ $("route-file").addEventListener("change", async event => {
 updateSpanOptions();
 
 function showResult(result) {
+  const equipment = $("equipment-checks");
+  equipment.hidden = !result.catalog_checks.length;
+  equipment.replaceChildren(...result.catalog_checks.map(check => {
+    const row = document.createElement("li");
+    row.textContent = check.check + " · " + check.status + " · " + check.detail;
+    return row;
+  }));
   const check = result.quality_check;
   const quality = $("quality-result");
   quality.hidden = false;
@@ -365,7 +379,7 @@ function showResult(result) {
 }
 
 $("run").addEventListener("click", async () => {
-  if (["quality-threshold", "quality-reserve", "quality-warning", "booster-gain"].some(id => !$(id).reportValidity())) return;
+  if (["quality-threshold", "quality-reserve", "quality-warning", "booster-gain", "tx-power"].some(id => !$(id).reportValidity())) return;
   if (unapplied()) {
     refreshStatus();
     input.focus();

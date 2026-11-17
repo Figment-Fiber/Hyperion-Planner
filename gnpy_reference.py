@@ -19,7 +19,7 @@ NUMBER = r"(-?\d+\.\d+)"
 CHANNEL_ROW = re.compile(r"\s*(\d+)" + (r"\s+" + NUMBER) * 5 + r"\s*")
 
 
-def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=None):
+def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=None, tx_power_dbm=None):
     """Return destination channel values and the input used for this run."""
     for length in (length_override_km, second_span_km):
         if length is not None and (
@@ -33,6 +33,8 @@ def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=
         raise RuntimeError(f"GNPy {GNPY_VERSION} is required. Found {package.version}.")
     examples = Path(package.locate_file("gnpy/example-data"))
     bundled = examples / "edfa_example_network.json"
+    equipment_path = examples / "eqpt_config.json"
+    equipment = json.loads(equipment_path.read_bytes())
     topology = json.loads(bundled.read_bytes())
     span = next(element for element in topology["elements"] if element["uid"] == "Span1")
     if second_span_km is not None:
@@ -67,6 +69,15 @@ def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=
             topology_path = Path(run_dir) / bundled.name
             topology_path.write_text(json.dumps(topology, indent=2) + "\n", encoding="utf-8")
         topology_hash = hashlib.sha256(topology_path.read_bytes()).hexdigest()
+        options = []
+        if tx_power_dbm is not None:
+            if type(tx_power_dbm) not in (int, float) or not -20 <= tx_power_dbm <= 8:
+                raise ValueError("Enter a generic transmitter output between −20 and +8 dBm/channel.")
+            equipment["SI"][0]["tx_power_dbm"] = tx_power_dbm
+            equipment_path = Path(run_dir) / equipment_path.name
+            equipment_path.write_text(json.dumps(equipment), encoding="utf-8")
+            options = ["-e", str(equipment_path)]
+        equipment_hash = hashlib.sha256(equipment_path.read_bytes()).hexdigest()
         completed = subprocess.run(
             [
                 sys.executable,
@@ -77,6 +88,7 @@ def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=
                 "Site_A",
                 "Site_B",
                 "--show-channels",
+                *options,
             ],
             capture_output=True,
             text=True,
@@ -97,8 +109,8 @@ def run_reference(length_override_km=None, second_span_km=None, booster_gain_db=
         "topology_sha256": topology_hash,
         "topology": topology["network_name"],
         "equipment": "eqpt_config.json",
-        "equipment_sha256": hashlib.sha256((examples / "eqpt_config.json").read_bytes()).hexdigest(),
-        "spectrum": json.loads((examples / "eqpt_config.json").read_bytes())["SI"][0],
+        "equipment_sha256": equipment_hash,
+        "spectrum": equipment["SI"][0],
         "length_source": "Bundled topology" if length_override_km is None else "Engineered override",
         "reference_bandwidth": "signal",
         "channels": parse_channels(output),

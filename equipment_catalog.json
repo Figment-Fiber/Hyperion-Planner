@@ -17,7 +17,17 @@
       "card": "WaveLogic 6 Extreme 1.6T MOTR",
       "published_max_payload_gbps_per_carrier": 1600,
       "published_electro_optics_gbaud": 200,
+      "published_symbol_rate_range_gbaud": [95, 200],
+      "published_tuning_range_thz": [191.25, 196.125],
+      "published_fixed_grid_ghz": 200,
+      "published_flex_grid_support": true,
+      "published_rx_sensitivity_dbm": {
+        "1200_gbps": -19.5,
+        "1400_gbps": -16.5,
+        "1600_gbps": -12.0
+      },
       "sources": [
+        "https://www.ciena.com/__data/assets/pdf_file/0021/157323/wavelogic_6_extreme_1-6t_motr_module_ds.pdf",
         "https://www.ciena.com/insights/data-sheets/6500-S14-packet-optical-platform",
         "https://www.ciena.com/insights/data-sheets/1-6t-wavelogic-6-extreme-motr"
       ]
@@ -33,7 +43,10 @@
       "published_max_line_rate_gbps_per_carrier": 1200,
       "published_line_interface_gbaud": 140,
       "published_supported_bands": ["C", "L"],
+      "published_typical_channel_spacing_ghz": 150,
+      "published_modulation_families": ["PCS-64QAM", "PCS-16QAM", "QPSK"],
       "sources": [
+        "https://www.nokia.com/optical-networks/pse-6s/",
         "https://www.nokia.com/optical-networks/1830-photonic-service-switch/",
         "https://www.nokia.com/asset/i/215113/"
       ]

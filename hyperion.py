@@ -103,9 +103,10 @@ def geographic_simulation(payload):
     reference = len(points) == 2 and payload.get("bundled") is True and overrides == [None]
     lengths = [estimate if override is None else override for estimate, override in zip(estimates, overrides)]
     booster = payload.get("booster_gain_db")
+    transmitter_power = payload.get("tx_power_dbm")
     effective_lengths = [80] if reference else lengths
-    result = (bundled_run() if reference and booster is None else
-              run_reference(*effective_lengths, booster_gain_db=booster))
+    result = (bundled_run() if reference and booster is None and transmitter_power is None else
+              run_reference(*effective_lengths, booster_gain_db=booster, tx_power_dbm=transmitter_power))
     spans = [
         {"from": names[index], "to": names[index + 1], "geodesic_km": estimate,
          "simulation_km": result["span_lengths_km"][index],
@@ -144,6 +145,39 @@ def quality_check(channels, limits):
     }
 
 
+def catalog_checks(result, profile_id, rate):
+    profiles = json.loads((ROOT / "equipment_catalog.json").read_bytes())["profiles"]
+    profile = next((entry for entry in profiles if entry["id"] == profile_id), None)
+    if profile is None:
+        raise ValueError("Select an equipment catalog entry.")
+    if profile["status"] == "simulation_reference":
+        return []
+    checks = [{"check": "Vendor optical feasibility", "status": "Not evaluated",
+               "detail": "A validated operating mode and required signal-quality threshold are missing."}]
+    spectrum = result["spectrum"]
+    if "published_tuning_range_thz" in profile:
+        low, high = profile["published_tuning_range_thz"]
+        frequencies = [channel["frequency_thz"] for channel in result["channels"]]
+        checks.append({"check": "Carrier tuning", "status": "Pass" if low <= min(frequencies) <= max(frequencies) <= high else "Fail",
+                       "detail": f"{min(frequencies):.5f}–{max(frequencies):.5f} THz versus published {low}–{high} THz."})
+    if "published_symbol_rate_range_gbaud" in profile:
+        low, high = profile["published_symbol_rate_range_gbaud"]
+        baud = spectrum["baud_rate"] / 1e9
+        checks.append({"check": "Symbol rate range", "status": "Pass" if low <= baud <= high else "Fail",
+                       "detail": f"{baud:g} GBd modeled versus published {low}–{high} GBd."})
+    sensitivity = profile.get("published_rx_sensitivity_dbm", {}).get(f"{rate}_gbps")
+    if sensitivity is not None:
+        weakest = min(result["channels"], key=lambda row: row["power_dbm"])
+        delta = weakest["power_dbm"] - sensitivity
+        checks.append({"check": "Receive power comparison", "status": "Reference only",
+                       "detail": f"Channel {weakest['channel']}: {weakest['power_dbm']:.2f} dBm against {sensitivity:g} dBm at {rate} Gb/s ({delta:+.2f} dB). The carrier was propagated with generic parameters."})
+    spacing = profile.get("published_typical_channel_spacing_ghz", profile.get("published_fixed_grid_ghz"))
+    if spacing is not None:
+        checks.append({"check": "Published spacing reference", "status": "Reference only",
+                       "detail": f"{spectrum['spacing'] / 1e9:g} GHz modeled versus {spacing:g} GHz published spacing reference."})
+    return checks
+
+
 def workbook(result):
     output = BytesIO()
     with xlsxwriter.Workbook(output, {"in_memory": True, "strings_to_formulas": False}) as book:
@@ -174,7 +208,8 @@ def workbook(result):
             ("Spectrum end (THz)", spectrum["f_max"] / 1e12),
             ("Channel spacing (GHz)", spectrum["spacing"] / 1e9),
             ("Baud rate (GBd)", spectrum["baud_rate"] / 1e9),
-            ("Launch power (dBm)", spectrum["power_dbm"]),
+            ("Transmitter output (dBm/channel)", spectrum["tx_power_dbm"]),
+            ("Span design reference (dBm/channel)", spectrum["power_dbm"]),
             ("Transmitter OSNR (dB)", spectrum["tx_osnr"]),
             ("Roll-off", spectrum["roll_off"]),
         ])
@@ -190,6 +225,14 @@ def workbook(result):
             summary.write_row(len(details) + 1, 0, ("Terminal A requested booster gain (dB)", result["booster_gain_db"]))
         for index, (key, value) in enumerate(result.get("quality_check", {}).items(), len(details) + 2):
             summary.write_row(index, 0, ("GSNR check · " + key.replace("_", " "), value))
+        if result.get("catalog_checks"):
+            catalog = book.add_worksheet("Equipment Checks")
+            catalog.set_column("A:B", 30)
+            catalog.set_column("C:C", 100)
+            catalog.write_row(0, 0, ("Check", "Status", "Evidence"), heading)
+            catalog.write(1, 0, result["catalog_profile"])
+            for index, check in enumerate(result["catalog_checks"], 2):
+                catalog.write_row(index, 0, [check["check"], check["status"], check["detail"]])
         if "spans" in result:
             spans = book.add_worksheet("Route Spans")
             spans.set_column("A:E", 25)
@@ -280,6 +323,8 @@ class Handler(BaseHTTPRequestHandler):
                 return
             result = simulation(payload)
             result["quality_check"] = quality_check(result["channels"], payload.get("quality_limits"))
+            result["catalog_profile"] = payload.get("catalog_profile", "generic-gnpy-reference")
+            result["catalog_checks"] = catalog_checks(result, result["catalog_profile"], payload.get("catalog_rate"))
         except (ValueError, KeyError, TypeError) as error:
             self.json_response(400, {"error": str(error)})
         except Exception as error:
