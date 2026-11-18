@@ -1,0 +1,2711 @@
+{
+  "type": "FeatureCollection",
+  "version": "0.6",
+  "name": "Hyperion Zones v0.6",
+  "scope": "Bundled sanctuary screening polygons, schematic routes, and reference points. Live boundaries and raster tiles are separate.",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "stop-john-muir-wilderness",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -118.76,
+          37.16
+        ]
+      },
+      "properties": {
+        "category": "stop",
+        "name": "John Muir Wilderness",
+        "source": "https://www.govinfo.gov/content/pkg/USCODE-2024-title16/html/USCODE-2024-title16-chap23-sec1133.htm",
+        "note": "Federal law generally prohibits new structures and installations in designated wilderness. Existing rights and statutory exceptions can apply. Confirm the designation boundary, activity, and parcel with the managing agency.",
+        "color": "#d83d4f",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Documented statutory baseline",
+        "hard_stop_status": "Statutory baseline; exceptions and parcel review open",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "stop-desolation-wilderness",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -120.17,
+          38.91
+        ]
+      },
+      "properties": {
+        "category": "stop",
+        "name": "Desolation Wilderness",
+        "source": "https://www.govinfo.gov/content/pkg/USCODE-2024-title16/html/USCODE-2024-title16-chap23-sec1133.htm",
+        "note": "Federal law generally prohibits new structures and installations in designated wilderness. Existing rights and statutory exceptions can apply. Confirm the designation boundary, activity, and parcel with the managing agency.",
+        "color": "#d83d4f",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Documented statutory baseline",
+        "hard_stop_status": "Statutory baseline; exceptions and parcel review open",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "stop-mount-hood-wilderness",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.71,
+          45.37
+        ]
+      },
+      "properties": {
+        "category": "stop",
+        "name": "Mount Hood Wilderness",
+        "source": "https://www.govinfo.gov/content/pkg/USCODE-2024-title16/html/USCODE-2024-title16-chap23-sec1133.htm",
+        "note": "Federal law generally prohibits new structures and installations in designated wilderness. Existing rights and statutory exceptions can apply. Confirm the designation boundary, activity, and parcel with the managing agency.",
+        "color": "#d83d4f",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Documented statutory baseline",
+        "hard_stop_status": "Statutory baseline; exceptions and parcel review open",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "stop-alpine-lakes-wilderness",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.14,
+          47.55
+        ]
+      },
+      "properties": {
+        "category": "stop",
+        "name": "Alpine Lakes Wilderness",
+        "source": "https://www.govinfo.gov/content/pkg/USCODE-2024-title16/html/USCODE-2024-title16-chap23-sec1133.htm",
+        "note": "Federal law generally prohibits new structures and installations in designated wilderness. Existing rights and statutory exceptions can apply. Confirm the designation boundary, activity, and parcel with the managing agency.",
+        "color": "#d83d4f",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Documented statutory baseline",
+        "hard_stop_status": "Statutory baseline; exceptions and parcel review open",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "stop-marjory-stoneman-douglas-wilderness",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.85,
+          25.41
+        ]
+      },
+      "properties": {
+        "category": "stop",
+        "name": "Marjory Stoneman Douglas Wilderness",
+        "source": "https://www.govinfo.gov/content/pkg/USCODE-2024-title16/html/USCODE-2024-title16-chap23-sec1133.htm",
+        "note": "Federal law generally prohibits new structures and installations in designated wilderness. Existing rights and statutory exceptions can apply. Confirm the designation boundary, activity, and parcel with the managing agency.",
+        "color": "#d83d4f",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Documented statutory baseline",
+        "hard_stop_status": "Statutory baseline; exceptions and parcel review open",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "mil-marine-corps-base-hawai-i",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.75,
+          21.44
+        ]
+      },
+      "properties": {
+        "category": "mil",
+        "name": "Marine Corps Base Hawai\u02bbi",
+        "source": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Special_Land_Use_Areas/MapServer/3",
+        "note": "Coordinate access and rights-of-way with the installation. This layer represents publicly mapped installations.",
+        "color": "#db7326",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "mil-vandenberg-space-force-base",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -120.57,
+          34.73
+        ]
+      },
+      "properties": {
+        "category": "mil",
+        "name": "Vandenberg Space Force Base",
+        "source": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Special_Land_Use_Areas/MapServer/3",
+        "note": "Coordinate access and rights-of-way with the installation. This layer represents publicly mapped installations.",
+        "color": "#db7326",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "mil-camp-pendleton",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -117.43,
+          33.35
+        ]
+      },
+      "properties": {
+        "category": "mil",
+        "name": "Camp Pendleton",
+        "source": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Special_Land_Use_Areas/MapServer/3",
+        "note": "Coordinate access and rights-of-way with the installation. This layer represents publicly mapped installations.",
+        "color": "#db7326",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tribal-navajo-nation",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.16,
+          36.08
+        ]
+      },
+      "properties": {
+        "category": "tribal",
+        "name": "Navajo Nation",
+        "source": "https://www.law.cornell.edu/cfr/text/25/169.107",
+        "note": "Confirm parcel status and tribal requirements. For land covered by 25 CFR Part 169, review applicable consent and grant requirements.",
+        "color": "#8951c9",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tribal-yakama-nation-reservation",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -120.75,
+          46.29
+        ]
+      },
+      "properties": {
+        "category": "tribal",
+        "name": "Yakama Nation Reservation",
+        "source": "https://www.law.cornell.edu/cfr/text/25/169.107",
+        "note": "Confirm parcel status and tribal requirements. For land covered by 25 CFR Part 169, review applicable consent and grant requirements.",
+        "color": "#8951c9",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tribal-pine-ridge-reservation",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.35,
+          43.25
+        ]
+      },
+      "properties": {
+        "category": "tribal",
+        "name": "Pine Ridge Reservation",
+        "source": "https://www.law.cornell.edu/cfr/text/25/169.107",
+        "note": "Confirm parcel status and tribal requirements. For land covered by 25 CFR Part 169, review applicable consent and grant requirements.",
+        "color": "#8951c9",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "park-don-edwards-san-francisco-bay-national-wildlife-refuge",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.12,
+          37.51
+        ]
+      },
+      "properties": {
+        "category": "park",
+        "name": "Don Edwards San Francisco Bay National Wildlife Refuge",
+        "source": "https://www.usgs.gov/programs/gap-analysis-project/science/pad-us-data-download",
+        "note": "Confirm the managing authority, parcel, permitted uses and rights-of-way. Refuge designations may require a compatibility determination.",
+        "color": "#278b55",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "park-yosemite-national-park",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -119.59,
+          37.74
+        ]
+      },
+      "properties": {
+        "category": "park",
+        "name": "Yosemite National Park",
+        "source": "https://www.usgs.gov/programs/gap-analysis-project/science/pad-us-data-download",
+        "note": "Confirm the managing authority, parcel, permitted uses and rights-of-way. Refuge designations may require a compatibility determination.",
+        "color": "#278b55",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "marine-olympic-coast-national-marine-sanctuary",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -124.96,
+          47.76
+        ]
+      },
+      "properties": {
+        "category": "marine",
+        "name": "Olympic Coast National Marine Sanctuary",
+        "source": "https://www.gc.noaa.gov/documents/2017/OCNMS-2005-013_Pacific%20Crossing.pdf",
+        "note": "Check the specific sanctuary rules, seabed disturbance and applicable permits. Overlay coverage varies by location.",
+        "color": "#108e99",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "marine-papah-naumoku-kea-national-marine-sanctuary",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -171.7,
+          25.15
+        ]
+      },
+      "properties": {
+        "category": "marine",
+        "name": "Papah\u0101naumoku\u0101kea National Marine Sanctuary",
+        "source": "https://sanctuaries.noaa.gov/news/press/papahanaumokuakea/",
+        "note": "Check the specific sanctuary rules, seabed disturbance and applicable permits. Overlay coverage varies by location.",
+        "color": "#108e99",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "marine-monterey-bay-national-marine-sanctuary",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.15,
+          36.62
+        ]
+      },
+      "properties": {
+        "category": "marine",
+        "name": "Monterey Bay National Marine Sanctuary",
+        "source": "https://sanctuaries.noaa.gov/library/imast_gis.html",
+        "note": "Check the specific sanctuary rules, seabed disturbance and applicable permits. Overlay coverage varies by location.",
+        "color": "#108e99",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "marine-hawaiian-islands-humpback-whale-national-marine-sanctuary",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -156.78,
+          20.79
+        ]
+      },
+      "properties": {
+        "category": "marine",
+        "name": "Hawaiian Islands Humpback Whale National Marine Sanctuary",
+        "source": "https://sanctuaries.noaa.gov/library/imast_gis.html",
+        "note": "Check the specific sanctuary rules, seabed disturbance and applicable permits. Overlay coverage varies by location.",
+        "color": "#108e99",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "haz-k-lauea-volcanic-hazard",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.29,
+          19.42
+        ]
+      },
+      "properties": {
+        "category": "haz",
+        "name": "K\u012blauea volcanic hazard",
+        "source": "https://www.usgs.gov/volcanoes/kilauea",
+        "note": "Screen engineering exposure using project-scale hazard data. County risk combines several factors and is a regional indicator.",
+        "color": "#efca61",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "haz-cascadia-subduction-zone",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -125.5,
+          45.92
+        ]
+      },
+      "properties": {
+        "category": "haz",
+        "name": "Cascadia subduction zone",
+        "source": "https://www.usgs.gov/programs/earthquake-hazards",
+        "note": "Screen engineering exposure using project-scale hazard data. County risk combines several factors and is a regional indicator.",
+        "color": "#efca61",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "haz-hawai-i-tsunami-evacuation-zones",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -157.86,
+          21.29
+        ]
+      },
+      "properties": {
+        "category": "haz",
+        "name": "Hawai\u02bbi tsunami evacuation zones",
+        "source": "https://www.pacioos.hawaii.edu/voyager/info/tsunami_evac_zones.html",
+        "note": "Screen engineering exposure using project-scale hazard data. County risk combines several factors and is a regional indicator.",
+        "color": "#efca61",
+        "geometry_quality": "Approximate reference point",
+        "observation_status": "Screening reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "wet-sea-us",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              125.6,
+              7.1
+            ],
+            [
+              144.7,
+              13.45
+            ],
+            [
+              169,
+              17
+            ],
+            [
+              180,
+              18.44
+            ]
+          ],
+          [
+            [
+              -180,
+              18.44
+            ],
+            [
+              -158,
+              21.32
+            ],
+            [
+              -141,
+              24
+            ],
+            [
+              -118.5,
+              33.7
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "category": "wet",
+        "name": "SEA-US",
+        "source": "https://www.submarinecablemap.com/submarine-cable/sea-us",
+        "note": "Selected public system connectivity. Lines are schematic and omit branches. Consult the source for named landings and verify alignment for engineering use.",
+        "color": "#04689c",
+        "geometry_quality": "Landing-region schematic",
+        "observation_status": "Public system reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "wet-hawaiki",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              151.2,
+              -33.9
+            ],
+            [
+              174.5,
+              -35.9
+            ],
+            [
+              180,
+              -28.23548387096774
+            ]
+          ],
+          [
+            [
+              -180,
+              -28.23548387096774
+            ],
+            [
+              -170,
+              -14.3
+            ],
+            [
+              -158,
+              21.3
+            ],
+            [
+              -144,
+              33
+            ],
+            [
+              -124.4,
+              45.2
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "category": "wet",
+        "name": "Hawaiki",
+        "source": "https://www.submarinecablemap.com/submarine-cable/hawaiki",
+        "note": "Selected public system connectivity. Lines are schematic and omit branches. Consult the source for named landings and verify alignment for engineering use.",
+        "color": "#465bb9",
+        "geometry_quality": "Landing-region schematic",
+        "observation_status": "Public system reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "wet-faster",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              140.3,
+              35.6
+            ],
+            [
+              151,
+              39
+            ],
+            [
+              177,
+              48
+            ],
+            [
+              180,
+              48.27272727272727
+            ]
+          ],
+          [
+            [
+              -180,
+              48.27272727272727
+            ],
+            [
+              -161,
+              50
+            ],
+            [
+              -140,
+              48
+            ],
+            [
+              -124,
+              46
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "category": "wet",
+        "name": "FASTER",
+        "source": "https://www.submarinecablemap.com/submarine-cable/faster",
+        "note": "Selected public system connectivity. Lines are schematic and omit branches. Consult the source for named landings and verify alignment for engineering use.",
+        "color": "#9f388f",
+        "geometry_quality": "Landing-region schematic",
+        "observation_status": "Public system reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "wet-jupiter",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              122,
+              14
+            ],
+            [
+              143,
+              26
+            ],
+            [
+              146,
+              33
+            ],
+            [
+              165,
+              40
+            ],
+            [
+              180,
+              40.5
+            ]
+          ],
+          [
+            [
+              -180,
+              40.5
+            ],
+            [
+              -165,
+              41
+            ],
+            [
+              -143,
+              38
+            ],
+            [
+              -118.5,
+              33.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "category": "wet",
+        "name": "JUPITER",
+        "source": "https://www.submarinecablemap.com/submarine-cable/jupiter",
+        "note": "Selected public system connectivity. Lines are schematic and omit branches. Consult the source for named landings and verify alignment for engineering use.",
+        "color": "#b15125",
+        "geometry_quality": "Landing-region schematic",
+        "observation_status": "Public system reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "wet-southern-cross-next",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              151.2,
+              -33.9
+            ],
+            [
+              178.4,
+              -18.1
+            ],
+            [
+              180,
+              -16.621212121212125
+            ]
+          ],
+          [
+            [
+              -180,
+              -16.621212121212125
+            ],
+            [
+              -175,
+              -12
+            ],
+            [
+              -165,
+              0
+            ],
+            [
+              -150,
+              14
+            ],
+            [
+              -131,
+              25
+            ],
+            [
+              -118.4,
+              33.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "category": "wet",
+        "name": "Southern Cross NEXT",
+        "source": "https://www.submarinecablemap.com/submarine-cable/southern-cross-next",
+        "note": "Selected public system connectivity. Lines are schematic and omit branches. Consult the source for named landings and verify alignment for engineering use.",
+        "color": "#047a78",
+        "geometry_quality": "Landing-region schematic",
+        "observation_status": "Public system reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "wet-pacific-light-cable-network",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              120.3,
+              23
+            ],
+            [
+              133,
+              22
+            ],
+            [
+              155,
+              25
+            ],
+            [
+              180,
+              34
+            ]
+          ],
+          [
+            [
+              -180,
+              34
+            ],
+            [
+              -153,
+              37
+            ],
+            [
+              -134,
+              34
+            ],
+            [
+              -118.4,
+              33.7
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "category": "wet",
+        "name": "Pacific Light Cable Network",
+        "source": "https://www.submarinecablemap.com/submarine-cable/pacific-light-cable-network-plcn",
+        "note": "Selected public system connectivity. Lines are schematic and omit branches. Consult the source for named landings and verify alignment for engineering use.",
+        "color": "#713fb7",
+        "geometry_quality": "Landing-region schematic",
+        "observation_status": "Public system reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "wet-pc-1",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              141,
+              36
+            ],
+            [
+              155,
+              43
+            ],
+            [
+              177,
+              47
+            ],
+            [
+              180,
+              47.130434782608695
+            ]
+          ],
+          [
+            [
+              -180,
+              47.130434782608695
+            ],
+            [
+              -160,
+              48
+            ],
+            [
+              -141,
+              47
+            ],
+            [
+              -124.5,
+              48.1
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "category": "wet",
+        "name": "PC-1",
+        "source": "https://www.gc.noaa.gov/documents/2017/OCNMS-2005-013_Pacific%20Crossing.pdf",
+        "note": "Selected public system connectivity. Lines are schematic and omit branches. Consult the source for named landings and verify alignment for engineering use.",
+        "color": "#be385d",
+        "geometry_quality": "Landing-region schematic",
+        "observation_status": "Public system reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "wet-honomoana",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              151.2,
+              -33.9
+            ],
+            [
+              169,
+              -28
+            ],
+            [
+              180,
+              -25.608695652173914
+            ]
+          ],
+          [
+            [
+              -180,
+              -25.608695652173914
+            ],
+            [
+              -168,
+              -23
+            ],
+            [
+              -149.6,
+              -17.6
+            ],
+            [
+              -137,
+              0
+            ],
+            [
+              -123,
+              17
+            ],
+            [
+              -119,
+              34
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "category": "wet",
+        "name": "Honomoana",
+        "source": "https://cloud.google.com/blog/products/infrastructure/honomoana-and-tabua-subsea-cables-connect-south-pacific",
+        "note": "Selected public system connectivity. Lines are schematic and omit branches. Consult the source for named landings and verify alignment for engineering use.",
+        "color": "#216bb4",
+        "geometry_quality": "Landing-region schematic",
+        "observation_status": "Operator announcement",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "wet-tabua",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              151.2,
+              -33.9
+            ],
+            [
+              165,
+              -26
+            ],
+            [
+              178.4,
+              -18.1
+            ],
+            [
+              180,
+              -16.663265306122454
+            ]
+          ],
+          [
+            [
+              -180,
+              -16.663265306122454
+            ],
+            [
+              -162,
+              -0.5
+            ],
+            [
+              -143,
+              16
+            ],
+            [
+              -121.1,
+              35.1
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "category": "wet",
+        "name": "Tabua",
+        "source": "https://cloud.google.com/blog/products/infrastructure/honomoana-and-tabua-subsea-cables-connect-south-pacific",
+        "note": "Selected public system connectivity. Lines are schematic and omit branches. Consult the source for named landings and verify alignment for engineering use.",
+        "color": "#997000",
+        "geometry_quality": "Landing-region schematic",
+        "observation_status": "Operator announcement",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "wet-asia-america-gateway-aag-",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              114.2,
+              22.3
+            ],
+            [
+              124,
+              14
+            ],
+            [
+              144.7,
+              13.5
+            ],
+            [
+              171,
+              13
+            ],
+            [
+              180,
+              15.40967741935484
+            ]
+          ],
+          [
+            [
+              -180,
+              15.40967741935484
+            ],
+            [
+              -158,
+              21.3
+            ],
+            [
+              -134,
+              27
+            ],
+            [
+              -120.5,
+              35.2
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "category": "wet",
+        "name": "Asia-America Gateway (AAG)",
+        "source": "https://www.submarinecablemap.com/submarine-cable/asia-america-gateway-aag-cable-system",
+        "note": "Selected public system connectivity. Lines are schematic and omit branches. Consult the source for named landings and verify alignment for engineering use.",
+        "color": "#468128",
+        "geometry_quality": "Landing-region schematic",
+        "observation_status": "Public system reference",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "land-west-coast-seattle-to-los-angeles",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.33,
+            47.61
+          ],
+          [
+            -122.68,
+            45.52
+          ],
+          [
+            -122.42,
+            37.78
+          ],
+          [
+            -118.24,
+            34.05
+          ]
+        ]
+      },
+      "properties": {
+        "category": "land",
+        "name": "West Coast \u00b7 Seattle to Los Angeles",
+        "source": "https://www.impactcybertrust.org/dataset_view?idDataset=521",
+        "note": "Illustrative metro-to-metro corridor. Exact path, operator, conduit, fiber, DWDM service and shared risk require separate verification.",
+        "color": "#137b43",
+        "geometry_quality": "City-to-city schematic",
+        "observation_status": "Illustrative corridor",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "land-northern-seattle-to-chicago",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.33,
+            47.61
+          ],
+          [
+            -116.2,
+            43.62
+          ],
+          [
+            -111.89,
+            40.76
+          ],
+          [
+            -95.94,
+            41.26
+          ],
+          [
+            -87.63,
+            41.88
+          ]
+        ]
+      },
+      "properties": {
+        "category": "land",
+        "name": "Northern \u00b7 Seattle to Chicago",
+        "source": "https://www.impactcybertrust.org/dataset_view?idDataset=521",
+        "note": "Illustrative metro-to-metro corridor. Exact path, operator, conduit, fiber, DWDM service and shared risk require separate verification.",
+        "color": "#32954e",
+        "geometry_quality": "City-to-city schematic",
+        "observation_status": "Illustrative corridor",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "land-central-san-francisco-to-chicago",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.42,
+            37.78
+          ],
+          [
+            -119.81,
+            39.53
+          ],
+          [
+            -111.89,
+            40.76
+          ],
+          [
+            -104.99,
+            39.74
+          ],
+          [
+            -94.58,
+            39.1
+          ],
+          [
+            -87.63,
+            41.88
+          ]
+        ]
+      },
+      "properties": {
+        "category": "land",
+        "name": "Central \u00b7 San Francisco to Chicago",
+        "source": "https://www.impactcybertrust.org/dataset_view?idDataset=521",
+        "note": "Illustrative metro-to-metro corridor. Exact path, operator, conduit, fiber, DWDM service and shared risk require separate verification.",
+        "color": "#48651d",
+        "geometry_quality": "City-to-city schematic",
+        "observation_status": "Illustrative corridor",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "land-southwest-los-angeles-to-dallas",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -118.24,
+            34.05
+          ],
+          [
+            -112.07,
+            33.45
+          ],
+          [
+            -106.65,
+            35.08
+          ],
+          [
+            -96.8,
+            32.78
+          ]
+        ]
+      },
+      "properties": {
+        "category": "land",
+        "name": "Southwest \u00b7 Los Angeles to Dallas",
+        "source": "https://www.impactcybertrust.org/dataset_view?idDataset=521",
+        "note": "Illustrative metro-to-metro corridor. Exact path, operator, conduit, fiber, DWDM service and shared risk require separate verification.",
+        "color": "#2e8e7a",
+        "geometry_quality": "City-to-city schematic",
+        "observation_status": "Illustrative corridor",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "land-gulf-dallas-to-atlanta",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -96.8,
+            32.78
+          ],
+          [
+            -95.37,
+            29.76
+          ],
+          [
+            -90.07,
+            29.95
+          ],
+          [
+            -84.39,
+            33.75
+          ]
+        ]
+      },
+      "properties": {
+        "category": "land",
+        "name": "Gulf \u00b7 Dallas to Atlanta",
+        "source": "https://www.impactcybertrust.org/dataset_view?idDataset=521",
+        "note": "Illustrative metro-to-metro corridor. Exact path, operator, conduit, fiber, DWDM service and shared risk require separate verification.",
+        "color": "#667a13",
+        "geometry_quality": "City-to-city schematic",
+        "observation_status": "Illustrative corridor",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "land-midwest-to-northeast-chicago-to-boston",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -87.63,
+            41.88
+          ],
+          [
+            -81.69,
+            41.5
+          ],
+          [
+            -80,
+            40.44
+          ],
+          [
+            -74,
+            40.71
+          ],
+          [
+            -71.06,
+            42.36
+          ]
+        ]
+      },
+      "properties": {
+        "category": "land",
+        "name": "Midwest to Northeast \u00b7 Chicago to Boston",
+        "source": "https://www.impactcybertrust.org/dataset_view?idDataset=521",
+        "note": "Illustrative metro-to-metro corridor. Exact path, operator, conduit, fiber, DWDM service and shared risk require separate verification.",
+        "color": "#187d66",
+        "geometry_quality": "City-to-city schematic",
+        "observation_status": "Illustrative corridor",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "land-eastern-seaboard-atlanta-to-new-york",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -84.39,
+            33.75
+          ],
+          [
+            -77.49,
+            39.04
+          ],
+          [
+            -74,
+            40.71
+          ]
+        ]
+      },
+      "properties": {
+        "category": "land",
+        "name": "Eastern seaboard \u00b7 Atlanta to New York",
+        "source": "https://www.impactcybertrust.org/dataset_view?idDataset=521",
+        "note": "Illustrative metro-to-metro corridor. Exact path, operator, conduit, fiber, DWDM service and shared risk require separate verification.",
+        "color": "#587e27",
+        "geometry_quality": "City-to-city schematic",
+        "observation_status": "Illustrative corridor",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "land-florida-atlanta-to-miami",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -84.39,
+            33.75
+          ],
+          [
+            -81.38,
+            28.54
+          ],
+          [
+            -80.19,
+            25.76
+          ]
+        ]
+      },
+      "properties": {
+        "category": "land",
+        "name": "Florida \u00b7 Atlanta to Miami",
+        "source": "https://www.impactcybertrust.org/dataset_view?idDataset=521",
+        "note": "Illustrative metro-to-metro corridor. Exact path, operator, conduit, fiber, DWDM service and shared risk require separate verification.",
+        "color": "#227050",
+        "geometry_quality": "City-to-city schematic",
+        "observation_status": "Illustrative corridor",
+        "hard_stop_status": "No hard-stop determination",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.6"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                180,
+                25.38976
+              ],
+              [
+                179.69252,
+                25.54104
+              ],
+              [
+                179.41638,
+                25.70751
+              ],
+              [
+                179.15383,
+                25.8977
+              ],
+              [
+                178.91329,
+                26.10537
+              ],
+              [
+                178.69349,
+                26.33136
+              ],
+              [
+                178.49601,
+                26.5742
+              ],
+              [
+                178.30653,
+                26.85803
+              ],
+              [
+                178.15895,
+                27.12831
+              ],
+              [
+                178.03853,
+                27.40896
+              ],
+              [
+                177.94198,
+                27.71432
+              ],
+              [
+                177.88574,
+                27.97707
+              ],
+              [
+                177.85073,
+                28.276
+              ],
+              [
+                177.8467,
+                28.59348
+              ],
+              [
+                177.87226,
+                28.88131
+              ],
+              [
+                177.92567,
+                29.16572
+              ],
+              [
+                178.00575,
+                29.44148
+              ],
+              [
+                178.11268,
+                29.71
+              ],
+              [
+                178.25439,
+                29.98416
+              ],
+              [
+                178.43934,
+                30.26737
+              ],
+              [
+                178.62805,
+                30.50216
+              ],
+              [
+                178.8422,
+                30.72443
+              ],
+              [
+                179.07393,
+                30.92578
+              ],
+              [
+                179.34112,
+                31.11928
+              ],
+              [
+                179.61792,
+                31.28512
+              ],
+              [
+                179.94844,
+                31.4464
+              ],
+              [
+                180,
+                31.466352
+              ],
+              [
+                180,
+                25.38976
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -180,
+                25.38976
+              ],
+              [
+                -180,
+                31.466352
+              ],
+              [
+                -179.74978,
+                31.56318
+              ],
+              [
+                -179.4177,
+                31.66179
+              ],
+              [
+                -179.10344,
+                31.72953
+              ],
+              [
+                -178.75218,
+                31.77748
+              ],
+              [
+                -178.43412,
+                31.79649
+              ],
+              [
+                -178.08931,
+                31.79165
+              ],
+              [
+                -177.77776,
+                31.76401
+              ],
+              [
+                -177.38921,
+                31.69789
+              ],
+              [
+                -177.04995,
+                31.60978
+              ],
+              [
+                -176.41282,
+                31.51708
+              ],
+              [
+                -176.07199,
+                31.42701
+              ],
+              [
+                -175.72777,
+                31.3037
+              ],
+              [
+                -175.27281,
+                31.27467
+              ],
+              [
+                -174.82112,
+                31.19865
+              ],
+              [
+                -174.36049,
+                31.0684
+              ],
+              [
+                -173.95092,
+                30.90176
+              ],
+              [
+                -173.67333,
+                30.75735
+              ],
+              [
+                -173.37804,
+                30.57004
+              ],
+              [
+                -173.09242,
+                30.34897
+              ],
+              [
+                -172.85721,
+                30.1286
+              ],
+              [
+                -172.65616,
+                29.90243
+              ],
+              [
+                -172.4687,
+                29.6469
+              ],
+              [
+                -172.31074,
+                29.38007
+              ],
+              [
+                -172.18269,
+                29.10461
+              ],
+              [
+                -171.82179,
+                29.12776
+              ],
+              [
+                -171.50552,
+                29.12249
+              ],
+              [
+                -171.17551,
+                29.09204
+              ],
+              [
+                -170.82159,
+                29.02954
+              ],
+              [
+                -170.49444,
+                28.94259
+              ],
+              [
+                -170.16441,
+                28.8238
+              ],
+              [
+                -169.74655,
+                28.75519
+              ],
+              [
+                -169.34847,
+                28.64716
+              ],
+              [
+                -168.95037,
+                28.49263
+              ],
+              [
+                -168.58344,
+                28.30203
+              ],
+              [
+                -168.16342,
+                28.34011
+              ],
+              [
+                -167.73621,
+                28.33488
+              ],
+              [
+                -167.30612,
+                28.28464
+              ],
+              [
+                -166.88603,
+                28.18981
+              ],
+              [
+                -166.36193,
+                28.00113
+              ],
+              [
+                -165.87842,
+                27.74381
+              ],
+              [
+                -165.4457,
+                27.42363
+              ],
+              [
+                -165.07732,
+                27.05226
+              ],
+              [
+                -164.707,
+                26.92271
+              ],
+              [
+                -164.21858,
+                26.89375
+              ],
+              [
+                -163.74438,
+                26.80737
+              ],
+              [
+                -163.35645,
+                26.69058
+              ],
+              [
+                -163,
+                26.54202
+              ],
+              [
+                -163,
+                24.11409
+              ],
+              [
+                -161.68679,
+                23.86839
+              ],
+              [
+                -161.42708,
+                23.76155
+              ],
+              [
+                -161.2536,
+                23.6257
+              ],
+              [
+                -161.09751,
+                23.40707
+              ],
+              [
+                -161.03067,
+                23.20662
+              ],
+              [
+                -161.0262,
+                22.94485
+              ],
+              [
+                -161.08586,
+                22.74252
+              ],
+              [
+                -161.23298,
+                22.51916
+              ],
+              [
+                -161.39956,
+                22.37767
+              ],
+              [
+                -161.65181,
+                22.26168
+              ],
+              [
+                -161.8173,
+                22.22899
+              ],
+              [
+                -162.04257,
+                22.23099
+              ],
+              [
+                -163,
+                22.40727
+              ],
+              [
+                -163,
+                19.23458
+              ],
+              [
+                -163.21262,
+                19.44214
+              ],
+              [
+                -163.41328,
+                19.67526
+              ],
+              [
+                -163.58383,
+                19.91207
+              ],
+              [
+                -163.73841,
+                20.17192
+              ],
+              [
+                -163.95588,
+                20.30099
+              ],
+              [
+                -164.28284,
+                20.25133
+              ],
+              [
+                -164.65884,
+                20.22922
+              ],
+              [
+                -165.10201,
+                20.25007
+              ],
+              [
+                -165.54798,
+                20.32372
+              ],
+              [
+                -165.91855,
+                20.28628
+              ],
+              [
+                -166.29049,
+                20.28488
+              ],
+              [
+                -166.82777,
+                20.34635
+              ],
+              [
+                -167.32963,
+                20.47258
+              ],
+              [
+                -167.8053,
+                20.66024
+              ],
+              [
+                -168.24746,
+                20.90873
+              ],
+              [
+                -168.54244,
+                21.1242
+              ],
+              [
+                -168.77569,
+                21.33074
+              ],
+              [
+                -168.99177,
+                21.55913
+              ],
+              [
+                -169.21703,
+                21.84743
+              ],
+              [
+                -169.618,
+                22.00464
+              ],
+              [
+                -170.00653,
+                22.21103
+              ],
+              [
+                -170.58725,
+                22.16191
+              ],
+              [
+                -171.15995,
+                22.19751
+              ],
+              [
+                -171.58175,
+                22.27841
+              ],
+              [
+                -172.03998,
+                22.42318
+              ],
+              [
+                -172.37735,
+                22.46346
+              ],
+              [
+                -172.71075,
+                22.53279
+              ],
+              [
+                -173.03602,
+                22.63048
+              ],
+              [
+                -173.34556,
+                22.75354
+              ],
+              [
+                -173.8426,
+                22.70118
+              ],
+              [
+                -174.34649,
+                22.71185
+              ],
+              [
+                -174.86184,
+                22.78978
+              ],
+              [
+                -175.34381,
+                22.9282
+              ],
+              [
+                -175.67372,
+                23.0637
+              ],
+              [
+                -175.98815,
+                23.22832
+              ],
+              [
+                -176.2841,
+                23.42052
+              ],
+              [
+                -176.53229,
+                23.6156
+              ],
+              [
+                -176.78542,
+                23.85503
+              ],
+              [
+                -177.01229,
+                24.11613
+              ],
+              [
+                -177.1921,
+                24.3676
+              ],
+              [
+                -177.36249,
+                24.6621
+              ],
+              [
+                -177.8369,
+                24.87185
+              ],
+              [
+                -178.27313,
+                24.94194
+              ],
+              [
+                -178.70077,
+                25.05859
+              ],
+              [
+                -179.32201,
+                25.16141
+              ],
+              [
+                -179.66167,
+                25.2591
+              ],
+              [
+                -180,
+                25.38976
+              ]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Papah\u0101naumoku\u0101kea National Marine Sanctuary",
+        "category": "marine",
+        "source": "https://www.law.cornell.edu/cfr/text/15/appendix-A_to_subpart_W_of_part_922",
+        "note": "Generalized from all 1,128 published boundary vertices and split at the antimeridian. Protects waters around the Northwestern Hawaiian Islands. Review installation-related seabed disturbance under 15 CFR \u00a7922.244, separate monument rules, and applicable authorizations.",
+        "geometry_quality": "CFR boundary \u00b7 generalized to ~0.012\u00b0",
+        "observation_status": "Bundled regulatory screening outline",
+        "hard_stop_status": "Site-specific authorization review",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.2",
+        "color": "#108e99"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.18389,
+              47.12917
+            ],
+            [
+              -124.97,
+              47.12917
+            ],
+            [
+              -125,
+              47.58472
+            ],
+            [
+              -125.07889,
+              47.66806
+            ],
+            [
+              -125.095,
+              47.83361
+            ],
+            [
+              -125.48694,
+              47.95361
+            ],
+            [
+              -125.63889,
+              48.12583
+            ],
+            [
+              -125.68167,
+              48.25
+            ],
+            [
+              -125.50081,
+              48.30589
+            ],
+            [
+              -125.38136,
+              48.33756
+            ],
+            [
+              -125.15469,
+              48.44617
+            ],
+            [
+              -125.14164,
+              48.45256
+            ],
+            [
+              -125.09775,
+              48.46894
+            ],
+            [
+              -125.00303,
+              48.49533
+            ],
+            [
+              -124.98886,
+              48.49894
+            ],
+            [
+              -124.91581,
+              48.50367
+            ],
+            [
+              -124.84053,
+              48.50589
+            ],
+            [
+              -124.78831,
+              48.50283
+            ],
+            [
+              -124.72725,
+              48.49344
+            ],
+            [
+              -124.63694,
+              48.46889
+            ],
+            [
+              -124.63694,
+              48.38806
+            ],
+            [
+              -124.18389,
+              47.12917
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Olympic Coast National Marine Sanctuary",
+        "category": "marine",
+        "source": "https://www.law.cornell.edu/cfr/text/15/appendix-A_to_subpart_O_of_part_922",
+        "note": "Regulatory offshore coordinates are shown with a generalized straight coastal closure. The published boundary also follows specified tides and excludes La Push harbor. NOAA\u2019s PC-1 permit is a documented example of authorization under conditions.",
+        "geometry_quality": "CFR offshore coordinates \u00b7 approximate shore closure",
+        "observation_status": "Bundled regulatory screening outline",
+        "hard_stop_status": "Site-specific authorization review",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.2",
+        "color": "#108e99"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.58238,
+              35.01394
+            ],
+            [
+              -120.82173,
+              35.01394
+            ],
+            [
+              -120.60643,
+              34.55436
+            ],
+            [
+              -119.93333,
+              34.37859
+            ],
+            [
+              -119.93822,
+              34.38126
+            ],
+            [
+              -119.9427,
+              34.38391
+            ],
+            [
+              -119.94657,
+              34.38362
+            ],
+            [
+              -119.95046,
+              34.38354
+            ],
+            [
+              -119.95292,
+              34.38358
+            ],
+            [
+              -119.95496,
+              34.38367
+            ],
+            [
+              -119.95698,
+              34.38381
+            ],
+            [
+              -119.959,
+              34.38401
+            ],
+            [
+              -119.96257,
+              34.38451
+            ],
+            [
+              -119.96946,
+              34.38575
+            ],
+            [
+              -119.97406,
+              34.38677
+            ],
+            [
+              -119.97601,
+              34.3873
+            ],
+            [
+              -119.97815,
+              34.38794
+            ],
+            [
+              -119.98047,
+              34.38872
+            ],
+            [
+              -119.98274,
+              34.38958
+            ],
+            [
+              -119.98497,
+              34.39053
+            ],
+            [
+              -119.98716,
+              34.39154
+            ],
+            [
+              -119.98928,
+              34.39263
+            ],
+            [
+              -119.99136,
+              34.39379
+            ],
+            [
+              -119.99319,
+              34.39491
+            ],
+            [
+              -119.99514,
+              34.39621
+            ],
+            [
+              -119.99731,
+              34.39713
+            ],
+            [
+              -119.99962,
+              34.39823
+            ],
+            [
+              -120.00168,
+              34.3993
+            ],
+            [
+              -120.00386,
+              34.40055
+            ],
+            [
+              -120.00625,
+              34.40107
+            ],
+            [
+              -120.00882,
+              34.40173
+            ],
+            [
+              -120.01178,
+              34.40261
+            ],
+            [
+              -120.01409,
+              34.40339
+            ],
+            [
+              -120.01636,
+              34.40425
+            ],
+            [
+              -120.01878,
+              34.40527
+            ],
+            [
+              -120.02094,
+              34.40628
+            ],
+            [
+              -120.0232,
+              34.40744
+            ],
+            [
+              -120.02641,
+              34.40752
+            ],
+            [
+              -120.02956,
+              34.40774
+            ],
+            [
+              -120.03246,
+              34.40806
+            ],
+            [
+              -120.03569,
+              34.40855
+            ],
+            [
+              -120.03855,
+              34.40907
+            ],
+            [
+              -120.04137,
+              34.40971
+            ],
+            [
+              -120.04394,
+              34.4104
+            ],
+            [
+              -120.04667,
+              34.41126
+            ],
+            [
+              -120.0487,
+              34.411
+            ],
+            [
+              -120.05096,
+              34.41077
+            ],
+            [
+              -120.05323,
+              34.41062
+            ],
+            [
+              -120.05528,
+              34.41054
+            ],
+            [
+              -120.05733,
+              34.41052
+            ],
+            [
+              -120.05961,
+              34.41056
+            ],
+            [
+              -120.06188,
+              34.41068
+            ],
+            [
+              -120.06392,
+              34.41084
+            ],
+            [
+              -120.06679,
+              34.41046
+            ],
+            [
+              -120.06927,
+              34.41021
+            ],
+            [
+              -120.07175,
+              34.41004
+            ],
+            [
+              -120.07424,
+              34.40997
+            ],
+            [
+              -120.07984,
+              34.4099
+            ],
+            [
+              -120.08369,
+              34.41002
+            ],
+            [
+              -120.08666,
+              34.40991
+            ],
+            [
+              -120.08964,
+              34.40991
+            ],
+            [
+              -120.09353,
+              34.41011
+            ],
+            [
+              -120.09739,
+              34.41051
+            ],
+            [
+              -120.09987,
+              34.41088
+            ],
+            [
+              -120.10255,
+              34.41138
+            ],
+            [
+              -120.10677,
+              34.41203
+            ],
+            [
+              -120.10941,
+              34.41251
+            ],
+            [
+              -120.11288,
+              34.41331
+            ],
+            [
+              -120.11729,
+              34.41452
+            ],
+            [
+              -120.11919,
+              34.41509
+            ],
+            [
+              -120.12107,
+              34.41571
+            ],
+            [
+              -120.12292,
+              34.41639
+            ],
+            [
+              -120.12474,
+              34.41711
+            ],
+            [
+              -120.12733,
+              34.41802
+            ],
+            [
+              -120.13068,
+              34.41937
+            ],
+            [
+              -120.13314,
+              34.4203
+            ],
+            [
+              -120.13678,
+              34.42183
+            ],
+            [
+              -120.14015,
+              34.42266
+            ],
+            [
+              -120.14124,
+              34.42285
+            ],
+            [
+              -120.14365,
+              34.42227
+            ],
+            [
+              -120.14631,
+              34.42173
+            ],
+            [
+              -120.14922,
+              34.42126
+            ],
+            [
+              -120.15216,
+              34.42091
+            ],
+            [
+              -120.15458,
+              34.42039
+            ],
+            [
+              -120.15725,
+              34.41992
+            ],
+            [
+              -120.16108,
+              34.41942
+            ],
+            [
+              -120.16493,
+              34.41913
+            ],
+            [
+              -120.16857,
+              34.41904
+            ],
+            [
+              -120.17221,
+              34.41913
+            ],
+            [
+              -120.17583,
+              34.41941
+            ],
+            [
+              -120.17943,
+              34.41986
+            ],
+            [
+              -120.18174,
+              34.41968
+            ],
+            [
+              -120.18378,
+              34.41957
+            ],
+            [
+              -120.18583,
+              34.41952
+            ],
+            [
+              -120.18788,
+              34.41952
+            ],
+            [
+              -120.19038,
+              34.41961
+            ],
+            [
+              -120.19288,
+              34.41978
+            ],
+            [
+              -120.19513,
+              34.42001
+            ],
+            [
+              -120.19763,
+              34.42034
+            ],
+            [
+              -120.20103,
+              34.42014
+            ],
+            [
+              -120.20468,
+              34.4201
+            ],
+            [
+              -120.21923,
+              34.42062
+            ],
+            [
+              -120.22203,
+              34.41994
+            ],
+            [
+              -120.22509,
+              34.41933
+            ],
+            [
+              -120.22818,
+              34.41885
+            ],
+            [
+              -120.23141,
+              34.41849
+            ],
+            [
+              -120.23501,
+              34.41819
+            ],
+            [
+              -120.23821,
+              34.41806
+            ],
+            [
+              -120.24012,
+              34.41788
+            ],
+            [
+              -120.24279,
+              34.41768
+            ],
+            [
+              -120.24551,
+              34.41758
+            ],
+            [
+              -120.24801,
+              34.41758
+            ],
+            [
+              -120.2514,
+              34.41735
+            ],
+            [
+              -120.26775,
+              34.38689
+            ],
+            [
+              -120.32691,
+              34.33744
+            ],
+            [
+              -120.3756,
+              34.3048
+            ],
+            [
+              -120.41671,
+              34.27979
+            ],
+            [
+              -120.53987,
+              34.20486
+            ],
+            [
+              -120.60041,
+              34.18182
+            ],
+            [
+              -120.64208,
+              34.10208
+            ],
+            [
+              -120.73023,
+              34.07464
+            ],
+            [
+              -120.85081,
+              33.87643
+            ],
+            [
+              -120.9055,
+              33.82377
+            ],
+            [
+              -121.2132,
+              33.83184
+            ],
+            [
+              -121.34958,
+              33.85137
+            ],
+            [
+              -121.40902,
+              33.91005
+            ],
+            [
+              -121.40925,
+              34.08467
+            ],
+            [
+              -121.49111,
+              34.16932
+            ],
+            [
+              -121.4922,
+              34.2105
+            ],
+            [
+              -121.49681,
+              34.26897
+            ],
+            [
+              -121.50604,
+              34.32128
+            ],
+            [
+              -121.51066,
+              34.37975
+            ],
+            [
+              -121.51681,
+              34.41821
+            ],
+            [
+              -121.52704,
+              34.45284
+            ],
+            [
+              -121.56178,
+              34.54049
+            ],
+            [
+              -121.57941,
+              34.5795
+            ],
+            [
+              -121.5901,
+              34.59446
+            ],
+            [
+              -121.62378,
+              34.64285
+            ],
+            [
+              -121.63763,
+              34.65978
+            ],
+            [
+              -121.65637,
+              34.67836
+            ],
+            [
+              -121.66652,
+              34.69012
+            ],
+            [
+              -121.68042,
+              34.70722
+            ],
+            [
+              -121.69538,
+              34.72486
+            ],
+            [
+              -121.7034,
+              34.74143
+            ],
+            [
+              -121.705,
+              34.76227
+            ],
+            [
+              -121.69966,
+              34.78952
+            ],
+            [
+              -121.6426,
+              34.89914
+            ],
+            [
+              -121.58238,
+              35.01394
+            ],
+            [
+              -121.58238,
+              35.01394
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Chumash Heritage National Marine Sanctuary",
+        "category": "marine",
+        "source": "https://www.law.cornell.edu/cfr/text/15/appendix-A_to_subpart_V_of_part_922",
+        "note": "Screening outline from published boundary vertices. Segments following the shore and landward reference intersections are generalized. Consult NOAA's GIS layer for exclusions, coastal tie-ins and detailed boundaries. One invalid longitude in Appendix A is resolved using the matching latitude and longitude published in Appendix B of the same final rule.",
+        "geometry_quality": "CFR boundary vertices \u00b7 approximate shore segments",
+        "observation_status": "Bundled regulatory screening outline",
+        "hard_stop_status": "Site-specific authorization review",
+        "last_source_review": "2026-11-15",
+        "verifier": "Hyperion Zones prototype",
+        "revision": "0.2",
+        "color": "#108e99"
+      }
+    }
+  ]
+}

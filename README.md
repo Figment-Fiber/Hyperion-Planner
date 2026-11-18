@@ -1,43 +1,21 @@
-# Hyperion Routes · M4 development build
+# Hyperion Routes · Mark Five
 
-**Amplification.** Above 80 km, the active span length triggers an amplification review marker on the map and in Settings. Apply or edit the suggested midpoint EDFA target to clear that placement alert. The target estimates first-half fiber and ingress-connector loss, bounded by the generic amplifier range. Terminal B can configure the existing receive-side EDFA. Explicit midpoint or receive-side targets switch the entire run to gain mode. GNPy still determines effective gain and output under its equipment model. See the transmission report and per-channel ASE OSNR, SNR NLI and GSNR for the completed run.
+Hyperion Routes is a local optical route planning prototype. Draw a network on a map, edit its equipment and losses, and run a selected service through **real GNPy 3.0.1**. The visible brand is **Hyperion**.
 
-**Marine screening.** Moving sites updates an approximate coastline check along the geographic path, using Natural Earth 1:50m land polygons. A potential water crossing adds a cable armor review note. It does not determine depth, cable construction or wet-plant repeater placement. See [ITU-T G.978](https://www.itu.int/epublications/publication/itu-t-g-978-2025-05-characteristics-of-optical-fibre-submarine-cables) and [Natural Earth terms](https://www.naturalearthdata.com/about/terms-of-use/).
+The long-term goal combines geographic routing, optical engineering, vendor equipment, spectrum planning, construction constraints and an equipment handoff to Hyperion Estimator. This build uses generic optical models with sourced vendor references. It is not a vendor-certified design system.
 
-**Known check for engineering changes.** For every changed input, inspect the actual engine topology and equipment, compare the affected loss, power and noise readings, and verify the browser and workbook against the completed run. Use an independent CLI run for new simulation paths. A placement alert and an optical verdict are evaluated independently.
+## Download and launch
 
-Under **GSNR planning limits**, set optional GSNR and ASE OSNR thresholds at signal bandwidth. The review band defaults to 1 dB. Results report the limiting channel, remaining margin and corrective action when near or below a threshold. Review and Fail entries appear in red in the browser and Excel. FEC margin requires validated modem data and is shown as Not evaluated. Excel downloads remain tied to the last successful run.
+[Download Mark Five ZIP](https://github.com/Figment-Fiber/Hyperion-Planner/archive/refs/heads/metis/m5.zip), extract it, and open the folder containing `hyperion.py` and `requirements.txt`. In Windows File Explorer, type `powershell` in that folder's address bar and press Enter.
 
-On the M4 branch, **Equipment catalog** selections are saved with the route and evaluated against the completed run. Ciena checks include tuning range, baud range, and an optional rate-specific receive-power comparison. Nokia shows its published spacing reference. The **Equipment Checks** sheet carries the same findings. These comparisons use the generic propagated spectrum. Vendor optical feasibility remains unevaluated until a validated mode is available.
-
-**Generic transmitter output** under Terminal A changes the actual GNPy transmitter setting. The transmission report and Excel show the transmitter output separately from the span design reference.
-
-Under **Fiber spans**, select a span and add, edit or remove fusion splices. Each starts at 0.10 dB. GNPy applies their combined loss at the span output. Site C accepts separate A-side and B-side connector losses that replace the 0.50 dB default for each side. The passive budget in the results and Excel itemizes those losses before auto-design adjustments. Enter actual pigtail splices separately where they exist.
-
-M3 adds an explicit generic Terminal A booster and a user-defined GSNR planning check. Open Terminal A to enter a booster gain target. The transmission report shows the actual GNPy element and effective gain, which auto-design can change. In **GSNR planning limits**, enter a required GSNR at signal bandwidth and a design reserve. Results identify the limiting channel and remaining margin. This is one planning check. Vendor-mode feasibility, receive-power limits and spectrum validation are separate work.
-
-The map opens on Oʻahu with two draggable endpoints. Scroll, pinch, or use the zoom controls to change scale. Span estimates are WGS84 straight-line distances between site coordinates. Use an engineered length for surveyed fiber, conduit routing, or slack. Map tiles require internet access and are credited in the map. The local simulation and distance calculations can run without tiles.
-
-Use **Save route** to download a JSON file with the current sites, coordinates and span overrides. **Load route** restores that design. **New route** opens an editable two-site starter in Oʻahu. Apply pending span edits before saving. Changing a completed design flags the results for a rerun. Excel continues to export the completed simulation.
-
-Open **Route settings** to inspect terminals, an optional ROADM and each span. Click a map marker, then **Open site settings**, to jump to that site. Site names and per-span lengths are editable. The equipment catalog lists generic and vendor references. GNPy runs use the generic reference equipment.
-
-Select **Place ROADM C**, then click the map to insert an intermediate express ROADM between A and B. The span dropdown switches between A → C and C → B. Each span can use its geographic distance or an independent engineered length. The GNPy report shows both spans, the generic ROADM, and any amplifiers GNPy adds during auto-design. Excel includes the coordinates, distance, effective length, and source per span.
-
-This route uses one unidirectional service and the bundled spectrum and equipment models. The next engineering milestone is editable transceiver and ROADM profiles, fixed-grid and flex-grid allocations, and overlap and guard-band validation on both spans.
-
-Run the bundled GNPy 3.0.1 EDFA example from a local browser. The demo uses two sites, one SSMF span, one EDFA and 76 channels. It runs locally after installing the dependencies.
-
-## Download and start
-
-[Download the M4 ZIP](https://github.com/Figment-Fiber/Hyperion-Planner/archive/refs/heads/metis/m4.zip) or select **Code → Download ZIP** on the [`metis/m4` branch](https://github.com/Figment-Fiber/Hyperion-Planner/tree/metis/m4). Extract the ZIP. In File Explorer, open the extracted folder that contains `hyperion.py` and `requirements.txt`, type `powershell` in the address bar, and press Enter. Git users can clone the M4 branch directly:
+Alternatively:
 
 ```powershell
-git clone --branch metis/m4 https://github.com/Figment-Fiber/Hyperion-Planner.git
+git clone --branch metis/m5 https://github.com/Figment-Fiber/Hyperion-Planner.git
 cd Hyperion-Planner
 ```
 
-Use Python 3.12. In Windows PowerShell, run each line separately and wait for it to finish before running the next. For an existing virtual environment, start with the dependency install so it includes the M4 requirements.
+Use **Python 3.12**, running each line separately:
 
 ```powershell
 py -3.12 -m venv .venv
@@ -45,32 +23,63 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe hyperion.py
 ```
 
-On macOS or Linux with Python 3.12, use `python3.12 -m venv .venv` and replace `.\.venv\Scripts\python.exe` with `.venv/bin/python`.
+For an existing checkout, switch to `metis/m5`, pull, and repeat the dependency install. Stop an old server with Ctrl+C first.
 
-On Windows, if Python 3.12 is managed by uv, use `uv venv --seed --python 3.12 .venv` for the first command. Windows with Python 3.12 and Edge is the tested configuration.
+Keep the server window open. Wait for **Hyperion Routes is ready**, then open **http://127.0.0.1:8765/** in Firefox, Edge or Chrome. Do not open the Python or HTML file directly: the app needs its local server. If the address cannot be reached, inspect the terminal error and confirm the server is still running.
 
-Wait for **Hyperion Routes is ready** in PowerShell. Keep the server running in that window and open the printed address in your browser. The default is **http://127.0.0.1:8765/**. Use Ctrl+C in the terminal to stop the app.
+For another port, run `.\.venv\Scripts\python.exe hyperion.py --port 8766` and open **http://127.0.0.1:8766/**. On macOS/Linux use `python3.12 -m venv .venv` and `.venv/bin/python` instead of the Windows Python path. Windows with Python 3.12 and Edge is the tested configuration.
 
-If you need a different port, start the app with the full Python command:
+## What Mark Five includes
+
+- **Geography:** up to six sites, connected spans, continental U.S. and Hawaiʻi map views, zoom, draggable sites, and up to 50 editable bends per span. Length sums WGS84 geodesic segments. Engineered overrides survive site and bend movement.
+- **Selected service:** choose source/destination and optional intermediate site IDs. GNPy propagates this route through the physical degrees. The default search chooses the fewest links. Branches establish node degree and inventory; this does not load simultaneous traffic on every branch.
+- **Settings:** node names, generic/Ciena/Nokia equipment references, per-node overrides, Corning Centrix panel assumptions, connector/pigtail losses, removable field splices, fiber profiles and attenuation, transmitter output, booster/preamp gain and midpoint amplifiers.
+- **ROADM/WSS:** generic express and local add/drop paths, editable minimum internal loss, output target and passband checks. Source/destination ROADMs are included where their physical degree requires them.
+- **Results:** 76 per-channel readings for frequency, power, ASE OSNR, nonlinear-noise SNR and GSNR, plus the actual GNPy report. OSNR/SNR/GSNR are in dB at **signal bandwidth**, not automatically at 0.1 nm.
+- **Warnings:** over-80-km amplification review, amplifier operating limits, optional GSNR/ASE planning thresholds and reserves, incompatible equipment, WSS passbands, marine screening and Zones. Review and Fail entries are red in the browser and Excel.
+- **Workspace:** editable route names, locally numbered DWDM Route starters, Save/Load project JSON, Back, Undo/Redo, resizable settings and map, and optional recalculation after edits. Changed inputs flag old results.
+- **Downloads:** completed-run Excel, run evidence and Estimator quantities. Excel includes channels, spans, vertices, checks, source status and equipment. Saved projects retain the physical network and editable settings.
+
+Select **Load 80 km reference** and **Run simulation** for the bundled case. Select its span and enter **85.25 km** for an override. Both cases are verified against independent CLI channel tables.
+
+Panels default to **0.50 dB per mated pair** and **0.10 dB per pigtail splice**; field splices start at 0.10 dB. These are editable planning allowances, not measured loss or guaranteed Corning specifications. Panel losses replace corresponding fiber-end allowances to prevent double counting. External passive loss is itemized separately from internal ROADM behavior and amplifier gain/noise.
+
+The 80-km rule requests placement review; it is not a universal reach limit. Adding an amplifier clears that placement warning, while optical checks still apply. GNPy includes amplifier ASE. FEC remains **Not evaluated** without a validated modem threshold. A generic optical result does not establish a vendor-mode pass.
+
+## Vendor data and Estimator
+
+`equipment_catalog.json` includes public source links for Ciena, Nokia and Corning. Client handoff capabilities differ from line-side modes. Selecting 100/400/800 Gb/s runs compatibility checks; it does **not** turn the generic 32-GBd spectrum into a vendor waveform. Missing licensed modes, thresholds and filter narrowing curves remain unevaluated. WSS band limits flag unsupported channels; they do not replace a measured transfer function.
+
+Routes maintains quantities. **Hyperion Estimator owns pricing, quotes and cost totals**; construction pricing is excluded. Save after a successful current-revision run to include modeled selected-service amplifiers. A pre-simulation save identifies amplifier inventory as pending. Other directions/services need their own optical design.
+
+The supplied Node.js import adapter reads saved project files:
 
 ```powershell
-.\.venv\Scripts\python.exe hyperion.py --port 8766
+node estimator_adapter.js hyperion-route.json > equipment-import.json
 ```
 
-Then open **http://127.0.0.1:8766/**. If PowerShell returns to the `PS ...>` prompt, the foreground server has stopped. Check the terminal output and rerun the full launch command.
+Its importer checks revision and source snapshot. Reconciliation retains quotes for unchanged items and reports quantity changes. This is an import interface, not an embedded pricing screen.
 
-## Run and export
+## Zones and marine limitations
 
-1. Select **Use bundled**, then **Run simulation** for the original 80 km reference case. Select **Use map estimate** to return to geographic mode.
-2. Enter **85.25** and select **Apply length**, then **Run simulation**.
-3. Drag A and B, or move a focused endpoint with the arrow keys. The geographic estimate updates. The applied engineering length continues to drive the optical simulation.
-4. Select **Download Excel** for the completed run. An engineered run includes bundled results and differences. Edits after a completed run require another simulation to update the workbook.
-5. Select **Use bundled** and rerun to restore the reference optical case.
+The local Zones endpoint screens the **whole bent route** against polygons. The default is an explicitly labeled v0.6 demonstration snapshot with only three approximate area polygons. Reference points are not boundaries. No-crossing results do not establish permitting clearance or complete geographic coverage.
 
-Edit **Site A name** and **Site B name** to label your design. Select **Use map estimate** to run the current geographic distance. Moving a site updates that distance in map mode. Select **Apply length** to use an engineered length that stays fixed when you drag a site. Site labels and the length source are captured in the workbook when you run.
+Optional environment variable `HYPERION_ZONES_URL` points to a GeoJSON service. The app reports live/cache/stale/fallback status and exports unresolved crossings. No production live feed is configured.
 
-The workbook links are valid for the latest 32 runs in the current server session. Save the workbook locally to keep it. See the [M1 plan](Hyperion_M1_Plan.md) for baseline evidence and acceptance criteria.
+Marine screening uses an approximate coastline check. It requests cable armor/wet-plant review; it does not establish depth or require single/double armor in deep water. See [ITU-T G.978](https://www.itu.int/epublications/publication/itu-t-g-978-2025-05-characteristics-of-optical-fibre-submarine-cables) and [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/). Map tiles require internet. Local optical calculations need no paid service.
 
-## Verify the reference cases
+## Verification
 
-With the app running, install Playwright in a separate test environment or make its module available via `PLAYWRIGHT_MODULE`. Install its Chromium browser, or set `HYPERION_BROWSER` to an installed Edge or Chromium executable. Run `node verify_browser.cjs` from this folder. The test compares all rendered channel rows with the two saved GNPy CLI runs, then exercises dragging, validation, reset and workbook downloads.
+The **known engineering check** traces each edit into the geometry, actual engine inputs, propagation, compatibility, quantities and exports it affects. Completed-run downloads remain attached to that run after edits. The local server retains the latest 32 runs; download files to preserve them across restarts.
+
+```powershell
+.\.venv\Scripts\python.exe verify_gnpy_reference.py
+.\.venv\Scripts\python.exe verify_m5_model.py
+.\.venv\Scripts\python.exe verify_m5_equipment.py
+.\.venv\Scripts\python.exe verify_m5_zones.py
+.\.venv\Scripts\python.exe verify_m5_integration.py
+```
+
+Browser acceptance uses `verify_m05_browser.cjs`, Playwright via `PLAYWRIGHT_MODULE`, an installed browser via `HYPERION_BROWSER`, and the running app via `HYPERION_URL`. The earlier `verify_browser.cjs` targets the archived M1 interface.
+
+See the [M05 milestone record](Hyperion_M05_Milestone_Record.md), [original baseline](evidence/gnpy-3.0.1), and [M05 evidence](evidence/m05). Full vendor modes, rate-specific/flex-grid allocation, OEO regeneration and the 20-node target are tracked in the [M06 plan](Hyperion_M06_Plan.md).

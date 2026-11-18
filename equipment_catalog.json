@@ -6,7 +6,16 @@
       "label": "Generic · GNPy reference",
       "status": "simulation_reference",
       "gnpy_equipment": "eqpt_config.json",
-      "description": "Bundled GNPy 3.0.1 reference equipment and spectrum."
+      "description": "Generic planning reference. Selected client rate is a compatibility assumption. Optical propagation retains the configured generic spectrum.",
+      "vendor": "Generic",
+      "client_rates_gbps": [
+        100,
+        400,
+        800
+      ],
+      "required_slots": 1,
+      "line_interface_type": "generic",
+      "line_interface_label": "Generic coherent line interface"
     },
     {
       "id": "ciena-6500-s14-wl6e-motr",
@@ -17,8 +26,14 @@
       "card": "WaveLogic 6 Extreme 1.6T MOTR",
       "published_max_payload_gbps_per_carrier": 1600,
       "published_electro_optics_gbaud": 200,
-      "published_symbol_rate_range_gbaud": [95, 200],
-      "published_tuning_range_thz": [191.25, 196.125],
+      "published_symbol_rate_range_gbaud": [
+        95,
+        200
+      ],
+      "published_tuning_range_thz": [
+        191.25,
+        196.125
+      ],
       "published_fixed_grid_ghz": 200,
       "published_flex_grid_support": true,
       "published_rx_sensitivity_dbm": {
@@ -30,7 +45,18 @@
         "https://www.ciena.com/__data/assets/pdf_file/0021/157323/wavelogic_6_extreme_1-6t_motr_module_ds.pdf",
         "https://www.ciena.com/insights/data-sheets/6500-S14-packet-optical-platform",
         "https://www.ciena.com/insights/data-sheets/1-6t-wavelogic-6-extreme-motr"
-      ]
+      ],
+      "client_rates_gbps": [
+        100,
+        400,
+        800
+      ],
+      "required_slots": 2,
+      "compatible_chassis": [
+        "ciena-6500-s14"
+      ],
+      "line_interface_type": "integrated",
+      "line_interface_label": "Integrated WaveLogic 6 Extreme line interface"
     },
     {
       "id": "nokia-1830-pss-hc-4cp4t8",
@@ -42,14 +68,190 @@
       "coherent_engine": "PSE-6s",
       "published_max_line_rate_gbps_per_carrier": 1200,
       "published_line_interface_gbaud": 140,
-      "published_supported_bands": ["C", "L"],
+      "published_supported_bands": [
+        "C",
+        "L"
+      ],
       "published_typical_channel_spacing_ghz": 150,
-      "published_modulation_families": ["PCS-64QAM", "PCS-16QAM", "QPSK"],
+      "published_modulation_families": [
+        "PCS-64QAM",
+        "PCS-16QAM",
+        "QPSK"
+      ],
       "sources": [
         "https://www.nokia.com/optical-networks/pse-6s/",
         "https://www.nokia.com/optical-networks/1830-photonic-service-switch/",
         "https://www.nokia.com/asset/i/215113/"
-      ]
+      ],
+      "client_rates_gbps": [
+        100,
+        400,
+        800
+      ],
+      "required_slots": 1,
+      "compatible_chassis": [
+        "nokia-1830-pss-4hc",
+        "nokia-1830-pss-10hc"
+      ],
+      "line_interface_type": "pluggable",
+      "line_interface_label": "PSE-6s BMDC012 coherent pluggable"
+    },
+    {
+      "id": "ciena-2x100g-motr",
+      "label": "Ciena 6500 · 2 × 100G MOTR",
+      "vendor": "Ciena",
+      "status": "catalog_reference",
+      "platform": "6500 D/S-Series",
+      "card": "2 × 100G MOTR",
+      "client_rates_gbps": [
+        10,
+        40,
+        100
+      ],
+      "required_slots": 1,
+      "compatible_chassis": [
+        "ciena-6500-s14"
+      ],
+      "sources": [
+        "https://www.ciena.com/insights/data-sheets/2-x-100g-motr-module",
+        "https://www.ciena.com/__data/assets/pdf_file/0030/154686/2x100G_MOTR_module_DS.pdf"
+      ],
+      "simulation_status": "No validated GNPy optical mode",
+      "line_interface_type": "pluggable",
+      "line_interface_label": "WL5n 100G/200G QSFP-DD coherent pluggable"
+    },
+    {
+      "id": "nokia-1830-pss-42p800",
+      "label": "Nokia 1830 PSS-HC · 42P800 aggregation",
+      "vendor": "Nokia",
+      "status": "catalog_reference",
+      "card": "42P800",
+      "client_rates_gbps": [
+        10,
+        25
+      ],
+      "required_slots": 1,
+      "compatible_chassis": [
+        "nokia-1830-pss-4hc",
+        "nokia-1830-pss-10hc"
+      ],
+      "sources": [
+        "https://www.nokia.com/asset/i/215113/"
+      ],
+      "simulation_status": "Aggregation card; coherent line mode supplied by separate line card",
+      "line_interface_type": "separate_line_card",
+      "line_interface_label": "Requires a separate compatible coherent line card"
     }
-  ]
+  ],
+  "components": [
+    {
+      "id": "corning-centrix-ctx-s1u",
+      "label": "Corning Centrix CTX-S1U housing",
+      "kind": "patch-panel",
+      "vendor": "Corning",
+      "rack_units": 1,
+      "max_cassettes": 3,
+      "max_lc_simplex_ports": 108,
+      "price": null,
+      "sources": [
+        "https://www.corning.com/catalog/coc/documents/product-family-specifications/0230_NAFTA_AEN.pdf"
+      ]
+    },
+    {
+      "id": "corning-centrix-lc36",
+      "label": "Corning Centrix 36-LC pigtailed cassette family",
+      "kind": "cassette",
+      "vendor": "Corning",
+      "simplex_ports": 36,
+      "price": null,
+      "sources": [
+        "https://www.corning.com/catalog/coc/documents/product-family-specifications/0230_NAFTA_AEN.pdf"
+      ]
+    },
+    {
+      "id": "ciena-6500-s14",
+      "label": "Ciena 6500-S14 chassis",
+      "kind": "chassis",
+      "vendor": "Ciena",
+      "service_slots": 14,
+      "price": null,
+      "sources": [
+        "https://www.ciena.com/insights/data-sheets/6500-S14-packet-optical-platform"
+      ]
+    },
+    {
+      "id": "nokia-1830-pss-4hc",
+      "label": "Nokia 1830 PSS-4hc chassis",
+      "kind": "chassis",
+      "vendor": "Nokia",
+      "service_slots": 4,
+      "rack_units": 6,
+      "price": null,
+      "sources": [
+        "https://www.nokia.com/asset/i/215113/"
+      ]
+    },
+    {
+      "id": "nokia-1830-pss-10hc",
+      "label": "Nokia 1830 PSS-10hc chassis",
+      "kind": "chassis",
+      "vendor": "Nokia",
+      "service_slots": 10,
+      "rack_units": 15,
+      "price": null,
+      "sources": [
+        "https://www.nokia.com/asset/i/215113/"
+      ]
+    },
+    {
+      "id": "ciena-rls-rla32",
+      "label": "Ciena RLS RLA 32 × 1 C-band",
+      "kind": "roadm",
+      "vendor": "Ciena",
+      "switching_directions_max": 32,
+      "bands": [
+        "C"
+      ],
+      "flexgrid": true,
+      "price": null,
+      "sources": [
+        "https://www.ciena.com/insights/data-sheets/rls"
+      ],
+      "engineering_status": "WSS transfer function and per-mode loss require validated input"
+    },
+    {
+      "id": "nokia-iroadm32",
+      "label": "Nokia iROADM32",
+      "kind": "roadm",
+      "vendor": "Nokia",
+      "switching_directions_max": 32,
+      "bands": [
+        "C",
+        "L"
+      ],
+      "flexgrid": true,
+      "price": null,
+      "sources": [
+        "https://www.nokia.com/optical-networks/1830-pss-psi-l-optical-line-systems/"
+      ],
+      "engineering_status": "WSS transfer function and per-mode loss require validated input"
+    },
+    {
+      "id": "generic-client-optic",
+      "label": "Generic client optic",
+      "kind": "optic",
+      "vendor": "Generic",
+      "price": null,
+      "engineering_status": "Select rate and form factor from the endpoint card; price belongs in Estimator"
+    },
+    {
+      "id": "generic-coherent-line-interface",
+      "label": "Generic coherent line interface",
+      "kind": "line-interface",
+      "vendor": "Generic",
+      "price": null,
+      "engineering_status": "Engineering operating mode must be specified separately"
+    }
+  ],
+  "source_review_date": "2026-11-17"
 }

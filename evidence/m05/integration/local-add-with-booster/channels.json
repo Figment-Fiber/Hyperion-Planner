@@ -1,0 +1,610 @@
+[
+  {
+    "channel": 1,
+    "frequency_thz": 191.35,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.85,
+    "snr_nli_db": 77.69,
+    "gsnr_db": 22.85
+  },
+  {
+    "channel": 2,
+    "frequency_thz": 191.4,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.85,
+    "snr_nli_db": 77.13,
+    "gsnr_db": 22.85
+  },
+  {
+    "channel": 3,
+    "frequency_thz": 191.45,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.85,
+    "snr_nli_db": 76.88,
+    "gsnr_db": 22.85
+  },
+  {
+    "channel": 4,
+    "frequency_thz": 191.5,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.84,
+    "snr_nli_db": 76.72,
+    "gsnr_db": 22.84
+  },
+  {
+    "channel": 5,
+    "frequency_thz": 191.55,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.84,
+    "snr_nli_db": 76.61,
+    "gsnr_db": 22.84
+  },
+  {
+    "channel": 6,
+    "frequency_thz": 191.6,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.84,
+    "snr_nli_db": 76.52,
+    "gsnr_db": 22.84
+  },
+  {
+    "channel": 7,
+    "frequency_thz": 191.65,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.84,
+    "snr_nli_db": 76.44,
+    "gsnr_db": 22.84
+  },
+  {
+    "channel": 8,
+    "frequency_thz": 191.7,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.84,
+    "snr_nli_db": 76.38,
+    "gsnr_db": 22.84
+  },
+  {
+    "channel": 9,
+    "frequency_thz": 191.75,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.84,
+    "snr_nli_db": 76.33,
+    "gsnr_db": 22.84
+  },
+  {
+    "channel": 10,
+    "frequency_thz": 191.8,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.84,
+    "snr_nli_db": 76.28,
+    "gsnr_db": 22.84
+  },
+  {
+    "channel": 11,
+    "frequency_thz": 191.85,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.84,
+    "snr_nli_db": 76.24,
+    "gsnr_db": 22.84
+  },
+  {
+    "channel": 12,
+    "frequency_thz": 191.9,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.84,
+    "snr_nli_db": 76.2,
+    "gsnr_db": 22.84
+  },
+  {
+    "channel": 13,
+    "frequency_thz": 191.95,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.83,
+    "snr_nli_db": 76.17,
+    "gsnr_db": 22.83
+  },
+  {
+    "channel": 14,
+    "frequency_thz": 192.0,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.83,
+    "snr_nli_db": 76.13,
+    "gsnr_db": 22.83
+  },
+  {
+    "channel": 15,
+    "frequency_thz": 192.05,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.83,
+    "snr_nli_db": 76.11,
+    "gsnr_db": 22.83
+  },
+  {
+    "channel": 16,
+    "frequency_thz": 192.1,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.83,
+    "snr_nli_db": 76.08,
+    "gsnr_db": 22.83
+  },
+  {
+    "channel": 17,
+    "frequency_thz": 192.15,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.83,
+    "snr_nli_db": 76.05,
+    "gsnr_db": 22.83
+  },
+  {
+    "channel": 18,
+    "frequency_thz": 192.2,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.83,
+    "snr_nli_db": 76.03,
+    "gsnr_db": 22.83
+  },
+  {
+    "channel": 19,
+    "frequency_thz": 192.25,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.83,
+    "snr_nli_db": 76.01,
+    "gsnr_db": 22.83
+  },
+  {
+    "channel": 20,
+    "frequency_thz": 192.3,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.83,
+    "snr_nli_db": 75.99,
+    "gsnr_db": 22.83
+  },
+  {
+    "channel": 21,
+    "frequency_thz": 192.35,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.83,
+    "snr_nli_db": 75.97,
+    "gsnr_db": 22.83
+  },
+  {
+    "channel": 22,
+    "frequency_thz": 192.4,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.82,
+    "snr_nli_db": 75.95,
+    "gsnr_db": 22.82
+  },
+  {
+    "channel": 23,
+    "frequency_thz": 192.45,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.82,
+    "snr_nli_db": 75.94,
+    "gsnr_db": 22.82
+  },
+  {
+    "channel": 24,
+    "frequency_thz": 192.5,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.82,
+    "snr_nli_db": 75.92,
+    "gsnr_db": 22.82
+  },
+  {
+    "channel": 25,
+    "frequency_thz": 192.55,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.82,
+    "snr_nli_db": 75.91,
+    "gsnr_db": 22.82
+  },
+  {
+    "channel": 26,
+    "frequency_thz": 192.6,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.82,
+    "snr_nli_db": 75.89,
+    "gsnr_db": 22.82
+  },
+  {
+    "channel": 27,
+    "frequency_thz": 192.65,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.82,
+    "snr_nli_db": 75.88,
+    "gsnr_db": 22.82
+  },
+  {
+    "channel": 28,
+    "frequency_thz": 192.7,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.82,
+    "snr_nli_db": 75.87,
+    "gsnr_db": 22.82
+  },
+  {
+    "channel": 29,
+    "frequency_thz": 192.75,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.82,
+    "snr_nli_db": 75.86,
+    "gsnr_db": 22.82
+  },
+  {
+    "channel": 30,
+    "frequency_thz": 192.8,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.82,
+    "snr_nli_db": 75.85,
+    "gsnr_db": 22.82
+  },
+  {
+    "channel": 31,
+    "frequency_thz": 192.85,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.82,
+    "snr_nli_db": 75.84,
+    "gsnr_db": 22.82
+  },
+  {
+    "channel": 32,
+    "frequency_thz": 192.9,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.81,
+    "snr_nli_db": 75.83,
+    "gsnr_db": 22.81
+  },
+  {
+    "channel": 33,
+    "frequency_thz": 192.95,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.81,
+    "snr_nli_db": 75.82,
+    "gsnr_db": 22.81
+  },
+  {
+    "channel": 34,
+    "frequency_thz": 193.0,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.81,
+    "snr_nli_db": 75.81,
+    "gsnr_db": 22.81
+  },
+  {
+    "channel": 35,
+    "frequency_thz": 193.05,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.81,
+    "snr_nli_db": 75.8,
+    "gsnr_db": 22.81
+  },
+  {
+    "channel": 36,
+    "frequency_thz": 193.1,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.81,
+    "snr_nli_db": 75.79,
+    "gsnr_db": 22.81
+  },
+  {
+    "channel": 37,
+    "frequency_thz": 193.15,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.81,
+    "snr_nli_db": 75.79,
+    "gsnr_db": 22.81
+  },
+  {
+    "channel": 38,
+    "frequency_thz": 193.2,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.81,
+    "snr_nli_db": 75.78,
+    "gsnr_db": 22.81
+  },
+  {
+    "channel": 39,
+    "frequency_thz": 193.25,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.81,
+    "snr_nli_db": 75.77,
+    "gsnr_db": 22.81
+  },
+  {
+    "channel": 40,
+    "frequency_thz": 193.3,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.81,
+    "snr_nli_db": 75.77,
+    "gsnr_db": 22.81
+  },
+  {
+    "channel": 41,
+    "frequency_thz": 193.35,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.8,
+    "snr_nli_db": 75.77,
+    "gsnr_db": 22.8
+  },
+  {
+    "channel": 42,
+    "frequency_thz": 193.4,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.8,
+    "snr_nli_db": 75.76,
+    "gsnr_db": 22.8
+  },
+  {
+    "channel": 43,
+    "frequency_thz": 193.45,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.8,
+    "snr_nli_db": 75.76,
+    "gsnr_db": 22.8
+  },
+  {
+    "channel": 44,
+    "frequency_thz": 193.5,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.8,
+    "snr_nli_db": 75.76,
+    "gsnr_db": 22.8
+  },
+  {
+    "channel": 45,
+    "frequency_thz": 193.55,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.8,
+    "snr_nli_db": 75.75,
+    "gsnr_db": 22.8
+  },
+  {
+    "channel": 46,
+    "frequency_thz": 193.6,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.8,
+    "snr_nli_db": 75.75,
+    "gsnr_db": 22.8
+  },
+  {
+    "channel": 47,
+    "frequency_thz": 193.65,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.8,
+    "snr_nli_db": 75.75,
+    "gsnr_db": 22.8
+  },
+  {
+    "channel": 48,
+    "frequency_thz": 193.7,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.8,
+    "snr_nli_db": 75.75,
+    "gsnr_db": 22.8
+  },
+  {
+    "channel": 49,
+    "frequency_thz": 193.75,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.8,
+    "snr_nli_db": 75.75,
+    "gsnr_db": 22.8
+  },
+  {
+    "channel": 50,
+    "frequency_thz": 193.8,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.79,
+    "snr_nli_db": 75.75,
+    "gsnr_db": 22.79
+  },
+  {
+    "channel": 51,
+    "frequency_thz": 193.85,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.79,
+    "snr_nli_db": 75.75,
+    "gsnr_db": 22.79
+  },
+  {
+    "channel": 52,
+    "frequency_thz": 193.9,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.79,
+    "snr_nli_db": 75.76,
+    "gsnr_db": 22.79
+  },
+  {
+    "channel": 53,
+    "frequency_thz": 193.95,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.79,
+    "snr_nli_db": 75.76,
+    "gsnr_db": 22.79
+  },
+  {
+    "channel": 54,
+    "frequency_thz": 194.0,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.79,
+    "snr_nli_db": 75.76,
+    "gsnr_db": 22.79
+  },
+  {
+    "channel": 55,
+    "frequency_thz": 194.05,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.79,
+    "snr_nli_db": 75.77,
+    "gsnr_db": 22.79
+  },
+  {
+    "channel": 56,
+    "frequency_thz": 194.1,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.79,
+    "snr_nli_db": 75.78,
+    "gsnr_db": 22.79
+  },
+  {
+    "channel": 57,
+    "frequency_thz": 194.15,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.79,
+    "snr_nli_db": 75.78,
+    "gsnr_db": 22.79
+  },
+  {
+    "channel": 58,
+    "frequency_thz": 194.2,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.79,
+    "snr_nli_db": 75.79,
+    "gsnr_db": 22.79
+  },
+  {
+    "channel": 59,
+    "frequency_thz": 194.25,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.79,
+    "snr_nli_db": 75.8,
+    "gsnr_db": 22.79
+  },
+  {
+    "channel": 60,
+    "frequency_thz": 194.3,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.78,
+    "snr_nli_db": 75.81,
+    "gsnr_db": 22.78
+  },
+  {
+    "channel": 61,
+    "frequency_thz": 194.35,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.78,
+    "snr_nli_db": 75.83,
+    "gsnr_db": 22.78
+  },
+  {
+    "channel": 62,
+    "frequency_thz": 194.4,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.78,
+    "snr_nli_db": 75.84,
+    "gsnr_db": 22.78
+  },
+  {
+    "channel": 63,
+    "frequency_thz": 194.45,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.78,
+    "snr_nli_db": 75.86,
+    "gsnr_db": 22.78
+  },
+  {
+    "channel": 64,
+    "frequency_thz": 194.5,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.78,
+    "snr_nli_db": 75.88,
+    "gsnr_db": 22.78
+  },
+  {
+    "channel": 65,
+    "frequency_thz": 194.55,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.78,
+    "snr_nli_db": 75.9,
+    "gsnr_db": 22.78
+  },
+  {
+    "channel": 66,
+    "frequency_thz": 194.6,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.78,
+    "snr_nli_db": 75.93,
+    "gsnr_db": 22.78
+  },
+  {
+    "channel": 67,
+    "frequency_thz": 194.65,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.78,
+    "snr_nli_db": 75.96,
+    "gsnr_db": 22.78
+  },
+  {
+    "channel": 68,
+    "frequency_thz": 194.7,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.78,
+    "snr_nli_db": 75.99,
+    "gsnr_db": 22.78
+  },
+  {
+    "channel": 69,
+    "frequency_thz": 194.75,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.77,
+    "snr_nli_db": 76.04,
+    "gsnr_db": 22.77
+  },
+  {
+    "channel": 70,
+    "frequency_thz": 194.8,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.77,
+    "snr_nli_db": 76.09,
+    "gsnr_db": 22.77
+  },
+  {
+    "channel": 71,
+    "frequency_thz": 194.85,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.77,
+    "snr_nli_db": 76.15,
+    "gsnr_db": 22.77
+  },
+  {
+    "channel": 72,
+    "frequency_thz": 194.9,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.77,
+    "snr_nli_db": 76.23,
+    "gsnr_db": 22.77
+  },
+  {
+    "channel": 73,
+    "frequency_thz": 194.95,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.77,
+    "snr_nli_db": 76.33,
+    "gsnr_db": 22.77
+  },
+  {
+    "channel": 74,
+    "frequency_thz": 195.0,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.77,
+    "snr_nli_db": 76.48,
+    "gsnr_db": 22.77
+  },
+  {
+    "channel": 75,
+    "frequency_thz": 195.05,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.77,
+    "snr_nli_db": 76.72,
+    "gsnr_db": 22.77
+  },
+  {
+    "channel": 76,
+    "frequency_thz": 195.1,
+    "power_dbm": -5.0,
+    "osnr_ase_db": 22.77,
+    "snr_nli_db": 77.27,
+    "gsnr_db": 22.77
+  }
+]

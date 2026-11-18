@@ -1,0 +1,67 @@
+{
+  "route_name": "M05 branched Oahu verification",
+  "site_ids": [
+    "a",
+    "b",
+    "c",
+    "d"
+  ],
+  "lengths": [
+    25,
+    30,
+    35
+  ],
+  "fibers": [
+    {
+      "type_variety": "SSMF",
+      "loss_coef": 0.2
+    },
+    {
+      "type_variety": "SSMF",
+      "loss_coef": 0.2
+    },
+    {
+      "type_variety": "SSMF",
+      "loss_coef": 0.2
+    }
+  ],
+  "connections": [
+    {
+      "con_in_db": 0.5,
+      "con_out_db": 0.5
+    },
+    {
+      "con_in_db": 0.5,
+      "con_out_db": 0.5
+    },
+    {
+      "con_in_db": 0.5,
+      "con_out_db": 0.5
+    }
+  ],
+  "splices": [
+    [
+      0.1
+    ],
+    [
+      0.1,
+      0.1
+    ],
+    []
+  ],
+  "inline_gains": [
+    null,
+    null,
+    null
+  ],
+  "roadms": [
+    {
+      "target_pch_out_db": -20,
+      "path_loss_db": 2
+    },
+    {
+      "target_pch_out_db": -20,
+      "path_loss_db": 3
+    }
+  ]
+}

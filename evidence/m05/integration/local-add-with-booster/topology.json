@@ -1,0 +1,91 @@
+{
+  "network_name": "Hyperion selected service",
+  "elements": [
+    {
+      "uid": "Site_A",
+      "type": "Transceiver"
+    },
+    {
+      "uid": "Local_Panel_A",
+      "type": "Fused",
+      "params": {
+        "loss": 0.9
+      }
+    },
+    {
+      "uid": "Roadm_C",
+      "type": "Roadm",
+      "type_variety": "hyperion_roadm_0"
+    },
+    {
+      "uid": "Span1",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 7.819612,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.9,
+        "con_out": 0.6
+      },
+      "metadata": {
+        "location": {
+          "region": "",
+          "latitude": 1,
+          "longitude": 0
+        }
+      }
+    },
+    {
+      "uid": "Edfa1",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 15,
+        "tilt_target": 0,
+        "out_voa": 0
+      }
+    },
+    {
+      "uid": "Site_B",
+      "type": "Transceiver"
+    },
+    {
+      "uid": "User_Booster_A",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 10,
+        "tilt_target": 0,
+        "out_voa": 0
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "Site_A",
+      "to_node": "Local_Panel_A"
+    },
+    {
+      "from_node": "Local_Panel_A",
+      "to_node": "Roadm_C"
+    },
+    {
+      "from_node": "Roadm_C",
+      "to_node": "User_Booster_A"
+    },
+    {
+      "from_node": "User_Booster_A",
+      "to_node": "Span1"
+    },
+    {
+      "from_node": "Span1",
+      "to_node": "Edfa1"
+    },
+    {
+      "from_node": "Edfa1",
+      "to_node": "Site_B"
+    }
+  ]
+}

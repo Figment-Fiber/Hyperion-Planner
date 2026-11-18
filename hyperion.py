@@ -7,6 +7,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from io import BytesIO
 import json
 import math
+import copy
+import re
 from pathlib import Path
 from threading import Lock
 from uuid import uuid4
@@ -15,6 +17,7 @@ import xlsxwriter
 from geographiclib.geodesic import Geodesic
 
 from gnpy_reference import run_reference
+from route_geometry import resolve_network, segmented_route
 
 
 ROOT = Path(__file__).resolve().parent
@@ -101,6 +104,8 @@ def marine_screening(points):
 
 
 def simulation(payload):
+    if "network" in payload:
+        return network_simulation(payload)
     if "coordinates" in payload:
         return geographic_simulation(payload)
     override = payload.get("length_override_km")
@@ -130,6 +135,157 @@ def simulation(payload):
         "length_source": "Schematic map estimate" if use_map else result["length_source"],
         "baseline": bundled_run() if override is not None else None,
     }
+
+
+def prepare_network(payload):
+    """Validate a saved project and derive the active service inputs."""
+    from engineering_model import panel_connections
+    resolved = resolve_network(payload)
+    geometry = segmented_route(resolved["coordinates"], resolved["span_bends"], marine_screening)
+    projected = copy.deepcopy(payload)
+    projected.update(coordinates=resolved["coordinates"], site_names=resolved["site_names"],
+                     site_ids=[node["id"] for node in resolved["nodes"]])
+    equipment = projected.setdefault("equipment", {})
+    original_nodes = equipment.get("nodes", {})
+    equipment["nodes"] = [
+        {**copy.deepcopy(original_nodes.get(node["id"], {})),
+         "id": node["id"], "degrees": resolved["degrees"][node["id"]],
+         "local_add_drop": index in (0, len(resolved["nodes"]) - 1)}
+        for index, node in enumerate(resolved["nodes"])
+    ]
+    connections = panel_connections(projected)
+    lengths, splices, gains, fibers = [], [], [], []
+    for index, link in enumerate(resolved["links"]):
+        length = link.get("override") or geometry["km"][index]
+        if payload.get("reference_case") and len(resolved["links"]) == 1 and link.get("override") is None:
+            length = 80
+        losses = link.get("splices", [])
+        if (not isinstance(losses, list) or len(losses) > 100 or
+                any(type(loss) not in (int, float) or not 0 <= loss <= 10 for loss in losses)):
+            raise ValueError("Splice losses must be 0–10 dB, with up to 100 entries per span.")
+        gain = link.get("inline_gain")
+        if gain is not None and (type(gain) not in (int, float) or not 8 <= gain <= 35):
+            raise ValueError("Inline gain must be 8–35 dB.")
+        lengths.append(length)
+        splices.append(losses)
+        gains.append(gain)
+        fibers.append(link.get("fiber", {"type_variety": "SSMF", "loss_coef": 0.2}))
+        for field, target in (("connector_in_db", "con_in_db"), ("connector_out_db", "con_out_db")):
+            value = link.get(field)
+            if value is not None:
+                if type(value) not in (int, float) or not 0 <= value <= 10:
+                    raise ValueError("Span end loss must be between 0 and 10 dB.")
+                connections[index][target] = value
+    roadms = [
+        equipment["nodes"][index].get("roadm", {})
+        for index in range(1, len(resolved["nodes"]) - 1)
+    ]
+    design = {"lengths": lengths, "connections": connections, "splices": splices, "inline_gains": gains,
+              "fibers": fibers, "roadms": roadms, "site_ids": projected["site_ids"],
+              "degree_counts": [resolved["degrees"][node["id"]] for node in resolved["nodes"]],
+              "site_configs": [node.get("roadm", {}) for node in equipment["nodes"]],
+              "terminal_panel_losses": [connections[0]["con_in_db"], connections[-1]["con_out_db"]],
+              "route_name": "Hyperion selected service",
+              "booster_gain_db": payload.get("booster_gain_db"), "preamp_gain_db": payload.get("preamp_gain_db")}
+    return resolved, geometry, projected, design
+
+
+def network_preview(payload):
+    from engineering_model import equipment_options, summarize_network
+    from zones_screening import screen_routes
+    resolved, geometry, projected, design = prepare_network(payload)
+    summary = summarize_network(payload)
+    return {"geometry": geometry, "route": resolved, "options": equipment_options(projected),
+            "zones": screen_routes(geometry["paths"]), "design": design, "equipment_summary": summary}
+
+
+@lru_cache(maxsize=16)
+def propagate_design(design_json, transmitter_power):
+    design = json.loads(design_json)
+    return run_reference(booster_gain_db=design.get("booster_gain_db"),
+                         tx_power_dbm=transmitter_power,
+                         preamp_gain_db=design.get("preamp_gain_db"), design=design)
+
+
+def network_simulation(payload):
+    from engineering_model import evaluate_design, summarize_network
+    from zones_screening import screen_routes
+    resolved, geometry, projected, design = prepare_network(payload)
+    result = copy.deepcopy(propagate_design(json.dumps(design, sort_keys=True, allow_nan=False),
+                                           payload.get("tx_power_dbm")))
+    spans = []
+    for index, link in enumerate(resolved["links"]):
+        fiber = design["fibers"][index]
+        connections = design["connections"][index]
+        connector_loss = connections["con_in_db"] + connections["con_out_db"]
+        splice_loss = math.fsum(design["splices"][index])
+        spans.append({
+            "id": link["id"], "from": resolved["site_names"][index], "to": resolved["site_names"][index + 1],
+            "geodesic_km": geometry["km"][index], "simulation_km": design["lengths"][index],
+            "source": "Engineered override" if link.get("override") is not None else "Bundled topology" if payload.get("reference_case") else "Segmented WGS84",
+            "splice_losses_db": design["splices"][index], "splice_total_db": splice_loss,
+            "connector_loss_db": connector_loss, "inline_gain_db": design["inline_gains"][index],
+            "amplifier_warning": design["lengths"][index] > 80 and design["inline_gains"][index] is None,
+            "marine_screening": geometry["marine"][index], "route_vertices": geometry["paths"][index],
+            "passive_loss_db": round(design["lengths"][index] * fiber.get("loss_coef", 0.2) + connector_loss + splice_loss, 6),
+        })
+    result.update(
+        route_name=payload.get("route_name", "DWDM Route"), project_id=payload.get("project_id"),
+        revision=payload.get("revision", 1), points=resolved["coordinates"], site_names=resolved["site_names"],
+        map_estimate_km=math.fsum(geometry["km"]), spans=spans, baseline=None,
+        length_source="Per-span configuration", service_id=resolved["service_id"],
+        selected_path=resolved, zones=screen_routes(geometry["paths"]), snapshot=payload,
+    )
+    result["engineering"] = evaluate_design(projected, result)
+    local_losses = [loss if degree > 1 else 0 for loss, degree in
+                    zip(design["terminal_panel_losses"], (design["degree_counts"][0], design["degree_counts"][-1]))]
+    result["passive_budget"] = {
+        "line_spans_db": round(math.fsum(span["passive_loss_db"] for span in spans), 6),
+        "local_add_panel_db": local_losses[0], "local_drop_panel_db": local_losses[1],
+        "total_external_passive_db": round(math.fsum(span["passive_loss_db"] for span in spans) + math.fsum(local_losses), 6),
+        "scope": "External fiber, connectors and splices; ROADM internal loss and amplifier behavior are in the GNPy report.",
+    }
+    result["equipment_summary"] = summarize_network(payload, result)
+    profiles = {item["type_variety"]: item for item in result["equipment_input"]["Edfa"]}
+    for block in re.split(r"(?m)^Edfa ", result["report"])[1:]:
+        uid = block.splitlines()[0]
+        variety = re.search(r"type_variety:\s+(\S+)", block)
+        gain = re.search(r"effective gain\(dB\):\s+(-?[\d.]+)", block)
+        power = re.search(r"Power Out \(dBm\):\s+(-?[\d.]+)", block)
+        if not variety or not gain:
+            continue
+        profile = profiles.get(variety.group(1), {})
+        effective_gain = float(gain.group(1))
+        lower, upper = profile.get("gain_min"), profile.get("gain_flatmax")
+        detail = ""
+        if lower is not None and effective_gain < lower - .01:
+            detail = f"Effective gain {effective_gain} dB is below the profile's {lower} dB minimum. GNPy may add input attenuation."
+        if upper is not None and effective_gain > upper + .01:
+            detail = f"Effective gain {effective_gain} dB exceeds the profile's {upper} dB flat-gain limit."
+        if power and profile.get("p_max") is not None and float(power.group(1)) >= profile["p_max"] - .1:
+            detail += f" Total output is near the {profile['p_max']} dBm profile limit."
+        if detail:
+            result["engineering"]["issues"].append({
+                "node_id": uid, "check": "Amplifier operating range", "status": "Review",
+                "reason": detail, "action": "Inspect effective gain, input attenuation and output power; select a suitable stage and rerun.",
+            })
+    for index, node in enumerate(projected["equipment"]["nodes"]):
+        roadm = node.get("roadm", {})
+        if resolved["degrees"][node["id"]] > 1:
+            low, high = roadm.get("band_min_thz", 191.3), roadm.get("band_max_thz", 196.1)
+            if (type(low) not in (int, float) or type(high) not in (int, float)
+                    or not 180 <= low < high <= 210):
+                raise ValueError("WSS lower band edge must be below its upper edge within 180–210 THz.")
+            half_width = result["spectrum"]["baud_rate"] * (1 + result["spectrum"]["roll_off"]) / 2e12
+            invalid = [row["channel"] for row in result["channels"]
+                       if row["frequency_thz"] - half_width < low or row["frequency_thz"] + half_width > high]
+            if invalid:
+                result["engineering"]["issues"].append({
+                    "node_id": node["id"], "check": "WSS passband", "status": "Fail",
+                    "reason": f"Channels {invalid} exceed the configured {low}–{high} THz passband.",
+                    "action": "Choose a supported passband or reallocate the channels.",
+                })
+    return result
 
 
 def geographic_simulation(payload):
@@ -287,6 +443,9 @@ def workbook(result):
         summary.set_column("B:B", 75)
         summary.write_row(0, 0, ("Input", "Value"), heading)
         details = [
+            ("Project name", result.get("route_name", "Reference run")),
+            ("Project ID", result.get("project_id")),
+            ("Project revision", result.get("revision")),
             ("GNPy version", result["engine_version"]),
             ("Path", " → ".join(result["site_names"])),
             ("Site A name", result["site_names"][0]),
@@ -319,6 +478,8 @@ def workbook(result):
                 ("Baseline length (km)", baseline["span_length_km"]),
                 ("Baseline topology SHA-256", baseline["topology_sha256"]),
             ])
+        details.extend(("External passive budget · " + key.replace("_", " "), value)
+                       for key, value in result.get("passive_budget", {}).items())
         for index, row in enumerate(details, 1):
             summary.write_row(index, 0, row)
         if result.get("booster_gain_db") is not None:
@@ -389,6 +550,41 @@ def workbook(result):
             report.write(0, 1, "Bundled run · GNPy transmission report", heading)
             for index, line in enumerate(baseline["report"].splitlines(), 1):
                 report.write_string(index, 1, line)
+        if "engineering" in result:
+            quantities = book.add_worksheet("Equipment Summary")
+            quantities.set_column("A:C", 28)
+            quantities.set_column("D:D", 55)
+            quantities.set_column("E:G", 20)
+            quantities.write_row(0, 0, ("Stable ID", "Site", "Kind", "Equipment", "Quantity", "Unit", "Price status"), heading)
+            inventory = result["equipment_summary"]["bom"]
+            for index, item in enumerate(inventory, 1):
+                quantities.write_row(index, 0, [item["id"], item.get("site_id"), item["kind"], item["description"],
+                                                item["quantity"], item["unit"], "Estimator pricing pending"])
+            geometry = book.add_worksheet("Route Geometry")
+            geometry.set_column("A:D", 23)
+            geometry.write_row(0, 0, ("Span ID", "Vertex", "Latitude", "Longitude"), heading)
+            row = 1
+            for span in result["spans"]:
+                for vertex, point in enumerate(span["route_vertices"], 1):
+                    geometry.write_row(row, 0, [span["id"], vertex, *point])
+                    row += 1
+            findings = book.add_worksheet("Design Checks")
+            findings.set_column("A:C", 24)
+            findings.set_column("D:E", 90)
+            findings.write_row(0, 0, ("Location", "Check", "Status", "Finding", "Corrective action"), heading)
+            for index, issue in enumerate(result["engineering"]["issues"], 1):
+                findings.write_row(index, 0, [issue.get("node_id"), issue["check"], issue["status"],
+                                                issue.get("reason", ""), issue.get("action", "")],
+                                   alert if issue["status"] in ("Fail", "Review") else None)
+            zones = book.add_worksheet("Zones Screening")
+            zones.set_column("A:C", 25)
+            zones.set_column("D:E", 90)
+            zones.write_row(0, 0, ("Span", "Zone", "Status", "Reason", "Source"), heading)
+            zones.write_row(1, 0, ["", "Source coverage", "Review", result["zones"]["coverage"],
+                                    json.dumps(result["zones"]["source"], ensure_ascii=False)], alert)
+            for index, finding in enumerate(result["zones"]["findings"], 2):
+                zones.write_row(index, 0, [finding["span_index"] + 1, finding["name"], finding["status"],
+                                            finding["reason"], finding["source"]], alert)
     return output.getvalue()
 
 
@@ -407,6 +603,10 @@ class Handler(BaseHTTPRequestHandler):
         self.respond(status, "application/json", json.dumps(value).encode())
 
     def do_GET(self):
+        if self.path == "/api/zones":
+            from zones_screening import get_zones
+            self.json_response(200, get_zones())
+            return
         if self.path in STATIC:
             filename, kind = STATIC[self.path]
             self.respond(200, kind, (ROOT / filename).read_bytes())
@@ -419,10 +619,25 @@ class Handler(BaseHTTPRequestHandler):
                 return
             self.json_response(404, {"error": "This run expired. Run the simulation again to export."})
             return
+        for prefix in ("/api/evidence/", "/api/estimator/"):
+            if self.path.startswith(prefix):
+                with RUNS_LOCK:
+                    result = RUNS.get(self.path.removeprefix(prefix))
+                if result is None:
+                    self.json_response(404, {"error": "Run expired. Rerun the design."})
+                else:
+                    value = result if prefix == "/api/evidence/" else {
+                        "routes": result.get("equipment_summary", result.get("engineering", {})).get("quantity_export"),
+                        "equipment": result.get("equipment_summary", result.get("engineering", {})).get("estimator_equipment"),
+                        "network_equipment": result.get("equipment_summary"),
+                    }
+                    self.respond(200, "application/json", json.dumps(value, ensure_ascii=False).encode(),
+                                 "hyperion-run.json" if prefix == "/api/evidence/" else "hyperion-quantities.json")
+                return
         self.send_error(404)
 
     def do_POST(self):
-        if self.path not in ("/api/run", "/api/distances"):
+        if self.path not in ("/api/run", "/api/distances", "/api/preview"):
             self.send_error(404)
             return
         if self.headers.get_content_type() != "application/json":
@@ -430,11 +645,14 @@ class Handler(BaseHTTPRequestHandler):
             return
         try:
             size = int(self.headers.get("Content-Length", "0"))
-            if not 0 < size <= 4096:
+            if not 0 < size <= 250000:
                 raise ValueError("Invalid simulation request size.")
             payload = json.loads(self.rfile.read(size))
             if not isinstance(payload, dict):
                 raise ValueError("Invalid simulation inputs.")
+            if self.path == "/api/preview":
+                self.json_response(200, network_preview(payload))
+                return
             if self.path == "/api/distances":
                 points = payload["coordinates"]
                 self.json_response(200, {"km": geographic_spans(points), "marine": marine_screening(points)})
@@ -455,7 +673,9 @@ class Handler(BaseHTTPRequestHandler):
                 RUNS[run_id] = result
                 if len(RUNS) > 32:
                     RUNS.popitem(last=False)
-            self.json_response(200, {**result, "workbook_url": f"/api/workbook/{run_id}"})
+            self.json_response(200, {**result, "workbook_url": f"/api/workbook/{run_id}",
+                                     "evidence_url": f"/api/evidence/{run_id}",
+                                     "estimator_url": f"/api/estimator/{run_id}"})
 
 
 def main():

@@ -1,0 +1,151 @@
+{
+  "network_name": "M05 branched Oahu verification",
+  "elements": [
+    {
+      "uid": "Site_A",
+      "type": "Transceiver"
+    },
+    {
+      "uid": "Span1",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 25,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.6
+      },
+      "metadata": {
+        "location": {
+          "region": "",
+          "latitude": 1,
+          "longitude": 0
+        }
+      }
+    },
+    {
+      "uid": "Edfa1",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 15,
+        "tilt_target": 0,
+        "out_voa": 0
+      }
+    },
+    {
+      "uid": "Roadm_b",
+      "type": "Roadm",
+      "type_variety": "hyperion_roadm_1"
+    },
+    {
+      "uid": "Span2",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 30,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.7
+      },
+      "metadata": {
+        "location": {
+          "region": "",
+          "latitude": 1,
+          "longitude": 0
+        }
+      }
+    },
+    {
+      "uid": "Edfa2",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 15,
+        "tilt_target": 0,
+        "out_voa": 0
+      }
+    },
+    {
+      "uid": "Roadm_c",
+      "type": "Roadm",
+      "type_variety": "hyperion_roadm_2"
+    },
+    {
+      "uid": "Span3",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 35,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.5
+      },
+      "metadata": {
+        "location": {
+          "region": "",
+          "latitude": 1,
+          "longitude": 0
+        }
+      }
+    },
+    {
+      "uid": "Edfa3",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 15,
+        "tilt_target": 0,
+        "out_voa": 0
+      }
+    },
+    {
+      "uid": "Site_B",
+      "type": "Transceiver"
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "Site_A",
+      "to_node": "Span1"
+    },
+    {
+      "from_node": "Span1",
+      "to_node": "Edfa1"
+    },
+    {
+      "from_node": "Edfa1",
+      "to_node": "Roadm_b"
+    },
+    {
+      "from_node": "Roadm_b",
+      "to_node": "Span2"
+    },
+    {
+      "from_node": "Span2",
+      "to_node": "Edfa2"
+    },
+    {
+      "from_node": "Edfa2",
+      "to_node": "Roadm_c"
+    },
+    {
+      "from_node": "Roadm_c",
+      "to_node": "Span3"
+    },
+    {
+      "from_node": "Span3",
+      "to_node": "Edfa3"
+    },
+    {
+      "from_node": "Edfa3",
+      "to_node": "Site_B"
+    }
+  ]
+}

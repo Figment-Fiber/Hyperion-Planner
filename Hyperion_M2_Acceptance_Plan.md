@@ -84,3 +84,62 @@ Use the same route to test fixed- and flex-grid allocation with editable generic
 - **Conversion acceptance.** Import a known route with bends and compare coordinates, shape and segment distances against an independent reference. Calibrate a screenshot with known control points and exercise an ambiguous screenshot that requires user input. Edit and approve both routes, then verify the resulting optical spans preserve the approved geometry and engineered overrides and that exports identify each length source.
 
 **Engineering backlog.** Expand generic models to configurable ROADM degrees and WSS filtering, EDFA settings and placement, and OEO regeneration. Report launch power, OSNR/GSNR, mode margin and equipment compatibility alongside spectrum and guard-band checks. Use sourced Ciena and Nokia model data before making vendor-specific claims. Keep recommendations editable and carry cost estimation forward with explicit construction, equipment, labor, permitting and contingency inputs.
+
+## November 16 · Next Hyperion Routes build
+
+**Status: Planned for M05.** Logged at Kevin's request for later implementation after M04.
+
+Follow-on engineering review and 100/400/800 Gb/s fixed/flex-grid comparison requirements are recorded in the [M06 plan](Hyperion_M06_Plan.md).
+
+**Approved cost handoff, November 17.** Routes owns the equipment summary and revision-linked quantities in its saved project. Hyperion Estimator imports that saved project, preserves stable item and site IDs, and owns editable prices, quotes and estimate calculations. Routes may display an Estimator subtotal with pricing date and revision. Changes to a Routes design must identify the changed quantities when Estimator reimports it and preserve previously approved estimate revisions.
+
+### Required M05 interface changes
+
+- Gray out vendor equipment incompatible with the selected requirements and allow clicking it to open the specific reason. Apply the M05 equipment selection acceptance checks below.
+
+- Set the default logo wordmark to **Hyperion**. The product name remains **Hyperion Routes** in the page title and documentation.
+- Make the **Route settings** sidebar horizontally resizable. Provide a visible resize handle and keyboard controls. Keep it scrollable within the workspace so opening equipment and span sections does not push **Simulation results** farther down. On narrow screens where a sidebar cannot fit, use the collapsible Settings control.
+- Acceptance: verify the Hyperion wordmark, widen and narrow the panel, expand several settings sections, and confirm that Simulation results stay accessible. Check desktop and narrow layouts.
+
+### Required M05 engineering changes
+
+- Add Google Earth-style segmented spans with editable bends, geodesic distance along the polyline, preserved engineered length overrides, and saved vertices. Add a continental U.S. map view alongside Hawaiʻi.
+- Add equipment-only cost by site and span. Include vendor cards and optics, compatible pluggables, Corning fiber distribution panels, filters, ROADMs and amplifiers. Label generic pluggable prices as editable estimates, show unknown prices, and exclude construction.
+- Expand sourced Ciena and Nokia catalogs with chassis, cards, transponders, line and client optics, compatible ports, and span termination requirements.
+- Consume the separate Zones API, screen the entire drawn polyline, and show affected spans, reasons and source status. Carry unresolved crossings into the completed simulation results and Excel.
+- Add multi-degree nodes with selected ingress and egress degrees, express/add/drop behavior, and ROADM/WSS filter requirements. Verify modeled path loss, passband and supported impairments against GNPy.
+- Apply the known engineering check to every edit. Trace each component into the GNPy inputs, equipment compatibility, cost, or geographic rules it affects, and verify the resulting browser and Excel outputs.
+
+### Required M05 equipment selection changes — November 17, 2026
+
+### Required M05 node panels and termination accounting
+
+Confirmed November 17. Propose an editable generic Corning panel arrangement at intermediate ROADM/add-drop sites, with line-facing termination capacity for each connected degree and local patch capacity when a local transponder is present. Count physical housings separately from used ports and optical connections. Use a splice enclosure for a splice-through site and an explicit CTE/CTB or documented termination arrangement for submarine terminals.
+
+Show the panel under node settings and in the map node summary, including role, housing or model, capacity, used ports, connector type, mated connector-pair count, splice count and editable insertion losses with sources or assumption labels. Count loss on each traversed connection. Calculate express, add and drop service paths through the actual components they use. Replace existing allowances where the same connection is explicitly itemized to prevent double counting. Include jumpers and passive optics when present and distinguish their losses from the transponder power setting and ROADM internal loss.
+
+Acceptance: inspect the default panel at an intermediate ROADM, change its connector and splice loss, and verify the affected path's actual GNPy inputs, optical readings, warnings, saved project and exported quantities. Verify a shared physical panel does not duplicate housing quantities across degrees. Carry the quantities and project revision into the proposed Estimator handoff.
+
+- Re-evaluate the vendor equipment choices whenever the user changes a service requirement or relevant setting. Check chassis, cards, transponders, optics and their supported combinations against sourced capability records.
+- Gray out known-incompatible choices while keeping their explanation control clickable and keyboard accessible. Clicking or activating the option opens a compact pop-up describing the conflicting requirement and capability. Do not apply the incompatible choice.
+- Example: for a requested single 400GbE client handoff, a card whose highest supported client rate is 100GbE displays: "Does not support a 400GbE client handoff required by your settings. Maximum supported client rate: 100GbE." Distinguish client handoff rate from coherent line rate, aggregate capacity and multi-carrier delivery. Assess a chassis through the cards, slots and combinations it can support.
+- Apply this behavior to documented constraints such as chassis/card compatibility, port type, client and line rates, modem mode, tuning range, grid or slot width, and supported FEC. Derive the explanation from the actual failed check.
+- If capability data are missing, display "Compatibility unverified" with the missing evidence. Keep this distinct from a documented incompatibility.
+- If a changed requirement invalidates an existing selection, retain it visibly flagged and require a supported replacement before claiming design compatibility. Refresh option availability when the requirement is changed back.
+- Acceptance: a known 100GbE-only card is gray under a single 400GbE handoff requirement and its explanation opens without selecting it; a sourced compatible combination remains selectable; an unsupported frequency is explained; missing capability data shows unverified; and changing requirements re-evaluates both the existing selection and available options.
+
+### M05 final equipment and presentation additions · November 17
+
+Status: planned. These additions extend the existing M05 scope.
+
+- **Optics checks after moving sites or bends.** Recalculate geographic route length and re-evaluate affected optics and pluggables after dragging ends. Use the effective engineered length when an override is active and keep the map estimate separately visible. Mark prior findings pending or stale while debounced validation runs. Recheck the selected service, port/card compatibility, power budget, receiver limits, spectrum and supported GNPy signal-quality requirements. In Automatic Design propose supported replacements and explain the differences; preserve Advanced overrides with warnings. ZR or other advertised reach labels are candidate filters and require mode- and path-specific checks. Missing thresholds remain unverified. Acceptance: move a route across a supported reach or loss limit, verify an actionable warning and candidate update, restore the route, and test that an engineered override remains authoritative and exports match the completed run.
+
+- Default applicable terrestrial equipment sites to a Corning Centrix modular housing and compatible cassette arrangement sized to the required termination count. Select a documented regional variant and connector type. Keep capacity, populated cassettes, used ports, splice and connector losses separately editable. Corning's Centrix central-office reference describes 1U, 2U and 4U options with different connector capacities. Source https://www.corning.com/optical-communications/worldwide/en/home/applications/central-office-headend-solutions/solutions/centrix.html
+- Include generic client optics and line pluggables or integrated line interfaces as appropriate to the selected card. Record rate, form factor, connector, wavelength, power limits, reach category and sourced compatibility. Generic cost and engineering assumptions must remain labeled and editable. Include matching endpoints and required patching in saved quantities and the Estimator handoff.
+- Include the ROADM WSS/filter function and its supported degree, band and frequency-slot constraints. Global Ciena/Nokia selection proposes compatible photonic equipment and updates dependent validation and simulation inputs. Preserve local overrides with incompatibility or missing-data flags. Use sourced path loss and filtering penalties where available. A catalog product's supported switching directions does not establish its insertion-loss or spectral-transfer model.
+- Candidate vendor references are Ciena 6500 RLS and Nokia 1830 PSS/PSI-L photonic equipment. Sources https://www.ciena.com/insights/data-sheets/rls and https://www.nokia.com/optical-networks/1830-pss-psi-l-optical-line-systems/
+- Replace the Oʻahu-specific heading with the editable project route name. Default new designs to DWDM Route 1, DWDM Route 2, etc., advancing from locally saved route records and preserving explicit names on load. Document the scope of numbering. Save and export the name.
+- Put Back, Undo and Redo near the route title. Back returns from a focused node/span view to the route overview. Undo and Redo restore actual design history and affected dependencies. Disable unavailable actions.
+- Retain the navy palette and refine typography, spacing, contrast, control hierarchy and table readability. Use a professional engineering workspace layout and verify desktop and narrow-screen usability.
+- Add vertical map resizing with an accessible handle or equivalent control, allowing a roughly square map in a suitably wide viewport. Set practical minimum and maximum dimensions from available viewport space, preserve zoom and positions on resize, and keep the resizable settings panel and simulation results usable.
+- Verify names and numbering, route save/load, panel quantities and losses, optics compatibility, vendor WSS changes, history, map resizing, and all affected GNPy/browser/Excel outputs under the known engineering check.

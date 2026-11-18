@@ -1,0 +1,138 @@
+{
+  "cases": [
+    {
+      "case": "browser-completed-run",
+      "channel_rows": 76,
+      "command": [
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\.hyperion-gnpy\\Scripts\\python.exe",
+        "-c",
+        "from gnpy.tools.cli_examples import transmission_main_example; transmission_main_example()",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\browser-completed-run\\topology.json",
+        "Site_A",
+        "Site_B",
+        "--show-channels",
+        "-e",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\browser-completed-run\\equipment.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "case": "local-add-with-booster",
+      "channel_rows": 76,
+      "command": [
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\.hyperion-gnpy\\Scripts\\python.exe",
+        "-c",
+        "from gnpy.tools.cli_examples import transmission_main_example; transmission_main_example()",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\local-add-with-booster\\topology.json",
+        "Site_A",
+        "Site_B",
+        "--show-channels",
+        "-e",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\local-add-with-booster\\equipment.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "case": "local-drop",
+      "channel_rows": 76,
+      "command": [
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\.hyperion-gnpy\\Scripts\\python.exe",
+        "-c",
+        "from gnpy.tools.cli_examples import transmission_main_example; transmission_main_example()",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\local-drop\\topology.json",
+        "Site_A",
+        "Site_B",
+        "--show-channels",
+        "-e",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\local-drop\\equipment.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "case": "extra-splice",
+      "channel_rows": 76,
+      "command": [
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\.hyperion-gnpy\\Scripts\\python.exe",
+        "-c",
+        "from gnpy.tools.cli_examples import transmission_main_example; transmission_main_example()",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\extra-splice\\topology.json",
+        "Site_A",
+        "Site_B",
+        "--show-channels",
+        "-e",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\extra-splice\\equipment.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "case": "fiber-attenuation",
+      "channel_rows": 76,
+      "command": [
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\.hyperion-gnpy\\Scripts\\python.exe",
+        "-c",
+        "from gnpy.tools.cli_examples import transmission_main_example; transmission_main_example()",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\fiber-attenuation\\topology.json",
+        "Site_A",
+        "Site_B",
+        "--show-channels",
+        "-e",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\fiber-attenuation\\equipment.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "case": "inline-amplifier",
+      "channel_rows": 76,
+      "command": [
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\.hyperion-gnpy\\Scripts\\python.exe",
+        "-c",
+        "from gnpy.tools.cli_examples import transmission_main_example; transmission_main_example()",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\inline-amplifier\\topology.json",
+        "Site_A",
+        "Site_B",
+        "--show-channels",
+        "-e",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\inline-amplifier\\equipment.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "case": "roadm-path-loss",
+      "channel_rows": 76,
+      "command": [
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\.hyperion-gnpy\\Scripts\\python.exe",
+        "-c",
+        "from gnpy.tools.cli_examples import transmission_main_example; transmission_main_example()",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\roadm-path-loss\\topology.json",
+        "Site_A",
+        "Site_B",
+        "--show-channels",
+        "-e",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\roadm-path-loss\\equipment.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "case": "roadm-output-target",
+      "channel_rows": 76,
+      "command": [
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\.hyperion-gnpy\\Scripts\\python.exe",
+        "-c",
+        "from gnpy.tools.cli_examples import transmission_main_example; transmission_main_example()",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\roadm-output-target\\topology.json",
+        "Site_A",
+        "Site_B",
+        "--show-channels",
+        "-e",
+        "C:\\Users\\Kevin\\Desktop\\Titan Command Center\\projects\\Hyperion Planner\\evidence\\m05\\integration\\roadm-output-target\\equipment.json"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "checks": [
+    "source panel/ROADM/booster ordering",
+    "local add/drop passive budget",
+    "splice/attenuation/inline EDFA/ROADM loss and target sensitivity",
+    "workbook generation"
+  ]
+}

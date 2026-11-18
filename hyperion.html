@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hyperion Routes</title>
+  <title>Hyperion Routes · M05</title>
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="/leaflet.css">
   <link rel="stylesheet" href="/app.css">
@@ -12,148 +12,96 @@
 </head>
 <body>
   <header class="mast">
-    <div class="brand"><img src="/logo.png" alt=""><span>Hyperion Routes</span></div>
-    <nav class="actions" aria-label="Route files">
+    <div class="brand"><img src="/favicon.ico" alt=""><span>Hyperion</span></div>
+    <nav class="actions" aria-label="Project files">
       <button id="new-route">New route</button>
-      <button id="load-route">Load route</button>
-      <button id="save-route">Save route</button>
+      <button id="load-route">Load project</button>
+      <button id="save-route">Save project</button>
       <input id="route-file" type="file" accept=".json,application/json" hidden>
     </nav>
   </header>
   <main class="wrap">
     <div class="heading">
-      <div><h1>Oʻahu optical route planner</h1><p>Geographic span planning · GNPy 3.0.1</p></div>
+      <div>
+        <label class="sr-only" for="route-name">Route name</label>
+        <input id="route-name" class="route-name" value="DWDM Route 1" maxlength="100">
+        <p>Geographic design and optical verification</p>
+        <div class="actions history">
+          <button id="back">Back to overview</button>
+          <button id="undo" disabled>↶ Undo</button>
+          <button id="redo" disabled>↷ Redo</button>
+        </div>
+      </div>
       <div class="actions">
-        <button id="sample">Reset example</button>
+        <label class="toggle"><input id="auto-run" type="checkbox" checked> Recalculate after edits</label>
         <button id="run" class="primary">Run simulation</button>
       </div>
     </div>
-    <div class="work">
-      <section class="pane" aria-labelledby="network-title">
-        <div class="panehead"><h2 id="network-title">Network</h2></div>
-        <div class="inside rows">
-          <button type="button" id="add-roadm">Place ROADM C</button>
-          <button type="button" id="remove-roadm" hidden>Remove ROADM C</button>
+    <div class="work" id="workspace">
+      <section class="pane map-pane" aria-labelledby="map-title">
+        <div class="panehead maphead">
+          <h2 id="map-title">Route map</h2>
+          <div class="actions">
+            <select id="map-region" aria-label="Map region"><option value="hawaii">Hawaiʻi</option><option value="usa">Continental U.S.</option></select>
+            <button id="fit-map">Fit network</button>
+          </div>
         </div>
+        <div class="map-tools">
+          <button id="place-site" aria-pressed="false">Place site</button>
+          <button id="draw-span" aria-pressed="false">Connect sites</button>
+          <button id="draw-bend" aria-pressed="false">Draw bends</button>
+          <span id="tool-hint" class="quiet">Drag sites or click a span to edit.</span>
+        </div>
+        <div id="map" class="map geographic" aria-label="Interactive fiber route map"></div>
+        <div id="map-resize" class="resize-horizontal" role="separator" tabindex="0" aria-label="Map height" aria-orientation="horizontal"></div>
+        <div class="status" id="status" role="status">Ready to design.</div>
       </section>
-      <section class="pane" aria-labelledby="map-title">
-        <div class="panehead"><h2 id="map-title">Route map</h2><span class="quiet" id="route-order">A → B</span></div>
-        <div id="map" class="map geographic" aria-label="Interactive Oʻahu route map"></div>
-        <div class="status" id="status" role="status">Drag a site to move it. Scroll or use + and − to zoom.</div>
-      </section>
+      <div id="settings-resize" class="resize-vertical" role="separator" tabindex="0" aria-label="Settings width" aria-orientation="vertical"></div>
       <details id="route-settings" class="pane route-settings" open>
         <summary>Route settings</summary>
         <div class="inside settings-items">
-          <details id="settings-a">
-            <summary>Terminal A · Transmit</summary>
-            <label for="name-a">Site A name</label>
-            <input id="name-a" value="Kapolei" maxlength="60">
-            <p class="quiet">Generic GNPy transceiver. The reference spectrum launches 76 channels at 0 dBm/channel, 32 GBd, with 50 GHz spacing.</p>
-            <label for="booster-gain">Add generic booster · Gain target (dB)</label>
-            <input id="booster-gain" type="number" min="10" max="18" step="any" placeholder="No explicit booster">
-            <label for="tx-power">Generic transmitter output (dBm/channel)</label>
-            <input id="tx-power" type="number" min="-20" max="8" step="any" placeholder="0 dBm reference">
-            <p class="quiet">Enter 10–18 dB to place User_Booster_A. The transmission report shows effective settings after auto-design.</p>
+          <details open>
+            <summary>Service and design</summary>
+            <label for="service-source">Transmit site</label><select id="service-source"></select>
+            <label for="service-target">Receive site</label><select id="service-target"></select>
+            <label for="service-via">Via sites (IDs, comma separated)</label><input id="service-via" placeholder="Optional">
+            <label for="design-mode">Design mode</label><select id="design-mode"><option value="automatic">Automatic</option><option value="advanced">Advanced</option></select>
+            <label for="service-rate">Single client handoff</label><select id="service-rate"><option value="100">100 GbE</option><option value="400">400 GbE</option><option value="800">800 GbE</option></select>
+            <label for="vendor">Global equipment preset</label><select id="vendor"><option value="generic">Generic reference</option><option value="ciena">Ciena</option><option value="nokia">Nokia</option></select>
+            <p class="quiet">Vendor capability checks accompany a generic 76-channel optical calculation. Missing mode data appears in the results.</p>
+            <label for="tx-power">Transmitter output (dBm/channel)</label><input id="tx-power" type="number" min="-20" max="8" step="any" placeholder="0 default">
+            <label for="booster-gain">Transmit booster gain (dB)</label><input id="booster-gain" type="number" min="8" max="35" step="any" placeholder="Automatic reference">
+            <label for="preamp-gain">Receive preamp gain (dB)</label><input id="preamp-gain" type="number" min="8" max="35" step="any" placeholder="Automatic reference">
+            <button id="reference">Load 80 km reference</button>
           </details>
-          <details id="roadm-fields" hidden>
-            <summary>Site C · Express ROADM</summary>
-            <label for="name-c">Site C name · ROADM</label>
-            <input id="name-c" value="ROADM C" maxlength="60">
-            <p class="quiet">Generic express path from A toward B. Output target −20 dBm/channel. GNPy can insert a booster during auto-design.</p>
-            <label for="roadm-ingress-loss">A-side connector loss (dB)</label>
-            <input id="roadm-ingress-loss" type="number" min="0" max="10" step="any" placeholder="0.50 default">
-            <label for="roadm-egress-loss">B-side connector loss (dB)</label>
-            <input id="roadm-egress-loss" type="number" min="0" max="10" step="any" placeholder="0.50 default">
-            <p class="quiet">An entered value replaces that side’s span connector allowance. Enter field splices separately under Fiber spans.</p>
+          <details open><summary>Sites and spans</summary><div id="network-list" class="rows"></div></details>
+          <div id="selection-editor"><p class="quiet">Select a site or span.</p></div>
+          <details><summary>Planning thresholds</summary>
+            <label for="quality-threshold">Required GSNR (signal BW, dB)</label><input id="quality-threshold" type="number" min="-100" max="100" step="any" placeholder="Optional">
+            <label for="quality-reserve">GSNR design reserve (dB)</label><input id="quality-reserve" type="number" min="0" max="100" step="any" value="2">
+            <label for="quality-warning">Review band (dB)</label><input id="quality-warning" type="number" min="0" max="100" step="any" value="1">
+            <label for="ase-threshold">Required ASE OSNR (signal BW, dB)</label><input id="ase-threshold" type="number" min="-100" max="100" step="any" placeholder="Optional">
           </details>
-          <details id="settings-b">
-            <summary>Terminal B · Receive</summary>
-            <label for="name-b">Site B name</label>
-            <input id="name-b" value="Honolulu" maxlength="60">
-            <label for="preamp-gain">Receive-side EDFA target (dB)</label>
-            <input id="preamp-gain" type="number" min="8" max="35" step="any" placeholder="Use reference stage">
-            <p class="quiet">Generic GNPy receiver. See Simulation results for channel power, ASE OSNR, nonlinear SNR, and GSNR.</p>
-          </details>
-          <details id="settings-spans" open>
-            <summary>Fiber spans</summary>
-            <div id="span-list" class="rows"></div>
-        <form class="inside" id="span-form" novalidate>
-          <label for="span-choice">Span</label>
-          <select id="span-choice"></select>
-          <p class="quiet">Generic SSMF · 0.20 dB/km · 0.50 dB connector loss at each end. GNPy reports effective loss and gain after auto-design.</p>
-          <div class="kv"><span>Map estimate</span><strong id="estimate"></strong></div>
-          <p class="quiet">Straight-line distance. Enter a measured fiber length when available.</p>
-          <label for="length">Engineered length (km)</label>
-          <input id="length" type="number" step="any" inputmode="decimal" placeholder="80 km bundled" aria-describedby="length-error">
-          <div class="input-actions">
-            <button type="submit">Apply length</button>
-            <button type="button" id="use-map">Use map estimate</button>
-            <button type="button" id="clear-length">Use bundled</button>
-          </div>
-          <div class="error" id="length-error" role="alert"></div>
-          <div class="source">Length GNPy will use<strong id="source"></strong></div>
-        </form>
-            <div class="inside">
-              <p id="amplifier-warning" class="span-warning" role="status" hidden></p>
-              <p id="marine-note" class="quiet" hidden></p>
-              <label for="inline-gain">Midpoint inline EDFA target (dB)</label>
-              <input id="inline-gain" type="number" min="8" max="35" step="any" placeholder="No explicit midpoint EDFA">
-              <p class="quiet">An explicit inline or receive-side target switches the run to GNPy gain mode.</p>
-              <button type="button" id="suggest-gain" hidden>Apply suggested gain</button>
-            </div>
-            <div class="inside">
-              <h3>Splices</h3>
-              <p class="quiet">New fusion splices start at 0.10 dB. This build models their combined loss at the span output.</p>
-              <div id="splices"></div>
-              <button type="button" id="add-splice">Add splice</button>
-              <p id="splice-total" role="status"></p>
-            </div>
-          </details>
-          <details>
-            <summary>Equipment catalog</summary>
-            <label for="catalog-profile">Browse profiles</label>
-            <select id="catalog-profile"></select>
-            <label for="catalog-rate">Ciena receiver sensitivity reference</label>
-            <select id="catalog-rate"><option value="">Select a rate</option><option value="1200">1.2 Tb/s</option><option value="1400">1.4 Tb/s</option><option value="1600">1.6 Tb/s</option></select>
-            <p id="catalog-description" class="quiet" role="status"></p>
-          </details>
-          <details>
-            <summary>GSNR planning limits</summary>
-            <label for="quality-threshold">Required GSNR (signal BW, dB)</label>
-            <input id="quality-threshold" type="number" step="any" placeholder="Optional">
-            <label for="quality-reserve">Design reserve (dB)</label>
-            <input id="quality-reserve" type="number" min="0" step="any" value="2">
-            <label for="quality-warning">Review band (dB)</label>
-            <input id="quality-warning" type="number" min="0" step="any" value="1">
-            <label for="ase-threshold">Required ASE OSNR (signal BW, dB)</label>
-            <input id="ase-threshold" type="number" min="-100" max="100" step="any" placeholder="Optional">
-          </details>
+          <details><summary>Zones screening</summary><p id="zones-status" class="quiet">Checking feed…</p><div id="zones-findings"></div></details>
         </div>
       </details>
     </div>
     <section class="pane results" aria-labelledby="results-title">
-      <div class="panehead">
-        <div><h2 id="results-title">Simulation results</h2><span id="stale-results" hidden>Inputs changed · Rerun required</span></div>
-        <a id="download" hidden>Download Excel</a>
+      <div class="panehead"><div><h2 id="results-title">Simulation results</h2><span id="stale-results" class="span-warning" hidden>Inputs changed · Rerun required</span></div>
+        <div class="actions"><a id="download" hidden>Excel</a><a id="evidence-download" hidden>Run evidence</a><a id="estimator-download" hidden>Estimator quantities</a></div>
       </div>
       <div class="resultbody">
-        <p id="result-summary" role="status">Run the simulation to see channel results.</p>
+        <p id="result-summary" role="status">Run a service to inspect the completed design.</p>
         <p id="simulation-error" class="span-warning" role="alert" hidden></p>
-        <p id="quality-result" role="status" hidden></p>
-        <p id="ase-result" role="status" hidden></p>
-        <p id="fec-result" class="quiet" hidden>FEC margin · Not evaluated · Requires a validated modem mode.</p>
-        <ul id="equipment-checks" hidden></ul>
-        <ul id="span-losses" hidden></ul>
-        <p id="comparison" hidden></p>
+        <div id="results-checks"></div>
         <div class="table-scroll" id="channel-table" hidden tabindex="0">
-          <table aria-label="Channel results">
-            <thead><tr><th scope="col">Channel</th><th scope="col">Frequency (THz)</th><th scope="col">Power (dBm)</th><th scope="col">ASE OSNR (signal BW, dB)</th><th scope="col">SNR NLI (signal BW, dB)</th><th scope="col">GSNR (signal BW, dB)</th></tr></thead>
-            <tbody id="channels"></tbody>
-          </table>
+          <table aria-label="Channel results"><thead><tr><th>Channel</th><th>Frequency (THz)</th><th>Power (dBm)</th><th>ASE OSNR (signal BW, dB)</th><th>SNR NLI (signal BW, dB)</th><th>GSNR (signal BW, dB)</th></tr></thead><tbody id="channels"></tbody></table>
         </div>
+        <details id="equipment-summary"><summary>Equipment summary</summary><div id="equipment-summary-body"></div></details>
         <details id="transmission" hidden><summary>GNPy transmission details</summary><pre id="report"></pre></details>
       </div>
     </section>
+    <dialog id="option-detail"><h2 id="option-title"></h2><p id="option-reason"></p><form method="dialog"><button>Close</button></form></dialog>
   </main>
 </body>
 </html>

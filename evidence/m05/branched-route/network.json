@@ -1,0 +1,83 @@
+{
+  "active_service": "west-east",
+  "network": {
+    "nodes": [
+      {
+        "id": "a",
+        "name": "Kapolei",
+        "lat": 21.335,
+        "lon": -158.058
+      },
+      {
+        "id": "b",
+        "name": "Pearl City",
+        "lat": 21.397,
+        "lon": -157.975
+      },
+      {
+        "id": "c",
+        "name": "Honolulu",
+        "lat": 21.307,
+        "lon": -157.858
+      },
+      {
+        "id": "d",
+        "name": "East Terminal",
+        "lat": 21.29,
+        "lon": -157.76
+      },
+      {
+        "id": "e",
+        "name": "North Branch",
+        "lat": 21.5,
+        "lon": -157.98
+      }
+    ],
+    "links": [
+      {
+        "id": "ab",
+        "from": "a",
+        "to": "b",
+        "bends": [
+          [
+            21.36,
+            -158.04
+          ]
+        ],
+        "override": 25
+      },
+      {
+        "id": "bc",
+        "from": "b",
+        "to": "c",
+        "bends": [
+          [
+            21.37,
+            -157.91
+          ]
+        ],
+        "override": 30
+      },
+      {
+        "id": "cd",
+        "from": "c",
+        "to": "d",
+        "bends": [],
+        "override": 35
+      },
+      {
+        "id": "be",
+        "from": "b",
+        "to": "e",
+        "bends": []
+      }
+    ],
+    "services": [
+      {
+        "id": "west-east",
+        "source": "a",
+        "target": "d"
+      }
+    ]
+  }
+}
