@@ -5,18 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hyperion Routes · M05</title>
   <link rel="icon" href="/favicon.ico">
+  <link rel="preload" href="/fonts/Barlow-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/leaflet.css">
   <link rel="stylesheet" href="/app.css">
   <script src="/leaflet.js" defer></script>
   <script src="/app.js" defer></script>
 </head>
 <body>
+  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="icon-map" viewBox="0 0 24 24"><path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Z M9 3v16 M15 5v16"/></symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M5 3v18 M12 3v18 M19 3v18 M2 8h6 M9 16h6 M16 7h6"/><circle cx="5" cy="8" r="2"/><circle cx="12" cy="16" r="2"/><circle cx="19" cy="7" r="2"/></symbol>
+    <symbol id="icon-chart" viewBox="0 0 24 24"><path d="M3 3v18h18 M7 16v-5 M12 16V7 M17 16V4"/></symbol>
+    <symbol id="icon-new" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8Z M14 3v5h5 M8 14h8 M12 10v8"/></symbol>
+    <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M3 7V4h7l2 3h9v13H3Z M3 10h18"/></symbol>
+    <symbol id="icon-save" viewBox="0 0 24 24"><path d="M3 3h15l3 3v15H3Z M7 3v6h10V3 M7 21v-8h10v8"/></symbol>
+    <symbol id="icon-pin" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2"/></symbol>
+    <symbol id="icon-link" viewBox="0 0 24 24"><rect x="2" y="8" width="6" height="8" rx="1"/><rect x="16" y="8" width="6" height="8" rx="1"/><path d="M8 12h8 M5 5v3 M19 5v3"/></symbol>
+    <symbol id="icon-bend" viewBox="0 0 24 24"><path d="M4 19 10 6l10 4"/><rect x="2" y="17" width="4" height="4" rx="1"/><rect x="8" y="4" width="4" height="4" rx="1"/><rect x="18" y="8" width="4" height="4" rx="1"/></symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8Z"/></symbol>
+  </defs></svg>
+  <nav class="suite-rail" aria-label="Workspace navigation">
+    <a href="#map-title" class="rail-link" aria-label="Route map" aria-current="location"><svg><use href="#icon-map"/></svg><span>Map</span></a>
+    <button type="button" id="rail-settings" aria-label="Show route settings"><svg><use href="#icon-settings"/></svg><span>Settings</span></button>
+    <a href="#results-title" class="rail-link" aria-label="Simulation results"><svg><use href="#icon-chart"/></svg><span>Results</span></a>
+    <span class="rail-caption">HYPERION</span>
+  </nav>
   <header class="mast">
-    <div class="brand"><img src="/favicon.ico" alt=""><span>Hyperion</span></div>
+    <div class="brand"><img src="/favicon.ico" alt=""><div><span>Hyperion</span><small>Routes · Optical planning workspace</small></div></div>
     <nav class="actions" aria-label="Project files">
-      <button id="new-route">New route</button>
-      <button id="load-route">Load project</button>
-      <button id="save-route">Save project</button>
+      <button id="new-route"><svg class="icon"><use href="#icon-new"/></svg>New route</button>
+      <button id="load-route"><svg class="icon"><use href="#icon-folder"/></svg>Load project</button>
+      <button id="save-route"><svg class="icon"><use href="#icon-save"/></svg>Save project</button>
       <input id="route-file" type="file" accept=".json,application/json" hidden>
     </nav>
   </header>
@@ -25,7 +44,7 @@
       <div>
         <label class="sr-only" for="route-name">Route name</label>
         <input id="route-name" class="route-name" value="DWDM Route 1" maxlength="100">
-        <p>Geographic design and optical verification</p>
+        <p class="workspace-caption">Plan the path. Connect the sites. Verify the design.</p>
         <div class="actions history">
           <button id="back">Back to overview</button>
           <button id="undo" disabled>↶ Undo</button>
@@ -34,22 +53,22 @@
       </div>
       <div class="actions">
         <label class="toggle"><input id="auto-run" type="checkbox" checked> Recalculate after edits</label>
-        <button id="run" class="primary">Run simulation</button>
+        <button id="run" class="primary"><svg class="icon"><use href="#icon-play"/></svg>Run simulation</button>
       </div>
     </div>
     <div class="work" id="workspace">
       <section class="pane map-pane" aria-labelledby="map-title">
         <div class="panehead maphead">
-          <h2 id="map-title">Route map</h2>
+          <h2 id="map-title"><svg class="icon"><use href="#icon-map"/></svg>Route map</h2>
           <div class="actions">
             <select id="map-region" aria-label="Map region"><option value="hawaii">Hawaiʻi</option><option value="usa">Continental U.S.</option></select>
             <button id="fit-map">Fit network</button>
           </div>
         </div>
         <div class="map-tools">
-          <button id="place-site" aria-pressed="false">Place site</button>
-          <button id="draw-span" aria-pressed="false">Connect sites</button>
-          <button id="draw-bend" aria-pressed="false">Draw bends</button>
+          <button id="place-site" aria-pressed="false"><svg class="icon"><use href="#icon-pin"/></svg>Place site</button>
+          <button id="draw-span" aria-pressed="false"><svg class="icon"><use href="#icon-link"/></svg>Connect sites</button>
+          <button id="draw-bend" aria-pressed="false"><svg class="icon"><use href="#icon-bend"/></svg>Draw bends</button>
           <span id="tool-hint" class="quiet">Drag sites or click a span to edit.</span>
         </div>
         <div id="map" class="map geographic" aria-label="Interactive fiber route map"></div>
@@ -58,7 +77,7 @@
       </section>
       <div id="settings-resize" class="resize-vertical" role="separator" tabindex="0" aria-label="Settings width" aria-orientation="vertical"></div>
       <details id="route-settings" class="pane route-settings" open>
-        <summary>Route settings</summary>
+        <summary><svg class="icon"><use href="#icon-settings"/></svg>Route settings</summary>
         <div class="inside settings-items">
           <details open>
             <summary>Service and design</summary>
@@ -87,7 +106,7 @@
       </details>
     </div>
     <section class="pane results" aria-labelledby="results-title">
-      <div class="panehead"><div><h2 id="results-title">Simulation results</h2><span id="stale-results" class="span-warning" hidden>Inputs changed · Rerun required</span></div>
+      <div class="panehead"><div><h2 id="results-title"><svg class="icon"><use href="#icon-chart"/></svg>Simulation results</h2><span id="stale-results" class="span-warning" hidden>Inputs changed · Rerun required</span></div>
         <div class="actions"><a id="download" hidden>Excel</a><a id="evidence-download" hidden>Run evidence</a><a id="estimator-download" hidden>Estimator quantities</a></div>
       </div>
       <div class="resultbody">

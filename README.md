@@ -1,4 +1,6 @@
-# Hyperion Routes · Mark Five
+# Hyperion Routes · Mark Five visual refresh
+
+This branch applies the approved November 20 Hyperion design direction: warm beige and cream, muted teal/sage accents, ink-colored text, Barlow typography, outlined icons and softly framed windows. It follows the visual reference at [Learn Arduino](https://learn-arduino-red.vercel.app/) without its circuit-board border decoration. Fonts are served locally under their bundled SIL Open Font License. Shared suite tokens live in `assets/branding/hyperion-theme.css`.
 
 Hyperion Routes is a local optical route planning prototype. Draw a network on a map, edit its equipment and losses, and run a selected service through **real GNPy 3.0.1**. The visible brand is **Hyperion**.
 
@@ -6,12 +8,12 @@ The long-term goal combines geographic routing, optical engineering, vendor equi
 
 ## Download and launch
 
-[Download Mark Five ZIP](https://github.com/Figment-Fiber/Hyperion-Planner/archive/refs/heads/metis/m5.zip), extract it, and open the folder containing `hyperion.py` and `requirements.txt`. In Windows File Explorer, type `powershell` in that folder's address bar and press Enter.
+[Download the visual refresh ZIP](https://github.com/Figment-Fiber/Hyperion-Planner/archive/refs/heads/metis/routes-beige-refresh.zip), extract it, and open the folder containing `hyperion.py` and `requirements.txt`. In Windows File Explorer, type `powershell` in that folder's address bar and press Enter. The earlier Mark Five build remains on `metis/m5`.
 
 Alternatively:
 
 ```powershell
-git clone --branch metis/m5 https://github.com/Figment-Fiber/Hyperion-Planner.git
+git clone --branch metis/routes-beige-refresh https://github.com/Figment-Fiber/Hyperion-Planner.git
 cd Hyperion-Planner
 ```
 
@@ -23,7 +25,7 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe hyperion.py
 ```
 
-For an existing checkout, switch to `metis/m5`, pull, and repeat the dependency install. Stop an old server with Ctrl+C first.
+For an existing checkout, switch to `metis/routes-beige-refresh`, pull, and repeat the dependency install. Stop an old server with Ctrl+C first.
 
 Keep the server window open. Wait for **Hyperion Routes is ready**, then open **http://127.0.0.1:8765/** in Firefox, Edge or Chrome. Do not open the Python or HTML file directly: the app needs its local server. If the address cannot be reached, inspect the terminal error and confirm the server is still running.
 

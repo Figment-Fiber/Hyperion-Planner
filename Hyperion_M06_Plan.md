@@ -4,6 +4,10 @@ November 17, 2026 HST. Status: planned, requested by Kevin. Carry forward M05 an
 
 ## Service and spectrum comparison
 
+### Suite visual direction — November 20, 2026
+
+Kevin selected https://learn-arduino-red.vercel.app/ as the visual reference across the Hyperion suite, applied first to Routes. Use warm beige/cream windows, muted colors, dark ink, readable Barlow body text and condensed headings, outlined playful icons, thin tan frames and restrained depth. Omit circuit-board traces and decorative border circuitry. This supersedes the earlier navy-theme preference. Keep engineering Fail/Review warnings red and maintain units, numeric readability, resizing, keyboard navigation and mobile behavior. Routes provides reusable suite colors/type in `assets/branding/hyperion-theme.css`, with locally served open-license fonts. Applying the theme to the other suite applications remains a separate integration task; this change implements Routes.
+
 ### Design Requirements and complete vendor builds
 
 Confirmed November 17. On opening a new project, offer **Design Requirements** with **Configure requirements** and **Use defaults**. The latter creates an explicitly generic 100 Gb/s service baseline. Keep an accessible Design Requirements button near the route title to reopen the complete list. Save the selected requirements and identify assumed values.

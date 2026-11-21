@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-20",
+  "branch": "metis/routes-beige-refresh",
+  "rendered_channel_rows": 76,
+  "matches_existing_m05_channel_evidence": true,
+  "blank_threshold_default_run": "76 rows, no display error",
+  "responsive_viewport_width": 390,
+  "horizontal_overflow": false,
+  "fonts": "Local Barlow and Barlow Semi Condensed",
+  "reference": "https://learn-arduino-red.vercel.app/",
+  "circuit_border_decoration": false,
+  "settings_width_after_keyboard_resize_px": 374,
+  "map_height_after_keyboard_resize_px": 422.390625,
+  "warning_text_rgb": [
+    165,
+    44,
+    51
+  ],
+  "text_contrast_ratios": {
+    "body": 12.86,
+    "muted": 5.36,
+    "warning": 5.93,
+    "primary": 11.07
+  },
+  "static_assets_and_font_files": "Verified"
+}

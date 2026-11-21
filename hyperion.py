@@ -25,11 +25,15 @@ STATIC = {
     "/": ("hyperion.html", "text/html; charset=utf-8"),
     "/app.js": ("hyperion.js", "text/javascript; charset=utf-8"),
     "/app.css": ("hyperion.css", "text/css; charset=utf-8"),
+    "/theme.css": ("assets/branding/hyperion-theme.css", "text/css; charset=utf-8"),
     "/equipment-catalog.json": ("equipment_catalog.json", "application/json; charset=utf-8"),
     "/leaflet.js": ("assets/leaflet/leaflet.js", "text/javascript; charset=utf-8"),
     "/leaflet.css": ("assets/leaflet/leaflet.css", "text/css; charset=utf-8"),
     "/logo.png": ("assets/branding/Hyperion_Planner_Logo.png", "image/png"),
     "/favicon.ico": ("assets/branding/Hyperion_Planner.ico", "image/x-icon"),
+    "/fonts/Barlow-Regular.ttf": ("assets/fonts/Barlow-Regular.ttf", "font/ttf"),
+    "/fonts/Barlow-SemiBold.ttf": ("assets/fonts/Barlow-SemiBold.ttf", "font/ttf"),
+    "/fonts/BarlowSemiCondensed-Bold.ttf": ("assets/fonts/BarlowSemiCondensed-Bold.ttf", "font/ttf"),
 }
 METRICS = {
     "power_dbm": "Power (dBm)",

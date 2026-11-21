@@ -32,7 +32,7 @@ const active = () => project.network.services.find(service => service.id === pro
 const degrees = id => project.network.links.filter(link => link.from === id || link.to === id).length;
 const site = id => project.network.nodes.find(node => node.id === id);
 const spanPath = link => [[site(link.from).lat,site(link.from).lon], ...(link.bends || []), [site(link.to).lat,site(link.to).lon]];
-const status = message => { $("status").textContent = message; };
+const status = message => { $("status").textContent = message; $("status").dataset.busy = String(/Checking|Running/.test(message)); };
 function equipmentFor(id) { return project.equipment.nodes[id] ||= {}; }
 function panelFor(id) {
   return equipmentFor(id).panel ||= {enabled:true,pairs_per_degree:1,connector_loss_db:.5,splices_per_degree:1,splice_loss_db:.1};
@@ -129,7 +129,7 @@ function renderMap() {
   routeLayer.clearLayers();
   const selectedLinks = new Set(preview?.route?.links.map(link => link.id) || []);
   for (const link of project.network.links) {
-    const line = L.polyline(spanPath(link),{color:selection?.id===link.id ? "#a5e5ff":selectedLinks.has(link.id) ? "#4ac6b0":"#738aa4",weight:selection?.id===link.id?5:3}).addTo(routeLayer);
+    const line = L.polyline(spanPath(link),{color:selection?.id===link.id ? "#334761":selectedLinks.has(link.id) ? "#3d7772":"#827e76",weight:selection?.id===link.id?5:3}).addTo(routeLayer);
     line.on("click", event => { L.DomEvent.stopPropagation(event); choose("link",link.id); });
     if (selection?.id===link.id) link.bends.forEach((point,index) => {
       const marker = L.marker(point,{draggable:true,icon:L.divIcon({className:"bend-point",html:"",iconSize:[14,14]}),title:"Bend " + (index+1) + " · Click to remove"}).addTo(routeLayer);
@@ -437,13 +437,18 @@ async function runSimulation() {
   finally{running=false;$("run").disabled=false;if($("auto-run").checked&&lastSnapshot!==JSON.stringify(project)&&lastSnapshot===serialized)updatePreview();}
 }
 $("run").onclick=runSimulation;
+$("rail-settings").onclick=()=>{
+  $("route-settings").open=true;
+  $("route-settings").scrollIntoView({behavior:"smooth",block:"nearest"});
+  $("route-settings").querySelector("summary").focus({preventScroll:true});
+};
 function showResults(result) {
   $("result-summary").textContent=result.route_name+" · Revision "+result.revision+" · "+result.site_names.join(" → ")+" · "+result.span_length_km.toFixed(3)+" km · "+result.channels.length+" channels";
   if(result.passive_budget)$("result-summary").textContent+=" · External passive loss "+result.passive_budget.total_external_passive_db.toFixed(2)+" dB (including local add/drop panels)";
   const checks=$("results-checks");checks.replaceChildren();
   const all=[];
   for(const [title,check] of [["GSNR planning",result.quality_check],["ASE OSNR planning",result.ase_check]]) {
-    all.push({title,status:check.status,detail:check.reason||"Channel "+check.channel+" · Remaining margin "+check.remaining_db.toFixed(2)+" dB. "+(check.action||"")});
+    all.push({title,status:check.status,detail:check.reason||(Number.isFinite(check.remaining_db)?"Channel "+check.channel+" · Remaining margin "+check.remaining_db.toFixed(2)+" dB. "+(check.action||""):"Enter a planning threshold to evaluate this margin.")});
   }
   all.push({title:"FEC margin",status:"Not evaluated",detail:"A validated modem mode and supported FEC threshold are required."});
   for(const issue of result.engineering?.issues||[])all.push({title:issue.check||issue.title||issue.code||"Equipment",status:issue.status,detail:issue.detail||issue.reason||issue.message});

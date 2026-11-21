@@ -1,0 +1,14 @@
+/* Hyperion suite foundation. Local fonts and reusable semantic color tokens. */
+@font-face{font-family:Barlow;src:url('/fonts/Barlow-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:Barlow;src:url('/fonts/Barlow-SemiBold.ttf') format('truetype');font-weight:600 800;font-style:normal;font-display:swap}
+@font-face{font-family:'Barlow Semi Condensed';src:url('/fonts/BarlowSemiCondensed-Bold.ttf') format('truetype');font-weight:600 800;font-style:normal;font-display:swap}
+:root{
+  color-scheme:light;
+  --hyperion-paper:#f6eddd;--hyperion-window:#faf4e9;--hyperion-well:#f0e6d7;
+  --hyperion-rail:#e9ddca;--hyperion-border:#cec0ad;--hyperion-ink:#252b3d;
+  --hyperion-text:#4f535b;--hyperion-muted:#65655f;--hyperion-teal:#36736e;
+  --hyperion-sage:#e1e8d9;--hyperion-error:#a52c33;--hyperion-error-bg:#fae9e3;
+  --hyperion-heading:'Barlow Semi Condensed',Barlow,'Segoe UI',sans-serif;
+  --hyperion-body:Barlow,'Segoe UI',sans-serif;
+  --hyperion-radius:9px;--hyperion-shadow:0 2px 0 #c9baa23b,0 8px 24px #5a492b07;
+}
