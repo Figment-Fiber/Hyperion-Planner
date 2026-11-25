@@ -228,5 +228,19 @@
     return draft;
   }
 
-  return {insertSite, copySettings, distanceKm};
+  // Use map-projected coordinates so the chosen segment matches what is visible
+  // on screen. This chooses insertion order only; WGS84 calculates path length.
+  function bendSegmentIndex(points, point) {
+    let best = Infinity, index = 0;
+    for (let i = 1; i < points.length; i++) {
+      const a = points[i - 1], b = points[i];
+      const dx = b[0] - a[0], dy = b[1] - a[1];
+      const t = Math.max(0, Math.min(1, ((point[0] - a[0]) * dx + (point[1] - a[1]) * dy) / (dx * dx + dy * dy || 1)));
+      const distance = Math.hypot(point[0] - a[0] - t * dx, point[1] - a[1] - t * dy);
+      if (distance < best) { best = distance; index = i - 1; }
+    }
+    return index;
+  }
+
+  return {insertSite, copySettings, distanceKm, bendSegmentIndex};
 });

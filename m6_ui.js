@@ -39,7 +39,7 @@ function updateM6State(){
   if(!$('project-state'))return;
   $('project-state').textContent=(lastSavedRevision===project.revision?'Project file downloaded':'Unsaved project changes')+' · Revision '+project.revision+(lastSnapshot===JSON.stringify(project)?' · Results current':' · Rerun after edits');
   const service=active();
-  $('active-service-strip').textContent=(project.m6?'M06':'Legacy reference')+' · '+(site(service.source)?.name||service.source)+' → '+(site(service.target)?.name||service.target)+' · '+(project.requirements?.rate_gbps||project.equipment.service_gbps)+' GbE · '+(preview?.design?.lengths?.reduce((a,b)=>a+b,0).toFixed(3)||'—')+' km · '+(selection?selection.type+' '+selection.id:'Route overview');
+  $('active-service-strip').textContent=(project.m6?'M07':'Legacy reference')+' · '+(site(service.source)?.name||service.source)+' → '+(site(service.target)?.name||service.target)+' · '+(project.requirements?.rate_gbps||project.equipment.service_gbps)+' GbE · '+(preview?.design?.lengths?.reduce((a,b)=>a+b,0).toFixed(3)||'—')+' km · '+(selection?selection.type+' '+selection.id:'Route overview');
   if(!$('comparison-pane').hidden&&comparisonSnapshot!==JSON.stringify(project))$('comparison-status').textContent='Design changed. Run comparison again for this revision.';
   clearTimeout(recoveryTimer);if(project.revision>1)recoveryTimer=setTimeout(()=>{try{localStorage.setItem('hyperion.recovery',JSON.stringify(project));}catch{}},700);
 }

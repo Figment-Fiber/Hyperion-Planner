@@ -13,7 +13,7 @@ const markers=[];
 const context={
   project:{network:{nodes:[{id:'A',lat:0,lon:0},{id:'B',lat:0,lon:200},{id:'C',lat:80,lon:100}],
     links:[{id:'ab',from:'A',to:'B',bends:[[0,100]],override:80,inline_gain:null}]}},
-  selection:null,preview:null,draggingSite:false,insertionHighlight:null,
+  selection:null,preview:null,draggingSite:false,draggingBend:false,insertionHighlight:null,
   map:{latLngToLayerPoint:p=>({x:p[1],y:p[0]}),removeLayer(){}},
   routeLayer:{clearLayers(){clears++;}},
   changed(){changed++;}, status(){},

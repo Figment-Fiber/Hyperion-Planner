@@ -21,6 +21,7 @@ let project = initialProject();
 let undoStack = [], redoStack = [], committed = JSON.stringify(project);
 let selection = null, tool = null, connectStart = null;
 let draggingSite = false;
+let draggingBend = false;
 let insertionHighlight = null;
 let preview = null, previewTimer, previewSequence = 0, lastSnapshot = null, lastResult = null, running = false;
 let generation = 0, catalog = null;
@@ -97,7 +98,7 @@ function setTool(value) {
     $(id).setAttribute("aria-pressed", String(tool === key));
   $("tool-hint").textContent = tool === "site" ? "Click to place a site (up to 20)." :
     tool === "connect" ? "Click the two sites to connect." :
-    tool === "bend" ? "Select a span, then click to add bends. Click a bend to remove." : "Drag sites or click a span to edit.";
+    tool === "bend" ? "Click a span to add a bend or switch spans. Click away from the line to bend the selected span. Drag bends to move; click a bend to remove." : "Drag sites or click a span to edit.";
 }
 $("place-site").onclick = () => setTool("site");
 $("draw-span").onclick = () => setTool("connect");
@@ -105,7 +106,7 @@ $("draw-bend").onclick = () => setTool("bend");
 map.on("click", event => {
   const point = event.latlng.wrap();
   if (tool === "site") {
-    if (project.network.nodes.length >= 20) { status("M06 supports up to 20 sites."); return; }
+    if (project.network.nodes.length >= 20) { status("This build supports up to 20 sites."); return; }
     if(typeof offerInsertionAt==="function" && offerInsertionAt([point.lat,point.lng]))return;
     const id = "ABCDEFGHIJKLMNOPQRST".split("").find(id => !site(id));
     project.network.nodes.push({id,name:"Site " + id,lat:point.lat,lon:point.lng});
@@ -114,14 +115,27 @@ map.on("click", event => {
     setTool("site");
   } else if(tool === "insert" && selection?.type === "link") {
     if(typeof proposeInsertion==="function")proposeInsertion(selection.id,[point.lat,point.lng]);
-  } else if (tool === "bend" && selection?.type === "link") {
-    const link = project.network.links.find(link => link.id === selection.id);
-    if (link.bends.length >= 50) { status("A span can have up to 50 bends."); return; }
-    link.bends.push([point.lat,point.lng]);
-    project.reference_case = false;
-    changed({editor:true});
+  } else if (tool === "bend") {
+    // Clicking near another branch must not keep modifying the previous span.
+    const target = typeof nearestSpan === "function" ? nearestSpan([point.lat,point.lng]) : null;
+    const id = target?.id || (selection?.type === "link" ? selection.id : null);
+    if (id) addSpanBend(id,[point.lat,point.lng]);
+    else status("Click the span you want to bend first.");
   }
 });
+function addSpanBend(linkId, point) {
+  const link = project.network.links.find(link => link.id === linkId);
+  if (!link) return;
+  if (link.bends.length >= 50) { status("A span can have up to 50 bends."); return; }
+  const projected = spanPath(link).map(p => {const pixel=map.latLngToLayerPoint(p);return [pixel.x,pixel.y];});
+  const pixel = map.latLngToLayerPoint(point);
+  const index = ProjectEditing.bendSegmentIndex(projected,[pixel.x,pixel.y]);
+  link.bends.splice(index,0,point);
+  selection = {type:"link",id:linkId};
+  $("route-settings").open = true;
+  project.reference_case = false;
+  changed({editor:true});
+}
 function choose(type,id) {
   selection = {type,id};
   $("route-settings").open = true;
@@ -137,18 +151,29 @@ function addWarning(point, label, action, configured=false) {
 }
 function renderMap() {
   // A preview response must not remove Leaflet's marker during an active drag.
-  if (draggingSite) return;
+  if (draggingSite || draggingBend) return;
   routeLayer.clearLayers();
   const selectedLinks = new Set(preview?.route?.links.map(link => link.id) || []);
   for (const link of project.network.links) {
     const line = L.polyline(spanPath(link),{color:selection?.id===link.id ? "#334761":selectedLinks.has(link.id) ? "#3d7772":"#827e76",weight:selection?.id===link.id?5:3}).addTo(routeLayer);
-    line.on("click", event => { L.DomEvent.stopPropagation(event); if((tool==="insert"||tool==="site")&&typeof proposeInsertion==="function"){proposeInsertion(link.id,[event.latlng.lat,event.latlng.lng]);return;}choose("link",link.id); });
+    line.on("click", event => {
+      L.DomEvent.stopPropagation(event);
+      const point=event.latlng.wrap();
+      if((tool==="insert"||tool==="site")&&typeof proposeInsertion==="function"){proposeInsertion(link.id,[point.lat,point.lng]);return;}
+      if(tool==="bend"){addSpanBend(link.id,[point.lat,point.lng]);return;}
+      choose("link",link.id);
+    });
     if (selection?.id===link.id) link.bends.forEach((point,index) => {
       const marker = L.marker(point,{draggable:true,icon:L.divIcon({className:"bend-point",html:"",iconSize:[14,14]}),title:"Bend " + (index+1) + " · Click to remove"}).addTo(routeLayer);
+      marker.on("dragstart",()=>{draggingBend=true;});
       marker.on("drag",() => {
         const ll=marker.getLatLng().wrap(); link.bends[index]=[ll.lat,ll.lng]; line.setLatLngs(spanPath(link));
       });
-      marker.on("dragend",()=>{project.reference_case=false;changed({editor:true});});
+      marker.on("dragend",()=>{
+        draggingBend=false;
+        const ll=marker.getLatLng().wrap();link.bends[index]=[ll.lat,ll.lng];
+        project.reference_case=false;changed({editor:true});
+      });
       marker.on("click",()=>{link.bends.splice(index,1);changed({editor:true});});
     });
     const index=preview?.route?.links.findIndex(item=>item.id===link.id) ?? -1;

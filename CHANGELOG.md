@@ -1,5 +1,12 @@
 # Hyperion Routes change notes
 
+## M07 — November 24, 2026
+
+- Draw bends switches directly between physical spans at multi-degree sites. Clicking another line no longer keeps adding bends to the previously selected branch.
+- New bends enter the nearest segment of the selected polyline instead of always appending at the far end. Moving a bend is protected from asynchronous preview redraws.
+- Existing fiber, losses, equipment, service connections and engineered length overrides are preserved. Geographic length feeds GNPy when no engineered override is set.
+- Added production-handler regressions and real-GNPy branch-isolation, effective-length, receiver-loss, override, splice and amplifier-noise checks. See `evidence/m07/verification.md` for scope and model limitations.
+
 ## M06 site-drop fix — November 24, 2026
 
 - Wider site-to-span drop target with a highlighted target during dragging; Yes/No confirmation remains required.

@@ -1,4 +1,6 @@
-# Hyperion Routes · Mark Six
+# Hyperion Routes · Mark Seven
+
+M07 fixes multi-degree bend editing: with **Draw bends** active, click A–B, B–C or B–D to add a bend on that span and switch selection. Click away from the line to reshape the selected span. New bends enter the nearest segment in route order; drag a bend to move it or click it to remove it. Engineered length overrides remain explicit and unchanged. See [M07 verification](evidence/m07/verification.md).
 
 This branch applies the approved November 20 Hyperion design direction: warm beige and cream, muted teal/sage accents, ink-colored text, Barlow typography, outlined icons and softly framed windows. It follows the visual reference at [Learn Arduino](https://learn-arduino-red.vercel.app/) without its circuit-board border decoration. Fonts are served locally under their bundled SIL Open Font License. Shared suite tokens live in `assets/branding/hyperion-theme.css`.
 
@@ -8,12 +10,12 @@ The long-term goal combines geographic routing, optical engineering, vendor equi
 
 ## Download and launch
 
-[Download Mark Six ZIP](https://github.com/Figment-Fiber/Hyperion-Planner/archive/refs/heads/metis/m6.zip), extract it, and open the folder containing `hyperion.py` and `requirements.txt`. In Windows File Explorer, type `powershell` in that folder's address bar and press Enter. The earlier beige M05 build remains on `metis/routes-beige-refresh`.
+[Download Mark Seven ZIP](https://github.com/Figment-Fiber/Hyperion-Planner/archive/refs/heads/metis/m7.zip), extract it, and open the folder containing `hyperion.py` and `requirements.txt`. In Windows File Explorer, type `powershell` in that folder's address bar and press Enter. Mark Six remains on `metis/m6`; the earlier beige M05 build remains on `metis/routes-beige-refresh`.
 
 Alternatively:
 
 ```powershell
-git clone --branch metis/m6 https://github.com/Figment-Fiber/Hyperion-Planner.git
+git clone --branch metis/m7 https://github.com/Figment-Fiber/Hyperion-Planner.git
 cd Hyperion-Planner
 ```
 
@@ -25,13 +27,13 @@ uv venv --seed --python 3.12 .venv
 .\.venv\Scripts\python.exe hyperion.py
 ```
 
-For an existing checkout, switch to `metis/m6`, pull, and repeat the dependency install. Stop an old server with Ctrl+C first.
+For an existing checkout, stop the old server with Ctrl+C, run `git fetch origin`, `git switch metis/m7`, then `git pull --ff-only`. Repeat the dependency install and launch command above. Refresh the browser with Ctrl+Shift+R.
 
 Keep the server window open. Wait for **Hyperion Routes is ready**, then open **http://127.0.0.1:8765/** in Firefox, Edge or Chrome. Do not open the Python or HTML file directly: the app needs its local server. If the address cannot be reached, inspect the terminal error and confirm the server is still running.
 
 For another port, run `.\.venv\Scripts\python.exe hyperion.py --port 8766` and open **http://127.0.0.1:8766/**. On macOS/Linux use `python3.12 -m venv .venv` and `.venv/bin/python` instead of the Windows Python path. Windows with Python 3.12 and Edge is the tested configuration.
 
-## What Mark Six includes
+## What Mark Seven includes
 
 - Author networks with up to **20 sites**, bent spans, geographic distance and persistent engineered overrides. Insert a site into a span with Yes/No confirmation and one-step undo. Click a node/span to open its inspector.
 - Choose terminal, ROADM, amplifier-site, splice-site, passive pass-through or OEO regeneration roles. Set incoming/outgoing amplifiers by connected direction. **Use amplifier** is optional: OFF excludes the stage from the actual engine topology. Automatic targets do not install equipment; manual settings remain editable.
@@ -46,7 +48,7 @@ For another port, run `.\.venv\Scripts\python.exe hyperion.py --port 8766` and o
 
 Automatic amplifier control estimates the needed gain for the requested channel output and reports actual GNPy operation/limits. Review any target mismatch. An unchecked amplifier means absent/bypassed; a physically powered-off installed device is not assumed to be lossless. An 80-km placement review is not a universal amplifier reach rule. Panels default to editable allowances of 0.50 dB per mated pair and 0.10 dB per pigtail splice, with explicit field splices separately accounted.
 
-**Legacy regression:** Load 80 km reference opens the original M05 optical model with 76 channels; its 85.25-km override remains verified against the saved CLI table. Existing M05 projects retain their old engine behavior until you explicitly select Enable M06 controls. Review amplification and mode assumptions when upgrading; the new model does not silently reproduce legacy automatic amplifiers.
+**Legacy regression:** Load 80 km reference opens the original M05 optical model with 76 channels; its 85.25-km override remains verified against the saved CLI table. Existing M05 projects retain their old engine behavior until you explicitly select Enable engineering controls. Review amplification and mode assumptions when upgrading; the new model does not silently reproduce legacy automatic amplifiers.
 
 The pinned GNPy 3.0.1 ROADM-to-fiber bookkeeping path needs an explicit zero-loss interface element. This compatibility element adds no attenuation or amplifier; serialized inputs and CLI replay evidence show it.
 
@@ -82,6 +84,8 @@ See [change notes](CHANGELOG.md) and [LinkedIn update notes since M04](LINKEDIN_
 .\.venv\Scripts\python.exe verify_m6_services.py
 node verify_m6_editing.cjs
 node verify_m6_drop.cjs
+node verify_m7_bends.cjs m7-fixtures.json
+.\.venv\Scripts\python.exe verify_m7_engineering.py m7-fixtures.json
 .\.venv\Scripts\python.exe verify_m6_geometry.py
 .\.venv\Scripts\python.exe verify_m6_engine.py
 .\.venv\Scripts\python.exe verify_m6_equipment.py
