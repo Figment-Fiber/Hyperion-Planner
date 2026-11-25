@@ -20,6 +20,8 @@ function initialProject() {
 let project = initialProject();
 let undoStack = [], redoStack = [], committed = JSON.stringify(project);
 let selection = null, tool = null, connectStart = null;
+let draggingSite = false;
+let insertionHighlight = null;
 let preview = null, previewTimer, previewSequence = 0, lastSnapshot = null, lastResult = null, running = false;
 let generation = 0, catalog = null;
 const map = L.map("map", {maxZoom:18}).setView([21.47,-157.98],10);
@@ -134,6 +136,8 @@ function addWarning(point, label, action, configured=false) {
   L.marker(point,{icon,title:label}).addTo(routeLayer).on("click",action);
 }
 function renderMap() {
+  // A preview response must not remove Leaflet's marker during an active drag.
+  if (draggingSite) return;
   routeLayer.clearLayers();
   const selectedLinks = new Set(preview?.route?.links.map(link => link.id) || []);
   for (const link of project.network.links) {
@@ -159,8 +163,22 @@ function renderMap() {
     const marker = L.marker([node.lat,node.lon], {draggable:true,title:node.name,
       icon:L.divIcon({className:"site-marker"+(selection?.id===node.id?" selected-marker":""),html:node.id,iconSize:[32,32]})}).addTo(routeLayer);
     marker.getElement().id="point-"+node.id.toLowerCase();
-    marker.on("drag",()=>{const ll=marker.getLatLng().wrap();node.lat=ll.lat;node.lon=ll.lng;});
+    marker.on("dragstart",()=>{draggingSite=true;});
+    marker.on("drag",()=>{
+      const ll=marker.getLatLng().wrap();node.lat=ll.lat;node.lon=ll.lng;
+      if(typeof nearestSpan==="function"){
+        const target=nearestSpan([node.lat,node.lon],node.id);
+        if(insertionHighlight){map.removeLayer(insertionHighlight);insertionHighlight=null;}
+        if(target){
+          insertionHighlight=L.polyline(spanPath(target),{color:"#b14a30",weight:9,opacity:.75,interactive:false}).addTo(map);
+          status("Release to insert "+node.id+" into this highlighted span. You will confirm before it changes.");
+        }
+      }
+    });
     marker.on("dragend",()=>{
+      draggingSite=false;
+      if(insertionHighlight){map.removeLayer(insertionHighlight);insertionHighlight=null;}
+      const ll=marker.getLatLng().wrap();node.lat=ll.lat;node.lon=ll.lng;
       if(typeof offerInsertionAt==="function" && offerInsertionAt([node.lat,node.lon],node.id))return;
       project.reference_case=false;changed({editor:true});
     });

@@ -48,7 +48,9 @@ if(recoveryDraft)$('recover-draft').hidden=false;
 $('recover-draft').onclick=async()=>{try{const value=recoveryDraft;await request('/api/preview',value);undoStack.push(JSON.stringify(project));restore(value);fitMap();$('recover-draft').hidden=true;}catch(error){status('Recovery unavailable: '+error.message);}};
 window.addEventListener('beforeunload',event=>{if(project.revision>1&&lastSavedRevision!==project.revision){event.preventDefault();event.returnValue='';}});
 function nearestSpan(point,excludeNode=null){
-  const pixel=map.latLngToLayerPoint(point);let match=null,best=14;
+  // Include the marker's visible footprint, rather than requiring its center
+  // to land almost exactly on a thin polyline. Confirmation remains mandatory.
+  const pixel=map.latLngToLayerPoint(point);let match=null,best=28;
   for(const link of project.network.links){if(excludeNode&&[link.from,link.to].includes(excludeNode))continue;const points=spanPath(link).map(p=>map.latLngToLayerPoint(p));for(let i=1;i<points.length;i++){const a=points[i-1],b=points[i],dx=b.x-a.x,dy=b.y-a.y,t=Math.max(0,Math.min(1,((pixel.x-a.x)*dx+(pixel.y-a.y)*dy)/(dx*dx+dy*dy||1))),distance=Math.hypot(pixel.x-a.x-t*dx,pixel.y-a.y-t*dy);if(distance<best){best=distance;match=link;}}}
   return match;
 }
@@ -62,7 +64,7 @@ $('insert-no').onclick=()=>{if(pendingInsertion?.existingNodeId){project=pending
 $('insert-confirm').addEventListener('cancel',()=>{if(pendingInsertion?.existingNodeId){project=pendingInsertion.base;renderMap();}pendingInsertion=null;status('Insertion cancelled; span unchanged.');});
 $('insert-yes').onclick=()=>{
   if(!pendingInsertion)return;
-  try{const edit=ProjectEditing.insertSite(pendingInsertion.base,pendingInsertion.linkId,pendingInsertion.point,$('insert-role').value,pendingInsertion.existingNodeId);project=edit.project;project.m6=true;project.requirements||=clone(DEFAULT_REQUIREMENTS);selection={type:'node',id:edit.insertedNodeId};pendingInsertion=null;$('insert-confirm').close();tool=null;changed({editor:true});syncFields();syncM6Fields();status(edit.review?.length?'Site inserted. Review retained equipment assignments in results.':'Site inserted; spans split and lengths preserved.');}catch(error){$('insert-description').textContent=error.message;}
+  try{const edit=ProjectEditing.insertSite(pendingInsertion.base,pendingInsertion.linkId,pendingInsertion.point,$('insert-role').value,pendingInsertion.existingNodeId);project=edit.project;project.m6=true;project.requirements||=clone(DEFAULT_REQUIREMENTS);selection={type:'node',id:edit.insertedNodeId};pendingInsertion=null;$('insert-confirm').close();setTool(null);changed({editor:true});syncFields();syncM6Fields();status(edit.review?.length?'Site inserted. Review retained equipment assignments in results.':'Site inserted; spans split and lengths preserved.');}catch(error){$('insert-description').textContent=error.message;}
 };
 function checkField(parent,label,checked,change,id){const wrapper=document.createElement('label');wrapper.className='toggle';const input=document.createElement('input');input.type='checkbox';input.checked=checked;if(id)input.id=id;input.onchange=()=>{change(input.checked);changed({editor:true});};wrapper.append(input,document.createTextNode(label));parent.append(wrapper);return input;}
 function stageControls(parent,settings,neighbor,direction){

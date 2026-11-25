@@ -1,5 +1,12 @@
 # Hyperion Routes change notes
 
+## M06 site-drop fix — November 24, 2026
+
+- Wider site-to-span drop target with a highlighted target during dragging; Yes/No confirmation remains required.
+- Background preview redraws cannot remove a marker during its drag. Final drop coordinates are read directly from the marker.
+- Verified straight and bent span insertion in the browser, cancellation restoring the site and original span, and confirmed insertion producing a two-degree intermediate site.
+- Regression checks: `node verify_m6_drop.cjs` and `node verify_m6_editing.cjs`.
+
 ## M06 — November 24, 2026
 
 Development build on `metis/m6`, based on the approved beige M05 visual refresh. The last LinkedIn baseline is assumed to be M04 from Kevin's recollection; posting history was not independently verified.

@@ -81,6 +81,7 @@ See [change notes](CHANGELOG.md) and [LinkedIn update notes since M04](LINKEDIN_
 ```powershell
 .\.venv\Scripts\python.exe verify_m6_services.py
 node verify_m6_editing.cjs
+node verify_m6_drop.cjs
 .\.venv\Scripts\python.exe verify_m6_geometry.py
 .\.venv\Scripts\python.exe verify_m6_engine.py
 .\.venv\Scripts\python.exe verify_m6_equipment.py
