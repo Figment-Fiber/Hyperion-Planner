@@ -24,6 +24,8 @@ ROOT = Path(__file__).resolve().parent
 STATIC = {
     "/": ("hyperion.html", "text/html; charset=utf-8"),
     "/app.js": ("hyperion.js", "text/javascript; charset=utf-8"),
+    "/m6-ui.js": ("m6_ui.js", "text/javascript; charset=utf-8"),
+    "/editing.js": ("project_editing.js", "text/javascript; charset=utf-8"),
     "/app.css": ("hyperion.css", "text/css; charset=utf-8"),
     "/theme.css": ("assets/branding/hyperion-theme.css", "text/css; charset=utf-8"),
     "/equipment-catalog.json": ("equipment_catalog.json", "application/json; charset=utf-8"),
@@ -195,6 +197,11 @@ def prepare_network(payload):
 
 
 def network_preview(payload):
+    if payload.get("m6"):
+        from m6_engine import prepare_network_m6
+        from engineering_model import equipment_options
+        prepared = prepare_network_m6(payload)
+        return {**prepared, "options": equipment_options(prepared["projected"])}
     from engineering_model import equipment_options, summarize_network
     from zones_screening import screen_routes
     resolved, geometry, projected, design = prepare_network(payload)
@@ -212,6 +219,9 @@ def propagate_design(design_json, transmitter_power):
 
 
 def network_simulation(payload):
+    if payload.get("m6"):
+        from m6_engine import network_simulation_m6
+        return network_simulation_m6(payload)
     from engineering_model import evaluate_design, summarize_network
     from zones_screening import screen_routes
     resolved, geometry, projected, design = prepare_network(payload)
@@ -387,6 +397,9 @@ def quality_check(channels, limits):
     }
 
 def ase_check(channels, threshold, warning=1):
+    channels = [row for row in channels if row.get("osnr_ase_db") is not None]
+    if not channels:
+        return {"status": "Not evaluated", "reason": "No amplifier ASE contribution in this modeled optical section; receiver and total signal-quality checks still apply."}
     if threshold is None:
         return {"status": "Not evaluated"}
     if type(threshold) not in (int, float) or not -100 <= threshold <= 100:
@@ -504,6 +517,37 @@ def workbook(result):
             summary.write_row(index, 0, ("ASE OSNR check · " + key.replace("_", " "), value),
                               alert if result["ase_check"]["status"] in ("Fail", "Review") else None)
         summary.write_row(len(details) + 25, 0, ("FEC margin", "Not evaluated · Requires a validated modem mode"))
+        if result.get("sections"):
+            section_sheet = book.add_worksheet("Optical Sections")
+            section_sheet.set_column("A:H", 24)
+            section_sheet.write_row(0, 0, ("Section", "From", "To", "Verdict", "GSNR minimum (signal BW dB)", "Receive min (dBm)", "Receive max (dBm)", "Check details"), heading)
+            section_channels = book.add_worksheet("Section Channels")
+            section_channels.set_column("A:H", 24)
+            section_channels.write_row(0, 0, ("Section", "Channel", "Frequency (THz)", *METRICS.values()), heading)
+            row = 1
+            for index, section in enumerate(result["sections"], 1):
+                values = section["channels"]
+                check = section["service_check"]
+                section_sheet.write_row(index, 0, [index, section.get("from"), section.get("to"), check["status"], min(c["gsnr_db"] for c in values), min(c["power_dbm"] for c in values), max(c["power_dbm"] for c in values), json.dumps(check)], alert if check["status"] in ("Fail", "Review") else None)
+                for channel in values:
+                    section_channels.write_row(row, 0, [index, channel["channel"], channel["frequency_thz"], *(channel.get(key) for key in METRICS)])
+                    row += 1
+        if result.get("service"):
+            mode_sheet = book.add_worksheet("Mode and Spectrum")
+            mode_sheet.set_column("A:A", 30)
+            mode_sheet.set_column("B:B", 110)
+            for row, (key, value) in enumerate(result["service"].items()):
+                mode_sheet.write_row(row, 0, [key, json.dumps(value) if isinstance(value, (dict, list)) else value])
+        if result.get("comparison_scenarios"):
+            comparison = book.add_worksheet("Rate Comparison")
+            comparison.set_column("A:F", 26)
+            comparison.write_row(0, 0, ("Rate (Gb/s)", "Mode", "Verdict", "Minimum GSNR (signal BW dB)", "Slot width (GHz)", "Details / assumptions"), heading)
+            for row, scenario in enumerate(result["comparison_scenarios"], 1):
+                case = scenario.get("result")
+                if case:
+                    comparison.write_row(row, 0, [scenario["rate_gbps"], case["service"]["mode_id"], case["service_check"]["status"], min(c["gsnr_db"] for c in case["channels"]), case["service"]["slot_width_ghz"], json.dumps(case["service_check"])], alert if case["service_check"]["status"] in ("Fail", "Review") else None)
+                else:
+                    comparison.write_row(row, 0, [scenario["rate_gbps"], "", "Failed to calculate", None, None, scenario.get("error")], alert)
         if "spans" in result:
             spans = book.add_worksheet("Route Spans")
             spans.set_column("A:L", 25)
@@ -641,7 +685,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_error(404)
 
     def do_POST(self):
-        if self.path not in ("/api/run", "/api/distances", "/api/preview"):
+        if self.path not in ("/api/run", "/api/distances", "/api/preview", "/api/compare"):
             self.send_error(404)
             return
         if self.headers.get_content_type() != "application/json":
@@ -656,6 +700,35 @@ class Handler(BaseHTTPRequestHandler):
                 raise ValueError("Invalid simulation inputs.")
             if self.path == "/api/preview":
                 self.json_response(200, network_preview(payload))
+                return
+            if self.path == "/api/compare":
+                from service_model import compare_requirements
+                from m6_engine import network_simulation_m6
+                scenarios = []
+                for spec in compare_requirements(payload):
+                    scenario = copy.deepcopy(payload)
+                    shared = {key: value for key, value in payload.get("requirements", {}).items()
+                              if key in ("grid", "channels", "center_thz", "guard_band_ghz", "launch_dbm", "reserve_db", "tx_osnr", "band_min_thz", "band_max_thz")}
+                    requirements = {**shared, "rate_gbps": spec["rate_gbps"], "mode_id": spec["mode_id"]}
+                    scenario.update(m6=True, requirements=requirements)
+                    scenario.setdefault("equipment", {})["service_gbps"] = spec["rate_gbps"]
+                    try:
+                        result = network_simulation_m6(scenario)
+                        scenarios.append({"rate_gbps": spec["rate_gbps"], "requirements": requirements, "result": result})
+                    except (ValueError, RuntimeError) as error:
+                        scenarios.append({"rate_gbps": spec["rate_gbps"], "requirements": requirements, "error": str(error)})
+                successful = next((item["result"] for item in scenarios if item.get("result")), None)
+                response = {"scenarios": scenarios, "revision": payload.get("revision")}
+                if successful:
+                    export = copy.deepcopy(successful)
+                    export.update(comparison_scenarios=scenarios, quality_check=quality_check(export["channels"], payload.get("quality_limits")), ase_check=ase_check(export["channels"], payload.get("ase_threshold_db")), catalog_checks=[])
+                    run_id = uuid4().hex
+                    with RUNS_LOCK:
+                        RUNS[run_id] = export
+                        if len(RUNS) > 32:
+                            RUNS.popitem(last=False)
+                    response["workbook_url"] = f"/api/workbook/{run_id}"
+                self.json_response(200, response)
                 return
             if self.path == "/api/distances":
                 points = payload["coordinates"]

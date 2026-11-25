@@ -9,7 +9,7 @@ function nextRouteNumber() {
 }
 function initialProject() {
   return {
-    version:2, project_id:uid(), revision:1, route_name:"DWDM Route " + nextRouteNumber(),
+    version:2,m6:true,requirements:{rate_gbps:100,mode_id:"generic-100g",grid:"fixed",channels:1,center_thz:193.1,guard_band_ghz:0,launch_dbm:0,reserve_db:2}, project_id:uid(), revision:1, route_name:"DWDM Route " + nextRouteNumber(),
     network:{nodes:[{id:"A",name:"Kapolei",lat:21.335,lon:-158.058},{id:"B",name:"Honolulu",lat:21.307,lon:-157.858}],
       links:[{id:"A-B",from:"A",to:"B",bends:[],override:null,splices:[],inline_gain:null,fiber:{type_variety:"SSMF",loss_coef:0.2}}],
       services:[{id:"service-1",source:"A",target:"B",via:[]}]},
@@ -38,6 +38,7 @@ function panelFor(id) {
   return equipmentFor(id).panel ||= {enabled:true,pairs_per_degree:1,connector_loss_db:.5,splices_per_degree:1,splice_loss_db:.1};
 }
 function changed({draw=true, editor=false}={}) {
+  if(typeof normalizeM6Project==="function")normalizeM6Project();
   const serialized = JSON.stringify(project);
   if (serialized !== committed) {
     undoStack.push(committed);
@@ -50,6 +51,7 @@ function changed({draw=true, editor=false}={}) {
   $("undo").disabled = undoStack.length === 0;
   $("redo").disabled = redoStack.length === 0;
   $("stale-results").hidden = !lastSnapshot || lastSnapshot === JSON.stringify(project);
+  if(typeof updateM6State==="function")updateM6State();
   if (draw) renderMap();
   renderNetworkList();
   if (editor) renderEditor();
@@ -70,6 +72,7 @@ async function updatePreview() {
     const result = await request("/api/preview", snapshot);
     if (sequence !== previewSequence || JSON.stringify(snapshot) !== JSON.stringify(project)) return;
     preview = result;
+    if(typeof updateM6State==="function")updateM6State();
     renderScreening(result.zones);
     renderNetworkList();
     renderMap();
@@ -90,7 +93,7 @@ function setTool(value) {
   connectStart = null;
   for (const [id,key] of [["place-site","site"],["draw-span","connect"],["draw-bend","bend"]])
     $(id).setAttribute("aria-pressed", String(tool === key));
-  $("tool-hint").textContent = tool === "site" ? "Click to place a site (up to six)." :
+  $("tool-hint").textContent = tool === "site" ? "Click to place a site (up to 20)." :
     tool === "connect" ? "Click the two sites to connect." :
     tool === "bend" ? "Select a span, then click to add bends. Click a bend to remove." : "Drag sites or click a span to edit.";
 }
@@ -100,12 +103,15 @@ $("draw-bend").onclick = () => setTool("bend");
 map.on("click", event => {
   const point = event.latlng.wrap();
   if (tool === "site") {
-    if (project.network.nodes.length === 6) { status("M05 supports up to six sites."); return; }
-    const id = ["A","B","C","D","E","F"].find(id => !site(id));
+    if (project.network.nodes.length >= 20) { status("M06 supports up to 20 sites."); return; }
+    if(typeof offerInsertionAt==="function" && offerInsertionAt([point.lat,point.lng]))return;
+    const id = "ABCDEFGHIJKLMNOPQRST".split("").find(id => !site(id));
     project.network.nodes.push({id,name:"Site " + id,lat:point.lat,lon:point.lng});
     selection = {type:"node",id};
     changed({editor:true});
     setTool("site");
+  } else if(tool === "insert" && selection?.type === "link") {
+    if(typeof proposeInsertion==="function")proposeInsertion(selection.id,[point.lat,point.lng]);
   } else if (tool === "bend" && selection?.type === "link") {
     const link = project.network.links.find(link => link.id === selection.id);
     if (link.bends.length >= 50) { status("A span can have up to 50 bends."); return; }
@@ -119,6 +125,8 @@ function choose(type,id) {
   $("route-settings").open = true;
   renderEditor();
   renderMap();
+  $("route-settings").scrollTop=0;
+  if(project.m6)$("design-requirements").open=false;
 }
 function addWarning(point, label, action, configured=false) {
   const icon = L.divIcon({className: configured ? "map-span-amplifier":"map-span-warning",
@@ -130,7 +138,7 @@ function renderMap() {
   const selectedLinks = new Set(preview?.route?.links.map(link => link.id) || []);
   for (const link of project.network.links) {
     const line = L.polyline(spanPath(link),{color:selection?.id===link.id ? "#334761":selectedLinks.has(link.id) ? "#3d7772":"#827e76",weight:selection?.id===link.id?5:3}).addTo(routeLayer);
-    line.on("click", event => { L.DomEvent.stopPropagation(event); choose("link",link.id); });
+    line.on("click", event => { L.DomEvent.stopPropagation(event); if((tool==="insert"||tool==="site")&&typeof proposeInsertion==="function"){proposeInsertion(link.id,[event.latlng.lat,event.latlng.lng]);return;}choose("link",link.id); });
     if (selection?.id===link.id) link.bends.forEach((point,index) => {
       const marker = L.marker(point,{draggable:true,icon:L.divIcon({className:"bend-point",html:"",iconSize:[14,14]}),title:"Bend " + (index+1) + " · Click to remove"}).addTo(routeLayer);
       marker.on("drag",() => {
@@ -149,10 +157,13 @@ function renderMap() {
   }
   for (const node of project.network.nodes) {
     const marker = L.marker([node.lat,node.lon], {draggable:true,title:node.name,
-      icon:L.divIcon({className:"site-marker",html:node.id,iconSize:[32,32]})}).addTo(routeLayer);
+      icon:L.divIcon({className:"site-marker"+(selection?.id===node.id?" selected-marker":""),html:node.id,iconSize:[32,32]})}).addTo(routeLayer);
     marker.getElement().id="point-"+node.id.toLowerCase();
     marker.on("drag",()=>{const ll=marker.getLatLng().wrap();node.lat=ll.lat;node.lon=ll.lng;});
-    marker.on("dragend",()=>{project.reference_case=false;changed({editor:true});});
+    marker.on("dragend",()=>{
+      if(typeof offerInsertionAt==="function" && offerInsertionAt([node.lat,node.lon],node.id))return;
+      project.reference_case=false;changed({editor:true});
+    });
     marker.on("click",()=> {
       if(tool==="connect") {
         if (!connectStart) {connectStart=node.id; status("Now click the other site."); return;}
@@ -163,6 +174,7 @@ function renderMap() {
         const link={id:uid(),from,to:node.id,bends:[],override:null,splices:[],inline_gain:null,fiber:{type_variety:"SSMF",loss_coef:.2}};
         project.network.links.push(link); selection={type:"link",id:link.id}; changed({editor:true});setTool("connect");
       } else {
+        choose("node",node.id);
         const content=document.createElement("div");
         const title=document.createElement("strong");title.textContent=node.name;
         const text=document.createElement("p");text.textContent=degrees(node.id)+" line degrees · "+(panelFor(node.id).enabled?"Corning Centrix panel":"Direct termination");
@@ -208,6 +220,7 @@ function renderEditor() {
     heading.textContent=node.id+" · Site settings";
     inputField(editor,"Site name",node.name,value=>{node.name=value.trim()||node.id;renderServiceSelects();},{type:"text",id:"site-name"});
     const settings=equipmentFor(node.id),panel=panelFor(node.id);
+    if(project.m6 && typeof renderM6NodeControls==="function")renderM6NodeControls(editor,node,settings);
     selectField(editor,"Vendor override",[["","Use global preset"],["generic","Generic"],["ciena","Ciena"],["nokia","Nokia"]],settings.vendor||"",value=>{if(value)settings.vendor=value;else delete settings.vendor;delete settings.profile_id;},"node-vendor");
     const options=document.createElement("div");options.id="equipment-options";editor.append(options);
     selectField(editor,"Fiber termination",[["panel","Corning Centrix"],["direct","Direct termination / no panel"]],panel.enabled?"panel":"direct",value=>panel.enabled=value==="panel","panel-enabled");
@@ -216,7 +229,7 @@ function renderEditor() {
     inputField(editor,"Loss per mated pair (dB)",panel.connector_loss_db,value=>panel.connector_loss_db=value,{max:10,id:"panel-connector-loss"});
     inputField(editor,"Pigtail splices per degree",panel.splices_per_degree,value=>panel.splices_per_degree=value,{step:"1",max:24,id:"panel-splices"});
     inputField(editor,"Loss per pigtail splice (dB)",panel.splice_loss_db,value=>panel.splice_loss_db=value,{max:10,id:"panel-splice-loss"});
-    if(degrees(node.id)>=2) {
+    if((settings.role|| (degrees(node.id)>=2?"roadm":"terminal"))==="roadm") {
       const roadm=settings.roadm ||= {target_pch_out_db:-20,path_loss_db:0,band_min_thz:191.3,band_max_thz:196.1};
       text(editor,"ROADM/WSS · "+degrees(node.id)+" connected degrees. The selected service determines the ingress and egress pair.");
       inputField(editor,"ROADM target (dBm/channel)",roadm.target_pch_out_db,value=>roadm.target_pch_out_db=value,{min:-30,max:5,id:"roadm-target"});
@@ -227,12 +240,13 @@ function renderEditor() {
     }
     const remove=document.createElement("button");remove.textContent="Remove site";remove.className="danger";
     remove.disabled=project.network.nodes.length<=2;
-    remove.onclick=()=>{project.network.nodes=project.network.nodes.filter(item=>item.id!==node.id);project.network.links=project.network.links.filter(link=>link.from!==node.id&&link.to!==node.id);delete project.equipment.nodes[node.id];selection=null;renderServiceSelects();changed({editor:true});};editor.append(remove);
+    remove.onclick=()=>{const apply=()=>{project.network.nodes=project.network.nodes.filter(item=>item.id!==node.id);project.network.links=project.network.links.filter(link=>link.from!==node.id&&link.to!==node.id);delete project.equipment.nodes[node.id];selection=null;renderServiceSelects();changed({editor:true});};if(project.m6)confirmTopologyChange('Remove '+node.name+'?','This removes the site and its '+degrees(node.id)+' connected spans. Services using it will need reconnection. Undo is available.',apply);else apply();};editor.append(remove);
     renderOptionChecks();
   } else {
     const link=project.network.links.find(link=>link.id===selection.id);if(!link){selection=null;return;}
     heading.textContent=site(link.from).name+" → "+site(link.to).name;
     const readings=document.createElement("p");readings.id="span-readings";editor.append(readings);
+    if(typeof renderM6SpanControls==="function")renderM6SpanControls(editor,link);
     inputField(editor,"Engineered length (km)",link.override,value=>{link.override=value;project.reference_case=false;},{min:.001,max:20000,id:"span-length",placeholder:"Follow drawn geometry"});
     const fiber=link.fiber ||= {type_variety:"SSMF",loss_coef:.2};
     selectField(editor,"Generic fiber model",[["SSMF","SSMF · Standard single mode"],["LOF","LOF · Large effective area"],["NZDF","NZDF · Non-zero dispersion shifted"]],fiber.type_variety,value=>fiber.type_variety=value,"fiber-type");
@@ -258,7 +272,7 @@ function renderEditor() {
     text(editor,link.bends.length+" route bends · Click Draw bends and then the map to add. Drag a bend to move it or click it to remove.");
     const clear=document.createElement("button");clear.textContent="Clear bends";clear.onclick=()=>{link.bends=[];project.reference_case=false;changed({editor:true});};editor.append(clear);
     const remove=document.createElement("button");remove.textContent="Remove span";remove.className="danger";
-    remove.onclick=()=>{project.network.links=project.network.links.filter(item=>item.id!==link.id);selection=null;changed({editor:true});};editor.append(remove);
+    remove.onclick=()=>{const apply=()=>{project.network.links=project.network.links.filter(item=>item.id!==link.id);selection=null;changed({editor:true});};if(project.m6)confirmTopologyChange('Remove this span?','Its bends, splice entries and inline equipment will be removed. Connected services may need a new path. Undo is available.',apply);else apply();};editor.append(remove);
     renderSpanReadings();
   }
 }
@@ -337,6 +351,7 @@ $("design-mode").onchange=()=>{project.equipment.mode=$("design-mode").value;cha
 $("service-rate").onchange=()=>{project.equipment.service_gbps=Number($("service-rate").value);proposeProfiles();changed({editor:true});};
 $("vendor").onchange=()=>{project.equipment.vendor=$("vendor").value;proposeProfiles(true);changed({editor:true});};
 function proposeProfiles(vendorChanged=false) {
+  if(project.m6 && !vendorChanged)return;
   if(project.equipment.mode!=="automatic")return;
   for(const node of project.network.nodes) {
     const settings=equipmentFor(node.id);
@@ -350,9 +365,11 @@ function proposeProfiles(vendorChanged=false) {
 }
 function restore(value) {
   project=clone(value);selection=null;tool=null;
+  if(typeof normalizeM6Project==="function")normalizeM6Project();
   for(const node of project.network.nodes)panelFor(node.id);
   committed=JSON.stringify(project);generation++;
   syncFields();renderEditor();renderMap();renderNetworkList();
+  if(typeof syncM6Fields==="function")syncM6Fields();
   $("undo").disabled=!undoStack.length;$("redo").disabled=!redoStack.length;
   $("stale-results").hidden=!lastSnapshot||lastSnapshot===committed;
   clearTimeout(previewTimer);previewTimer=setTimeout(updatePreview,100);
@@ -362,7 +379,7 @@ $("redo").onclick=()=>{if(!redoStack.length)return;undoStack.push(JSON.stringify
 $("back").onclick=()=>{selection=null;tool=null;map.closePopup();renderEditor();renderMap();};
 $("new-route").onclick=()=>{const next=initialProject();undoStack.push(JSON.stringify(project));redoStack=[];restore(next);fitMap();};
 $("reference").onclick=()=>{
-  const next=initialProject();next.reference_case=true;
+  const next=initialProject();delete next.m6;delete next.requirements;next.reference_case=true;
   for(const node of next.network.nodes)next.equipment.nodes[node.id]={panel:{enabled:true,pairs_per_degree:1,connector_loss_db:.5,splices_per_degree:0,splice_loss_db:.1}};
   undoStack.push(JSON.stringify(project));redoStack=[];restore(next);fitMap();
 };
@@ -377,6 +394,7 @@ $("save-route").onclick=async()=>{
     const validation=await request("/api/preview",project);
     const summary=lastSnapshot===JSON.stringify(project)?lastResult?.equipment_summary:validation.equipment_summary;
     const saved={...clone(project),equipment_summary:summary||null};
+    if(typeof markProjectSaved==="function")markProjectSaved();
     downloadJSON(saved,"hyperion-route.json");
     const number=/^DWDM Route (\d+)$/.exec(project.route_name);
     try{
@@ -431,6 +449,7 @@ async function runSimulation() {
   try {
     const result=await request("/api/run",snapshot);
     showResults(result);lastSnapshot=serialized;lastResult=result;
+    if(typeof updateM6State==="function")updateM6State();
     $("stale-results").hidden=JSON.stringify(project)===serialized;
     status(JSON.stringify(project)===serialized?"Simulation complete.":"Simulation complete for the previous revision. Current edits require a rerun.");
   }catch(error){$("simulation-error").textContent="Calculation error · "+error.message;$("simulation-error").hidden=false;status("Simulation failed.");}
@@ -443,10 +462,12 @@ $("rail-settings").onclick=()=>{
   $("route-settings").querySelector("summary").focus({preventScroll:true});
 };
 function showResults(result) {
+  if(typeof showM6Results==="function")showM6Results(result);
   $("result-summary").textContent=result.route_name+" · Revision "+result.revision+" · "+result.site_names.join(" → ")+" · "+result.span_length_km.toFixed(3)+" km · "+result.channels.length+" channels";
   if(result.passive_budget)$("result-summary").textContent+=" · External passive loss "+result.passive_budget.total_external_passive_db.toFixed(2)+" dB (including local add/drop panels)";
   const checks=$("results-checks");checks.replaceChildren();
   const all=[];
+  if(result.service_check)all.push({title:"Mode feasibility · stated planning assumptions",status:result.service_check.status,detail:result.service_check.reason});
   for(const [title,check] of [["GSNR planning",result.quality_check],["ASE OSNR planning",result.ase_check]]) {
     all.push({title,status:check.status,detail:check.reason||(Number.isFinite(check.remaining_db)?"Channel "+check.channel+" · Remaining margin "+check.remaining_db.toFixed(2)+" dB. "+(check.action||""):"Enter a planning threshold to evaluate this margin.")});
   }
@@ -459,10 +480,12 @@ function showResults(result) {
     const box=document.createElement("div");box.className="result-check"+(["Fail","Review"].includes(item.status)?" span-warning":"");
     const label=document.createElement("strong");label.textContent=item.title+" · "+item.status;
     box.append(label);text(box,item.detail||"", "");checks.append(box);
+    if(["Fail","Review"].includes(item.status)&&selection){const fix=document.createElement("button");fix.textContent="Open selected settings";fix.onclick=()=>choose(selection.type,selection.id);box.append(fix);}
   }
   $("channels").replaceChildren(...result.channels.map(channel=>{
     const row=document.createElement("tr");
-    for(const value of [channel.channel,channel.frequency_thz.toFixed(5),channel.power_dbm.toFixed(2),channel.osnr_ase_db.toFixed(2),channel.snr_nli_db.toFixed(2),channel.gsnr_db.toFixed(2)])row.insertCell().textContent=value;
+    const metric=(value,digits=2)=>value===null?"∞ / no contribution":Number.isFinite(value)?value.toFixed(digits):"Not evaluated";
+    for(const value of [channel.channel,metric(channel.frequency_thz,5),metric(channel.power_dbm),metric(channel.osnr_ase_db),metric(channel.snr_nli_db),metric(channel.gsnr_db)])row.insertCell().textContent=value;
     return row;
   }));
   $("channel-table").hidden=false;

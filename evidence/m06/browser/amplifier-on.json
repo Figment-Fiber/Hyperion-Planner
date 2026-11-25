@@ -1,0 +1,4653 @@
+{
+  "channels": [
+    {
+      "frequency_thz": 193.1,
+      "power_dbm": 1.4,
+      "osnr_ase_db": 33.36,
+      "snr_nli_db": 28.96,
+      "gsnr_db": 27.61,
+      "channel": 1,
+      "no_ase": false
+    }
+  ],
+  "raw_stdout": "User input for spectrum used for propagation instead of SI\nPower mode is set to False\n=> it can be modified in eqpt_config.json - Span\n\nThere are 2 fiber spans over 21 km between Site_A and Site_B\n\nNow propagating between Site_A and Site_B:\nReference used for design: (Input optical power reference in span = 0.00dBm,\n                            spacing = 50.00GHz\n                            nb_channels = 2)\n\nChannels propagating: (Input optical power deviation in span = 0.00dB,\n                       spacing = 50.00GHz,\n                       transceiver output power = 0.00dBm,\n                       nb_channels = 1)\n\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually\nTransceiver Site_A\n  GSNR (0.1nm, dB):          40.00\n  GSNR (signal bw, dB):      35.92\n  OSNR ASE (0.1nm, dB):      40.00\n  OSNR ASE (signal bw, dB):  35.92\n  CD (ps/nm):                0.00\n  PMD (ps):                  0.00\n  PDL (dB):                  0.00\n  Latency (ms):              0.00\n  Actual pch out (dBm):      0.00\nEdfa Amp_A_outgoing\n  type_variety:           std_medium_gain\n  effective gain(dB):     8.00\n  (before att_in and before output VOA)\n  tilt-target(dB)         0.00\n  noise figure (dB):      17.00\n  (including att_in)\n  pad att_in (dB):        7.00\n  Power In (dBm):         0.00\n  Power Out (dBm):        8.00\n  Delta_P (dB):           None\n  target pch (dBm):       None\n  actual pch out (dBm):   8.00\n  output VOA (dB):        0.00\nFiber          Span1\n  type_variety:                SSMF\n  length (km):                 10.31\n  pad att_in (dB):             0.00\n  total loss (dB):             3.26\n  (includes conn loss (dB) in: 0.60 out: 0.60)\n  (conn loss out includes EOL margin defined in eqpt_config.json)\n  reference pch out (dBm):     4.74\n  actual pch out (dBm):        4.74\nFiber          Span2\n  type_variety:                SSMF\n  length (km):                 10.67\n  pad att_in (dB):             0.00\n  total loss (dB):             3.33\n  (includes conn loss (dB) in: 0.60 out: 0.60)\n  (conn loss out includes EOL margin defined in eqpt_config.json)\n  reference pch out (dBm):     1.41\n  actual pch out (dBm):        1.40\nTransceiver Site_B\n  GSNR (0.1nm, dB):          31.70\n  GSNR (signal bw, dB):      27.61\n  OSNR ASE (0.1nm, dB):      37.44\n  OSNR ASE (signal bw, dB):  33.36\n  CD (ps/nm):                350.36\n  PMD (ps):                  0.18\n  PDL (dB):                  0.00\n  Latency (ms):              0.10\n  Actual pch out (dBm):      0.00\n\nTransmission results:\n  Final GSNR (0.1 nm): 31.70 dB\nNetwork (after autodesign) saved to <temporary-run-directory>\\effective.json\n\nThe GSNR per channel at the end of the line is:\nCh. #   Channel frequency (THz)       Channel power (dBm)    OSNR ASE (signal bw, dB)     SNR NLI (signal bw, dB)        GSNR (signal bw, dB)\n    1                 193.10000                      1.40                       33.36                       28.96                       27.61\n",
+  "raw_stderr": "WARNING:gnpy.core.network:\n\tWARNING: effective gain in Node Amp_A_outgoing\n\tis below user specified amplifier std_medium_gain\n\tmin gain: 15dB ; required gain: 8dB. Please check amplifier type.\n\n",
+  "report": "OPTICAL SECTION 1 (Kapolei to Honolulu)\nUser input for spectrum used for propagation instead of SI\nPower mode is set to False\n=> it can be modified in eqpt_config.json - Span\n\nThere are 2 fiber spans over 21 km between Site_A and Site_B\n\nNow propagating between Site_A and Site_B:\nReference used for design: (Input optical power reference in span = 0.00dBm,\n                            spacing = 50.00GHz\n                            nb_channels = 2)\n\nChannels propagating: (Input optical power deviation in span = 0.00dB,\n                       spacing = 50.00GHz,\n                       transceiver output power = 0.00dBm,\n                       nb_channels = 1)\n\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually\nTransceiver Site_A\n  GSNR (0.1nm, dB):          40.00\n  GSNR (signal bw, dB):      35.92\n  OSNR ASE (0.1nm, dB):      40.00\n  OSNR ASE (signal bw, dB):  35.92\n  CD (ps/nm):                0.00\n  PMD (ps):                  0.00\n  PDL (dB):                  0.00\n  Latency (ms):              0.00\n  Actual pch out (dBm):      0.00\nEdfa Amp_A_outgoing\n  type_variety:           std_medium_gain\n  effective gain(dB):     8.00\n  (before att_in and before output VOA)\n  tilt-target(dB)         0.00\n  noise figure (dB):      17.00\n  (including att_in)\n  pad att_in (dB):        7.00\n  Power In (dBm):         0.00\n  Power Out (dBm):        8.00\n  Delta_P (dB):           None\n  target pch (dBm):       None\n  actual pch out (dBm):   8.00\n  output VOA (dB):        0.00\nFiber          Span1\n  type_variety:                SSMF\n  length (km):                 10.31\n  pad att_in (dB):             0.00\n  total loss (dB):             3.26\n  (includes conn loss (dB) in: 0.60 out: 0.60)\n  (conn loss out includes EOL margin defined in eqpt_config.json)\n  reference pch out (dBm):     4.74\n  actual pch out (dBm):        4.74\nFiber          Span2\n  type_variety:                SSMF\n  length (km):                 10.67\n  pad att_in (dB):             0.00\n  total loss (dB):             3.33\n  (includes conn loss (dB) in: 0.60 out: 0.60)\n  (conn loss out includes EOL margin defined in eqpt_config.json)\n  reference pch out (dBm):     1.41\n  actual pch out (dBm):        1.40\nTransceiver Site_B\n  GSNR (0.1nm, dB):          31.70\n  GSNR (signal bw, dB):      27.61\n  OSNR ASE (0.1nm, dB):      37.44\n  OSNR ASE (signal bw, dB):  33.36\n  CD (ps/nm):                350.36\n  PMD (ps):                  0.18\n  PDL (dB):                  0.00\n  Latency (ms):              0.10\n  Actual pch out (dBm):      0.00\n\nTransmission results:\n  Final GSNR (0.1 nm): 31.70 dB\nNetwork (after autodesign) saved to <temporary-run-directory>\\effective.json",
+  "runtime_seconds": 2.191086200065911,
+  "effective_topology": {
+    "elements": [
+      {
+        "uid": "Site_A",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 0,
+            "longitude": 0,
+            "city": null,
+            "region": null
+          }
+        }
+      },
+      {
+        "uid": "Amp_A_outgoing",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "gain_target": 8,
+          "delta_p": null,
+          "tilt_target": 0,
+          "out_voa": 0,
+          "in_voa": 0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0,
+            "longitude": 0,
+            "city": null,
+            "region": null
+          }
+        }
+      },
+      {
+        "uid": "Span1",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 10.314442,
+          "length_units": "km",
+          "att_in": 0,
+          "con_in": 0.6,
+          "con_out": 0.6,
+          "loss_coef": 0.2
+        },
+        "metadata": {
+          "location": {
+            "latitude": 1,
+            "longitude": 0,
+            "city": null,
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "Span2",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 10.665179,
+          "length_units": "km",
+          "att_in": 0,
+          "con_in": 0.6,
+          "con_out": 0.6,
+          "loss_coef": 0.2
+        },
+        "metadata": {
+          "location": {
+            "latitude": 1,
+            "longitude": 0,
+            "city": null,
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "Site_B",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 0,
+            "longitude": 0,
+            "city": null,
+            "region": null
+          }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from_node": "Site_A",
+        "to_node": "Amp_A_outgoing"
+      },
+      {
+        "from_node": "Amp_A_outgoing",
+        "to_node": "Span1"
+      },
+      {
+        "from_node": "Span1",
+        "to_node": "Span2"
+      },
+      {
+        "from_node": "Span2",
+        "to_node": "Site_B"
+      }
+    ],
+    "network_name": "Hyperion M06 optical section 1"
+  },
+  "command": [
+    "<workspace>\\.hyperion-gnpy\\Scripts\\python.exe",
+    "-c",
+    "from gnpy.tools.cli_examples import transmission_main_example; transmission_main_example()",
+    "<temporary-run-directory>\\topology.json",
+    "Site_A",
+    "Site_B",
+    "-e",
+    "<temporary-run-directory>\\equipment.json",
+    "--spectrum",
+    "<temporary-run-directory>\\spectrum.json",
+    "--no-insert-edfas",
+    "--show-channels",
+    "--save-network",
+    "<temporary-run-directory>\\effective.json"
+  ],
+  "topology_sha256": "05aaaf2fcb8fb0601487518f05f461af1fa30bfd82580723973f98fd77814e2e",
+  "equipment_sha256": "a226acc8f4b806b7d56f2cd5d18404c37182b63184d06582c8e1e3a39a78cafd",
+  "spectrum_sha256": "c4ca3c89bf802eec2ec93600d8e42c5e291f848adc7673f955779d41ea505888",
+  "section": 1,
+  "from": "Kapolei",
+  "to": "Honolulu",
+  "topology_input": {
+    "network_name": "Hyperion M06 optical section 1",
+    "elements": [
+      {
+        "uid": "Site_A",
+        "type": "Transceiver"
+      },
+      {
+        "uid": "Amp_A_outgoing",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "gain_target": 8,
+          "tilt_target": 0,
+          "out_voa": 0
+        }
+      },
+      {
+        "uid": "Span1",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 10.314442,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0,
+          "con_in": 0.6,
+          "con_out": 0.6
+        },
+        "metadata": {
+          "location": {
+            "region": "",
+            "latitude": 1,
+            "longitude": 0
+          }
+        }
+      },
+      {
+        "uid": "Span2",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 10.665179,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0,
+          "con_in": 0.6,
+          "con_out": 0.6
+        },
+        "metadata": {
+          "location": {
+            "region": "",
+            "latitude": 1,
+            "longitude": 0
+          }
+        }
+      },
+      {
+        "uid": "Site_B",
+        "type": "Transceiver"
+      }
+    ],
+    "connections": [
+      {
+        "from_node": "Site_A",
+        "to_node": "Amp_A_outgoing"
+      },
+      {
+        "from_node": "Amp_A_outgoing",
+        "to_node": "Span1"
+      },
+      {
+        "from_node": "Span1",
+        "to_node": "Span2"
+      },
+      {
+        "from_node": "Span2",
+        "to_node": "Site_B"
+      }
+    ]
+  },
+  "equipment_input": {
+    "Edfa": [
+      {
+        "type_variety": "high_detail_model_example",
+        "type_def": "advanced_model",
+        "gain_flatmax": 25,
+        "gain_min": 15,
+        "p_max": 21,
+        "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+        "out_voa_auto": false,
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "Juniper_BoosterHG",
+        "type_def": "advanced_model",
+        "gain_flatmax": 25,
+        "gain_min": 10,
+        "p_max": 21,
+        "advanced_config_from_json": "Juniper-BoosterHG.json",
+        "out_voa_auto": false,
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "operator_model_example",
+        "type_def": "variable_gain",
+        "gain_flatmax": 26,
+        "gain_min": 15,
+        "p_max": 23,
+        "nf_min": 6,
+        "nf_max": 10,
+        "out_voa_auto": false,
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "openroadm_ila_low_noise",
+        "type_def": "openroadm",
+        "gain_flatmax": 27,
+        "gain_min": 0,
+        "p_max": 22,
+        "nf_coef": [
+          -0.0008104,
+          -0.06221,
+          -0.5889,
+          37.62
+        ],
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "openroadm_ila_standard",
+        "type_def": "openroadm",
+        "gain_flatmax": 27,
+        "gain_min": 0,
+        "p_max": 22,
+        "nf_coef": [
+          -0.0005952,
+          -0.0625,
+          -1.071,
+          28.99
+        ],
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "openroadm_mw_mw_preamp",
+        "type_def": "openroadm_preamp",
+        "gain_flatmax": 27,
+        "gain_min": 0,
+        "p_max": 22,
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "openroadm_mw_mw_preamp_typical_ver5",
+        "type_def": "openroadm",
+        "gain_flatmax": 27,
+        "gain_min": 0,
+        "p_max": 22,
+        "nf_coef": [
+          -0.0005952,
+          -0.0625,
+          -1.071,
+          28.99
+        ],
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "openroadm_mw_mw_preamp_worstcase_ver5",
+        "type_def": "openroadm",
+        "gain_flatmax": 27,
+        "gain_min": 0,
+        "p_max": 22,
+        "nf_coef": [
+          -0.0005952,
+          -0.0625,
+          -1.071,
+          27.99
+        ],
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "openroadm_mw_mw_booster",
+        "type_def": "openroadm_booster",
+        "gain_flatmax": 32,
+        "gain_min": 0,
+        "p_max": 22,
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "std_high_gain",
+        "type_def": "variable_gain",
+        "gain_flatmax": 35,
+        "gain_min": 25,
+        "p_max": 21,
+        "nf_min": 5.5,
+        "nf_max": 7,
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "std_medium_gain",
+        "type_def": "variable_gain",
+        "gain_flatmax": 26,
+        "gain_min": 15,
+        "p_max": 23,
+        "nf_min": 6,
+        "nf_max": 10,
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "std_low_gain",
+        "type_def": "variable_gain",
+        "gain_flatmax": 16,
+        "gain_min": 8,
+        "p_max": 23,
+        "nf_min": 6.5,
+        "nf_max": 11,
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "high_power",
+        "type_def": "variable_gain",
+        "gain_flatmax": 16,
+        "gain_min": 8,
+        "p_max": 25,
+        "nf_min": 9,
+        "nf_max": 15,
+        "out_voa_auto": false,
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "std_fixed_gain",
+        "type_def": "fixed_gain",
+        "gain_flatmax": 21,
+        "gain_min": 20,
+        "p_max": 21,
+        "nf0": 5.5,
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "4pumps_raman",
+        "type_def": "fixed_gain",
+        "gain_flatmax": 12,
+        "gain_min": 12,
+        "p_max": 21,
+        "nf0": -1,
+        "allowed_for_design": false
+      },
+      {
+        "type_variety": "hybrid_4pumps_lowgain",
+        "type_def": "dual_stage",
+        "raman": true,
+        "gain_min": 25,
+        "preamp_variety": "4pumps_raman",
+        "booster_variety": "std_low_gain",
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "hybrid_4pumps_mediumgain",
+        "type_def": "dual_stage",
+        "raman": true,
+        "gain_min": 25,
+        "preamp_variety": "4pumps_raman",
+        "booster_variety": "std_medium_gain",
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "medium+low_gain",
+        "type_def": "dual_stage",
+        "gain_min": 25,
+        "preamp_variety": "std_medium_gain",
+        "booster_variety": "std_low_gain",
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "medium+high_power",
+        "type_def": "dual_stage",
+        "gain_min": 25,
+        "preamp_variety": "std_medium_gain",
+        "booster_variety": "high_power",
+        "allowed_for_design": false
+      }
+    ],
+    "Fiber": [
+      {
+        "type_variety": "SSMF",
+        "dispersion": 1.67e-05,
+        "effective_area": 8.3e-11,
+        "pmd_coef": 1.265e-15
+      },
+      {
+        "type_variety": "NZDF",
+        "dispersion": 5e-06,
+        "effective_area": 7.2e-11,
+        "pmd_coef": 1.265e-15
+      },
+      {
+        "type_variety": "LOF",
+        "dispersion": 2.2e-05,
+        "effective_area": 1.25e-10,
+        "pmd_coef": 1.265e-15
+      }
+    ],
+    "RamanFiber": [
+      {
+        "type_variety": "SSMF",
+        "dispersion": 1.67e-05,
+        "effective_area": 8.3e-11,
+        "pmd_coef": 1.265e-15
+      }
+    ],
+    "Span": [
+      {
+        "power_mode": false,
+        "delta_power_range_db": [
+          -2,
+          3,
+          0.5
+        ],
+        "max_fiber_lineic_loss_for_raman": 0.25,
+        "target_extended_gain": 2.5,
+        "max_length": 150,
+        "length_units": "km",
+        "max_loss": 28,
+        "padding": 0,
+        "EOL": 0,
+        "con_in": 0,
+        "con_out": 0
+      }
+    ],
+    "Roadm": [
+      {
+        "type_variety": "default",
+        "target_pch_out_db": -20,
+        "add_drop_osnr": 38,
+        "pmd": 0,
+        "pdl": 0,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
+      },
+      {
+        "type_variety": "roadm_type_1",
+        "target_pch_out_db": -18,
+        "add_drop_osnr": 35,
+        "pmd": 0,
+        "pdl": 0,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "roadm-path-impairments": []
+      },
+      {
+        "type_variety": "detailed_impairments",
+        "target_pch_out_db": -20,
+        "add_drop_osnr": 38,
+        "pmd": 0,
+        "pdl": 0,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "roadm-path-impairments": [
+          {
+            "roadm-path-impairments-id": 0,
+            "roadm-express-path": [
+              {
+                "frequency-range": {
+                  "lower-frequency": 191300000000000.0,
+                  "upper-frequency": 196100000000000.0
+                },
+                "roadm-pmd": 0,
+                "roadm-cd": 0,
+                "roadm-pdl": 0,
+                "roadm-inband-crosstalk": 0,
+                "roadm-maxloss": 16.5
+              }
+            ]
+          },
+          {
+            "roadm-path-impairments-id": 1,
+            "roadm-add-path": [
+              {
+                "frequency-range": {
+                  "lower-frequency": 191300000000000.0,
+                  "upper-frequency": 196100000000000.0
+                },
+                "roadm-pmd": 0,
+                "roadm-cd": 0,
+                "roadm-pdl": 0,
+                "roadm-inband-crosstalk": 0,
+                "roadm-maxloss": 11.5,
+                "roadm-pmax": 2.5,
+                "roadm-osnr": 41,
+                "roadm-noise-figure": 23
+              }
+            ]
+          },
+          {
+            "roadm-path-impairments-id": 2,
+            "roadm-drop-path": [
+              {
+                "frequency-range": {
+                  "lower-frequency": 191300000000000.0,
+                  "upper-frequency": 196100000000000.0
+                },
+                "roadm-pmd": 0,
+                "roadm-cd": 0,
+                "roadm-pdl": 0,
+                "roadm-inband-crosstalk": 0,
+                "roadm-maxloss": 11.5,
+                "roadm-minloss": 7.5,
+                "roadm-typloss": 10,
+                "roadm-pmin": -13.5,
+                "roadm-pmax": -9.5,
+                "roadm-ptyp": -12,
+                "roadm-osnr": 41,
+                "roadm-noise-figure": 15
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "SI": [
+      {
+        "f_min": 193050000000000.0,
+        "baud_rate": 32000000000.0,
+        "f_max": 193100000000000.0,
+        "spacing": 50000000000.0,
+        "power_dbm": 0.0,
+        "power_range_db": [
+          0,
+          0,
+          1
+        ],
+        "tx_power_dbm": 0.0,
+        "roll_off": 0.15,
+        "tx_osnr": 40.0,
+        "sys_margins": 2.0,
+        "use_si_channel_count_for_design": true
+      }
+    ],
+    "Transceiver": [
+      {
+        "type_variety": "vendorA_trx-type1",
+        "frequency": {
+          "min": 191350000000000.0,
+          "max": 196100000000000.0
+        },
+        "mode": [
+          {
+            "format": "mode 1",
+            "baud_rate": 32000000000.0,
+            "OSNR": 11,
+            "bit_rate": 100000000000.0,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "min_spacing": 37500000000.0,
+            "cost": 1
+          },
+          {
+            "format": "mode 2",
+            "baud_rate": 66000000000.0,
+            "OSNR": 15,
+            "bit_rate": 200000000000.0,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "min_spacing": 75000000000.0,
+            "cost": 1
+          }
+        ]
+      },
+      {
+        "type_variety": "Voyager",
+        "frequency": {
+          "min": 191350000000000.0,
+          "max": 196100000000000.0
+        },
+        "mode": [
+          {
+            "format": "mode 1",
+            "baud_rate": 32000000000.0,
+            "OSNR": 12,
+            "bit_rate": 100000000000.0,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "min_spacing": 37500000000.0,
+            "cost": 1
+          },
+          {
+            "format": "mode 3",
+            "baud_rate": 44000000000.0,
+            "OSNR": 18,
+            "bit_rate": 300000000000.0,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "min_spacing": 62500000000.0,
+            "cost": 1
+          },
+          {
+            "format": "mode 2",
+            "baud_rate": 66000000000.0,
+            "OSNR": 21,
+            "bit_rate": 400000000000.0,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "min_spacing": 75000000000.0,
+            "cost": 1
+          },
+          {
+            "format": "mode 4",
+            "baud_rate": 66000000000.0,
+            "OSNR": 16,
+            "bit_rate": 200000000000.0,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "min_spacing": 75000000000.0,
+            "cost": 1
+          }
+        ]
+      }
+    ]
+  },
+  "spectrum_input": {
+    "spectrum": [
+      {
+        "f_min": 193100000000000.0,
+        "f_max": 193100000000000.0,
+        "baud_rate": 32000000000.0,
+        "slot_width": 50000000000.0,
+        "roll_off": 0.15,
+        "tx_osnr": 40.0,
+        "tx_power_dbm": 0.0,
+        "label": "generic-100g-ch1"
+      }
+    ]
+  },
+  "service_check": {
+    "status": "Fail",
+    "reason": "Every OEO-delimited section must pass; all mode limits are illustrative.",
+    "section_checks": [
+      {
+        "status": "Fail",
+        "reason": "Receiver power above maximum",
+        "margin_db": 13.61
+      }
+    ],
+    "engineering_issue_count": 3
+  },
+  "engine_version": "3.0.1",
+  "python_version": "3.12.15",
+  "topology": "Explicit M06 transparent sections",
+  "equipment": "Bundled GNPy 3.0.1 generic equipment",
+  "reference_bandwidth": "signal",
+  "spectrum": {
+    "f_min": 193050000000000.0,
+    "f_max": 193100000000000.0,
+    "baud_rate": 32000000000.0,
+    "spacing": 50000000000.0,
+    "roll_off": 0.15,
+    "power_dbm": 0.0,
+    "tx_power_dbm": 0.0,
+    "tx_osnr": 40.0,
+    "power_range_db": [
+      0,
+      0,
+      1
+    ],
+    "sys_margins": 2.0,
+    "use_si_channel_count_for_design": true
+  },
+  "service": {
+    "mode_id": "generic-100g",
+    "propagation_mode_id": "generic-100g",
+    "mode_label": "Generic illustrative 100G",
+    "rate_gbps": 100.0,
+    "mode_payload_gbps": 100,
+    "baud_rate": 32000000000.0,
+    "roll_off": 0.15,
+    "modulation": "DP-QPSK",
+    "fec": "Unspecified generic coded mode",
+    "slot_width": 50000000000.0,
+    "spacing": 50000000000.0,
+    "slot_width_ghz": 50.0,
+    "spacing_ghz": 50.0,
+    "min_slot_width_ghz": 36.8,
+    "occupied_width_ghz": 36.8,
+    "guard_band_ghz": 0.0,
+    "actual_gap_ghz": null,
+    "launch_dbm": 0.0,
+    "tx_osnr": 40.0,
+    "tx_osnr_reference_bandwidth": "0.1 nm",
+    "reserve_db": 2.0,
+    "reference_bandwidth": "signal",
+    "channel_count": 1,
+    "carrier_count": 1,
+    "allocations": [
+      {
+        "channel": 1,
+        "frequency_hz": 193100000000000.0,
+        "frequency_thz": 193.1,
+        "baud_rate": 32000000000.0,
+        "slot_width": 50000000000.0,
+        "roll_off": 0.15,
+        "launch_dbm": 0.0,
+        "tx_osnr": 40.0,
+        "slot_low_thz": 193.075,
+        "slot_high_thz": 193.125,
+        "signal_low_thz": 193.08159999999998,
+        "signal_high_thz": 193.1184
+      }
+    ],
+    "gnpy_spectrum": {
+      "spectrum": [
+        {
+          "f_min": 193100000000000.0,
+          "f_max": 193100000000000.0,
+          "baud_rate": 32000000000.0,
+          "slot_width": 50000000000.0,
+          "roll_off": 0.15,
+          "tx_osnr": 40.0,
+          "tx_power_dbm": 0.0,
+          "label": "generic-100g-ch1"
+        }
+      ]
+    },
+    "spectrum": {
+      "f_min": 193050000000000.0,
+      "f_max": 193100000000000.0,
+      "baud_rate": 32000000000.0,
+      "spacing": 50000000000.0,
+      "roll_off": 0.15,
+      "power_dbm": 0.0,
+      "tx_power_dbm": 0.0,
+      "tx_osnr": 40.0,
+      "power_range_db": [
+        0,
+        0,
+        1
+      ],
+      "sys_margins": 2.0,
+      "use_si_channel_count_for_design": true
+    },
+    "status": "Pass",
+    "issues": [],
+    "assumption_status": "Illustrative generic planning assumptions",
+    "vendor_certified": false,
+    "verdict_scope": "Generic planning",
+    "provenance": {
+      "mode": "Illustrative generic assumptions, not vendor-qualified modes or measured FEC thresholds.",
+      "threshold_source": "Editable hypothetical signal-bandwidth GSNR and receiver thresholds; no measured BER/FEC curve.",
+      "grid_source": "https://www.itu.int/rec/T-REC-G.694.1-202010-I/en",
+      "spectrum_source": "https://gnpy.readthedocs.io/en/master/json.html",
+      "minimum_slot_source": "Occupied width is baud rate times (1 + roll-off); implementation rejects narrower slots. This is not a rate-to-FEC certification rule.",
+      "guard_definition": "Total free bandwidth between adjacent occupied signal edges; allocated slot non-overlap is checked separately."
+    },
+    "required_gsnr_db": 12.0,
+    "rx_min_dbm": -20.0,
+    "rx_max_dbm": 0.0
+  },
+  "sections": [
+    {
+      "channels": [
+        {
+          "frequency_thz": 193.1,
+          "power_dbm": 1.4,
+          "osnr_ase_db": 33.36,
+          "snr_nli_db": 28.96,
+          "gsnr_db": 27.61,
+          "channel": 1,
+          "no_ase": false
+        }
+      ],
+      "raw_stdout": "User input for spectrum used for propagation instead of SI\nPower mode is set to False\n=> it can be modified in eqpt_config.json - Span\n\nThere are 2 fiber spans over 21 km between Site_A and Site_B\n\nNow propagating between Site_A and Site_B:\nReference used for design: (Input optical power reference in span = 0.00dBm,\n                            spacing = 50.00GHz\n                            nb_channels = 2)\n\nChannels propagating: (Input optical power deviation in span = 0.00dB,\n                       spacing = 50.00GHz,\n                       transceiver output power = 0.00dBm,\n                       nb_channels = 1)\n\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually\nTransceiver Site_A\n  GSNR (0.1nm, dB):          40.00\n  GSNR (signal bw, dB):      35.92\n  OSNR ASE (0.1nm, dB):      40.00\n  OSNR ASE (signal bw, dB):  35.92\n  CD (ps/nm):                0.00\n  PMD (ps):                  0.00\n  PDL (dB):                  0.00\n  Latency (ms):              0.00\n  Actual pch out (dBm):      0.00\nEdfa Amp_A_outgoing\n  type_variety:           std_medium_gain\n  effective gain(dB):     8.00\n  (before att_in and before output VOA)\n  tilt-target(dB)         0.00\n  noise figure (dB):      17.00\n  (including att_in)\n  pad att_in (dB):        7.00\n  Power In (dBm):         0.00\n  Power Out (dBm):        8.00\n  Delta_P (dB):           None\n  target pch (dBm):       None\n  actual pch out (dBm):   8.00\n  output VOA (dB):        0.00\nFiber          Span1\n  type_variety:                SSMF\n  length (km):                 10.31\n  pad att_in (dB):             0.00\n  total loss (dB):             3.26\n  (includes conn loss (dB) in: 0.60 out: 0.60)\n  (conn loss out includes EOL margin defined in eqpt_config.json)\n  reference pch out (dBm):     4.74\n  actual pch out (dBm):        4.74\nFiber          Span2\n  type_variety:                SSMF\n  length (km):                 10.67\n  pad att_in (dB):             0.00\n  total loss (dB):             3.33\n  (includes conn loss (dB) in: 0.60 out: 0.60)\n  (conn loss out includes EOL margin defined in eqpt_config.json)\n  reference pch out (dBm):     1.41\n  actual pch out (dBm):        1.40\nTransceiver Site_B\n  GSNR (0.1nm, dB):          31.70\n  GSNR (signal bw, dB):      27.61\n  OSNR ASE (0.1nm, dB):      37.44\n  OSNR ASE (signal bw, dB):  33.36\n  CD (ps/nm):                350.36\n  PMD (ps):                  0.18\n  PDL (dB):                  0.00\n  Latency (ms):              0.10\n  Actual pch out (dBm):      0.00\n\nTransmission results:\n  Final GSNR (0.1 nm): 31.70 dB\nNetwork (after autodesign) saved to <temporary-run-directory>\\effective.json\n\nThe GSNR per channel at the end of the line is:\nCh. #   Channel frequency (THz)       Channel power (dBm)    OSNR ASE (signal bw, dB)     SNR NLI (signal bw, dB)        GSNR (signal bw, dB)\n    1                 193.10000                      1.40                       33.36                       28.96                       27.61\n",
+      "raw_stderr": "WARNING:gnpy.core.network:\n\tWARNING: effective gain in Node Amp_A_outgoing\n\tis below user specified amplifier std_medium_gain\n\tmin gain: 15dB ; required gain: 8dB. Please check amplifier type.\n\n",
+      "report": "User input for spectrum used for propagation instead of SI\nPower mode is set to False\n=> it can be modified in eqpt_config.json - Span\n\nThere are 2 fiber spans over 21 km between Site_A and Site_B\n\nNow propagating between Site_A and Site_B:\nReference used for design: (Input optical power reference in span = 0.00dBm,\n                            spacing = 50.00GHz\n                            nb_channels = 2)\n\nChannels propagating: (Input optical power deviation in span = 0.00dB,\n                       spacing = 50.00GHz,\n                       transceiver output power = 0.00dBm,\n                       nb_channels = 1)\n\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually\nTransceiver Site_A\n  GSNR (0.1nm, dB):          40.00\n  GSNR (signal bw, dB):      35.92\n  OSNR ASE (0.1nm, dB):      40.00\n  OSNR ASE (signal bw, dB):  35.92\n  CD (ps/nm):                0.00\n  PMD (ps):                  0.00\n  PDL (dB):                  0.00\n  Latency (ms):              0.00\n  Actual pch out (dBm):      0.00\nEdfa Amp_A_outgoing\n  type_variety:           std_medium_gain\n  effective gain(dB):     8.00\n  (before att_in and before output VOA)\n  tilt-target(dB)         0.00\n  noise figure (dB):      17.00\n  (including att_in)\n  pad att_in (dB):        7.00\n  Power In (dBm):         0.00\n  Power Out (dBm):        8.00\n  Delta_P (dB):           None\n  target pch (dBm):       None\n  actual pch out (dBm):   8.00\n  output VOA (dB):        0.00\nFiber          Span1\n  type_variety:                SSMF\n  length (km):                 10.31\n  pad att_in (dB):             0.00\n  total loss (dB):             3.26\n  (includes conn loss (dB) in: 0.60 out: 0.60)\n  (conn loss out includes EOL margin defined in eqpt_config.json)\n  reference pch out (dBm):     4.74\n  actual pch out (dBm):        4.74\nFiber          Span2\n  type_variety:                SSMF\n  length (km):                 10.67\n  pad att_in (dB):             0.00\n  total loss (dB):             3.33\n  (includes conn loss (dB) in: 0.60 out: 0.60)\n  (conn loss out includes EOL margin defined in eqpt_config.json)\n  reference pch out (dBm):     1.41\n  actual pch out (dBm):        1.40\nTransceiver Site_B\n  GSNR (0.1nm, dB):          31.70\n  GSNR (signal bw, dB):      27.61\n  OSNR ASE (0.1nm, dB):      37.44\n  OSNR ASE (signal bw, dB):  33.36\n  CD (ps/nm):                350.36\n  PMD (ps):                  0.18\n  PDL (dB):                  0.00\n  Latency (ms):              0.10\n  Actual pch out (dBm):      0.00\n\nTransmission results:\n  Final GSNR (0.1 nm): 31.70 dB\nNetwork (after autodesign) saved to <temporary-run-directory>\\effective.json",
+      "runtime_seconds": 2.191086200065911,
+      "effective_topology": {
+        "elements": [
+          {
+            "uid": "Site_A",
+            "type": "Transceiver",
+            "metadata": {
+              "location": {
+                "latitude": 0,
+                "longitude": 0,
+                "city": null,
+                "region": null
+              }
+            }
+          },
+          {
+            "uid": "Amp_A_outgoing",
+            "type": "Edfa",
+            "type_variety": "std_medium_gain",
+            "operational": {
+              "gain_target": 8,
+              "delta_p": null,
+              "tilt_target": 0,
+              "out_voa": 0,
+              "in_voa": 0
+            },
+            "metadata": {
+              "location": {
+                "latitude": 0,
+                "longitude": 0,
+                "city": null,
+                "region": null
+              }
+            }
+          },
+          {
+            "uid": "Span1",
+            "type": "Fiber",
+            "type_variety": "SSMF",
+            "params": {
+              "length": 10.314442,
+              "length_units": "km",
+              "att_in": 0,
+              "con_in": 0.6,
+              "con_out": 0.6,
+              "loss_coef": 0.2
+            },
+            "metadata": {
+              "location": {
+                "latitude": 1,
+                "longitude": 0,
+                "city": null,
+                "region": ""
+              }
+            }
+          },
+          {
+            "uid": "Span2",
+            "type": "Fiber",
+            "type_variety": "SSMF",
+            "params": {
+              "length": 10.665179,
+              "length_units": "km",
+              "att_in": 0,
+              "con_in": 0.6,
+              "con_out": 0.6,
+              "loss_coef": 0.2
+            },
+            "metadata": {
+              "location": {
+                "latitude": 1,
+                "longitude": 0,
+                "city": null,
+                "region": ""
+              }
+            }
+          },
+          {
+            "uid": "Site_B",
+            "type": "Transceiver",
+            "metadata": {
+              "location": {
+                "latitude": 0,
+                "longitude": 0,
+                "city": null,
+                "region": null
+              }
+            }
+          }
+        ],
+        "connections": [
+          {
+            "from_node": "Site_A",
+            "to_node": "Amp_A_outgoing"
+          },
+          {
+            "from_node": "Amp_A_outgoing",
+            "to_node": "Span1"
+          },
+          {
+            "from_node": "Span1",
+            "to_node": "Span2"
+          },
+          {
+            "from_node": "Span2",
+            "to_node": "Site_B"
+          }
+        ],
+        "network_name": "Hyperion M06 optical section 1"
+      },
+      "command": [
+        "<workspace>\\.hyperion-gnpy\\Scripts\\python.exe",
+        "-c",
+        "from gnpy.tools.cli_examples import transmission_main_example; transmission_main_example()",
+        "<temporary-run-directory>\\topology.json",
+        "Site_A",
+        "Site_B",
+        "-e",
+        "<temporary-run-directory>\\equipment.json",
+        "--spectrum",
+        "<temporary-run-directory>\\spectrum.json",
+        "--no-insert-edfas",
+        "--show-channels",
+        "--save-network",
+        "<temporary-run-directory>\\effective.json"
+      ],
+      "topology_sha256": "05aaaf2fcb8fb0601487518f05f461af1fa30bfd82580723973f98fd77814e2e",
+      "equipment_sha256": "a226acc8f4b806b7d56f2cd5d18404c37182b63184d06582c8e1e3a39a78cafd",
+      "spectrum_sha256": "c4ca3c89bf802eec2ec93600d8e42c5e291f848adc7673f955779d41ea505888",
+      "section": 1,
+      "from": "Kapolei",
+      "to": "Honolulu",
+      "topology_input": {
+        "network_name": "Hyperion M06 optical section 1",
+        "elements": [
+          {
+            "uid": "Site_A",
+            "type": "Transceiver"
+          },
+          {
+            "uid": "Amp_A_outgoing",
+            "type": "Edfa",
+            "type_variety": "std_medium_gain",
+            "operational": {
+              "gain_target": 8,
+              "tilt_target": 0,
+              "out_voa": 0
+            }
+          },
+          {
+            "uid": "Span1",
+            "type": "Fiber",
+            "type_variety": "SSMF",
+            "params": {
+              "length": 10.314442,
+              "loss_coef": 0.2,
+              "length_units": "km",
+              "att_in": 0,
+              "con_in": 0.6,
+              "con_out": 0.6
+            },
+            "metadata": {
+              "location": {
+                "region": "",
+                "latitude": 1,
+                "longitude": 0
+              }
+            }
+          },
+          {
+            "uid": "Span2",
+            "type": "Fiber",
+            "type_variety": "SSMF",
+            "params": {
+              "length": 10.665179,
+              "loss_coef": 0.2,
+              "length_units": "km",
+              "att_in": 0,
+              "con_in": 0.6,
+              "con_out": 0.6
+            },
+            "metadata": {
+              "location": {
+                "region": "",
+                "latitude": 1,
+                "longitude": 0
+              }
+            }
+          },
+          {
+            "uid": "Site_B",
+            "type": "Transceiver"
+          }
+        ],
+        "connections": [
+          {
+            "from_node": "Site_A",
+            "to_node": "Amp_A_outgoing"
+          },
+          {
+            "from_node": "Amp_A_outgoing",
+            "to_node": "Span1"
+          },
+          {
+            "from_node": "Span1",
+            "to_node": "Span2"
+          },
+          {
+            "from_node": "Span2",
+            "to_node": "Site_B"
+          }
+        ]
+      },
+      "equipment_input": {
+        "Edfa": [
+          {
+            "type_variety": "high_detail_model_example",
+            "type_def": "advanced_model",
+            "gain_flatmax": 25,
+            "gain_min": 15,
+            "p_max": 21,
+            "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+            "out_voa_auto": false,
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "Juniper_BoosterHG",
+            "type_def": "advanced_model",
+            "gain_flatmax": 25,
+            "gain_min": 10,
+            "p_max": 21,
+            "advanced_config_from_json": "Juniper-BoosterHG.json",
+            "out_voa_auto": false,
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "operator_model_example",
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 23,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "openroadm_ila_low_noise",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 0,
+            "p_max": 22,
+            "nf_coef": [
+              -0.0008104,
+              -0.06221,
+              -0.5889,
+              37.62
+            ],
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "openroadm_ila_standard",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 0,
+            "p_max": 22,
+            "nf_coef": [
+              -0.0005952,
+              -0.0625,
+              -1.071,
+              28.99
+            ],
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "openroadm_mw_mw_preamp",
+            "type_def": "openroadm_preamp",
+            "gain_flatmax": 27,
+            "gain_min": 0,
+            "p_max": 22,
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "openroadm_mw_mw_preamp_typical_ver5",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 0,
+            "p_max": 22,
+            "nf_coef": [
+              -0.0005952,
+              -0.0625,
+              -1.071,
+              28.99
+            ],
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "openroadm_mw_mw_preamp_worstcase_ver5",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 0,
+            "p_max": 22,
+            "nf_coef": [
+              -0.0005952,
+              -0.0625,
+              -1.071,
+              27.99
+            ],
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "openroadm_mw_mw_booster",
+            "type_def": "openroadm_booster",
+            "gain_flatmax": 32,
+            "gain_min": 0,
+            "p_max": 22,
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "std_high_gain",
+            "type_def": "variable_gain",
+            "gain_flatmax": 35,
+            "gain_min": 25,
+            "p_max": 21,
+            "nf_min": 5.5,
+            "nf_max": 7,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+          },
+          {
+            "type_variety": "std_medium_gain",
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 23,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+          },
+          {
+            "type_variety": "std_low_gain",
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 23,
+            "nf_min": 6.5,
+            "nf_max": 11,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+          },
+          {
+            "type_variety": "high_power",
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 25,
+            "nf_min": 9,
+            "nf_max": 15,
+            "out_voa_auto": false,
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "std_fixed_gain",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "p_max": 21,
+            "nf0": 5.5,
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "4pumps_raman",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 12,
+            "gain_min": 12,
+            "p_max": 21,
+            "nf0": -1,
+            "allowed_for_design": false
+          },
+          {
+            "type_variety": "hybrid_4pumps_lowgain",
+            "type_def": "dual_stage",
+            "raman": true,
+            "gain_min": 25,
+            "preamp_variety": "4pumps_raman",
+            "booster_variety": "std_low_gain",
+            "allowed_for_design": true
+          },
+          {
+            "type_variety": "hybrid_4pumps_mediumgain",
+            "type_def": "dual_stage",
+            "raman": true,
+            "gain_min": 25,
+            "preamp_variety": "4pumps_raman",
+            "booster_variety": "std_medium_gain",
+            "allowed_for_design": true
+          },
+          {
+            "type_variety": "medium+low_gain",
+            "type_def": "dual_stage",
+            "gain_min": 25,
+            "preamp_variety": "std_medium_gain",
+            "booster_variety": "std_low_gain",
+            "allowed_for_design": true
+          },
+          {
+            "type_variety": "medium+high_power",
+            "type_def": "dual_stage",
+            "gain_min": 25,
+            "preamp_variety": "std_medium_gain",
+            "booster_variety": "high_power",
+            "allowed_for_design": false
+          }
+        ],
+        "Fiber": [
+          {
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "effective_area": 8.3e-11,
+            "pmd_coef": 1.265e-15
+          },
+          {
+            "type_variety": "NZDF",
+            "dispersion": 5e-06,
+            "effective_area": 7.2e-11,
+            "pmd_coef": 1.265e-15
+          },
+          {
+            "type_variety": "LOF",
+            "dispersion": 2.2e-05,
+            "effective_area": 1.25e-10,
+            "pmd_coef": 1.265e-15
+          }
+        ],
+        "RamanFiber": [
+          {
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "effective_area": 8.3e-11,
+            "pmd_coef": 1.265e-15
+          }
+        ],
+        "Span": [
+          {
+            "power_mode": false,
+            "delta_power_range_db": [
+              -2,
+              3,
+              0.5
+            ],
+            "max_fiber_lineic_loss_for_raman": 0.25,
+            "target_extended_gain": 2.5,
+            "max_length": 150,
+            "length_units": "km",
+            "max_loss": 28,
+            "padding": 0,
+            "EOL": 0,
+            "con_in": 0,
+            "con_out": 0
+          }
+        ],
+        "Roadm": [
+          {
+            "type_variety": "default",
+            "target_pch_out_db": -20,
+            "add_drop_osnr": 38,
+            "pmd": 0,
+            "pdl": 0,
+            "restrictions": {
+              "preamp_variety_list": [],
+              "booster_variety_list": []
+            }
+          },
+          {
+            "type_variety": "roadm_type_1",
+            "target_pch_out_db": -18,
+            "add_drop_osnr": 35,
+            "pmd": 0,
+            "pdl": 0,
+            "restrictions": {
+              "preamp_variety_list": [],
+              "booster_variety_list": []
+            },
+            "roadm-path-impairments": []
+          },
+          {
+            "type_variety": "detailed_impairments",
+            "target_pch_out_db": -20,
+            "add_drop_osnr": 38,
+            "pmd": 0,
+            "pdl": 0,
+            "restrictions": {
+              "preamp_variety_list": [],
+              "booster_variety_list": []
+            },
+            "roadm-path-impairments": [
+              {
+                "roadm-path-impairments-id": 0,
+                "roadm-express-path": [
+                  {
+                    "frequency-range": {
+                      "lower-frequency": 191300000000000.0,
+                      "upper-frequency": 196100000000000.0
+                    },
+                    "roadm-pmd": 0,
+                    "roadm-cd": 0,
+                    "roadm-pdl": 0,
+                    "roadm-inband-crosstalk": 0,
+                    "roadm-maxloss": 16.5
+                  }
+                ]
+              },
+              {
+                "roadm-path-impairments-id": 1,
+                "roadm-add-path": [
+                  {
+                    "frequency-range": {
+                      "lower-frequency": 191300000000000.0,
+                      "upper-frequency": 196100000000000.0
+                    },
+                    "roadm-pmd": 0,
+                    "roadm-cd": 0,
+                    "roadm-pdl": 0,
+                    "roadm-inband-crosstalk": 0,
+                    "roadm-maxloss": 11.5,
+                    "roadm-pmax": 2.5,
+                    "roadm-osnr": 41,
+                    "roadm-noise-figure": 23
+                  }
+                ]
+              },
+              {
+                "roadm-path-impairments-id": 2,
+                "roadm-drop-path": [
+                  {
+                    "frequency-range": {
+                      "lower-frequency": 191300000000000.0,
+                      "upper-frequency": 196100000000000.0
+                    },
+                    "roadm-pmd": 0,
+                    "roadm-cd": 0,
+                    "roadm-pdl": 0,
+                    "roadm-inband-crosstalk": 0,
+                    "roadm-maxloss": 11.5,
+                    "roadm-minloss": 7.5,
+                    "roadm-typloss": 10,
+                    "roadm-pmin": -13.5,
+                    "roadm-pmax": -9.5,
+                    "roadm-ptyp": -12,
+                    "roadm-osnr": 41,
+                    "roadm-noise-figure": 15
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "SI": [
+          {
+            "f_min": 193050000000000.0,
+            "baud_rate": 32000000000.0,
+            "f_max": 193100000000000.0,
+            "spacing": 50000000000.0,
+            "power_dbm": 0.0,
+            "power_range_db": [
+              0,
+              0,
+              1
+            ],
+            "tx_power_dbm": 0.0,
+            "roll_off": 0.15,
+            "tx_osnr": 40.0,
+            "sys_margins": 2.0,
+            "use_si_channel_count_for_design": true
+          }
+        ],
+        "Transceiver": [
+          {
+            "type_variety": "vendorA_trx-type1",
+            "frequency": {
+              "min": 191350000000000.0,
+              "max": 196100000000000.0
+            },
+            "mode": [
+              {
+                "format": "mode 1",
+                "baud_rate": 32000000000.0,
+                "OSNR": 11,
+                "bit_rate": 100000000000.0,
+                "roll_off": 0.15,
+                "tx_osnr": 40,
+                "min_spacing": 37500000000.0,
+                "cost": 1
+              },
+              {
+                "format": "mode 2",
+                "baud_rate": 66000000000.0,
+                "OSNR": 15,
+                "bit_rate": 200000000000.0,
+                "roll_off": 0.15,
+                "tx_osnr": 40,
+                "min_spacing": 75000000000.0,
+                "cost": 1
+              }
+            ]
+          },
+          {
+            "type_variety": "Voyager",
+            "frequency": {
+              "min": 191350000000000.0,
+              "max": 196100000000000.0
+            },
+            "mode": [
+              {
+                "format": "mode 1",
+                "baud_rate": 32000000000.0,
+                "OSNR": 12,
+                "bit_rate": 100000000000.0,
+                "roll_off": 0.15,
+                "tx_osnr": 40,
+                "min_spacing": 37500000000.0,
+                "cost": 1
+              },
+              {
+                "format": "mode 3",
+                "baud_rate": 44000000000.0,
+                "OSNR": 18,
+                "bit_rate": 300000000000.0,
+                "roll_off": 0.15,
+                "tx_osnr": 40,
+                "min_spacing": 62500000000.0,
+                "cost": 1
+              },
+              {
+                "format": "mode 2",
+                "baud_rate": 66000000000.0,
+                "OSNR": 21,
+                "bit_rate": 400000000000.0,
+                "roll_off": 0.15,
+                "tx_osnr": 40,
+                "min_spacing": 75000000000.0,
+                "cost": 1
+              },
+              {
+                "format": "mode 4",
+                "baud_rate": 66000000000.0,
+                "OSNR": 16,
+                "bit_rate": 200000000000.0,
+                "roll_off": 0.15,
+                "tx_osnr": 40,
+                "min_spacing": 75000000000.0,
+                "cost": 1
+              }
+            ]
+          }
+        ]
+      },
+      "spectrum_input": {
+        "spectrum": [
+          {
+            "f_min": 193100000000000.0,
+            "f_max": 193100000000000.0,
+            "baud_rate": 32000000000.0,
+            "slot_width": 50000000000.0,
+            "roll_off": 0.15,
+            "tx_osnr": 40.0,
+            "tx_power_dbm": 0.0,
+            "label": "generic-100g-ch1"
+          }
+        ]
+      },
+      "service_check": {
+        "status": "Fail",
+        "reason": "Receiver power above maximum",
+        "margin_db": 13.61
+      },
+      "component_readings": [
+        {
+          "uid": "Site_A",
+          "type": "Transceiver",
+          "section_id": 1,
+          "revision": 3,
+          "source": "GNPy CLI component report",
+          "units": "dB, dBm and km as indicated by field names",
+          "channel_output_power_dbm": [],
+          "node_id": "A"
+        },
+        {
+          "uid": "Amp_A_outgoing",
+          "type": "Edfa",
+          "section_id": 1,
+          "revision": 3,
+          "source": "GNPy CLI component report",
+          "units": "dB, dBm and km as indicated by field names",
+          "type_variety": "std_medium_gain",
+          "effective_gain_db": 8.0,
+          "noise_figure_db": 17.0,
+          "input_power_dbm": 0.0,
+          "output_power_dbm": 8.0,
+          "input_attenuation_db": 7.0,
+          "output_voa_db": 0.0,
+          "channel_output_power_dbm": [],
+          "node_id": "A",
+          "neighbor_id": "C",
+          "side": "outgoing",
+          "control": "automatic",
+          "requested_gain_db": null,
+          "requested_target_dbm": 0
+        },
+        {
+          "uid": "Span1",
+          "type": "Fiber",
+          "section_id": 1,
+          "revision": 3,
+          "source": "GNPy CLI component report",
+          "units": "dB, dBm and km as indicated by field names",
+          "type_variety": "SSMF",
+          "input_attenuation_db": 0.0,
+          "loss_db": 3.26,
+          "length_km": 10.31,
+          "reference_pch_out_dbm": 4.74,
+          "channel_output_power_dbm": []
+        },
+        {
+          "uid": "Span2",
+          "type": "Fiber",
+          "section_id": 1,
+          "revision": 3,
+          "source": "GNPy CLI component report",
+          "units": "dB, dBm and km as indicated by field names",
+          "type_variety": "SSMF",
+          "input_attenuation_db": 0.0,
+          "loss_db": 3.33,
+          "length_km": 10.67,
+          "reference_pch_out_dbm": 1.41,
+          "channel_output_power_dbm": []
+        },
+        {
+          "uid": "Site_B",
+          "type": "Transceiver",
+          "section_id": 1,
+          "revision": 3,
+          "source": "GNPy CLI component report",
+          "units": "dB, dBm and km as indicated by field names",
+          "channel_output_power_dbm": [],
+          "node_id": "B"
+        }
+      ]
+    }
+  ],
+  "route_name": "DWDM Route 1",
+  "project_id": "caa4b628-43ff-415e-9006-9320b8e49607",
+  "revision": 3,
+  "span_length_km": 20.979621,
+  "span_lengths_km": [
+    10.314442,
+    10.665179
+  ],
+  "length_source": "Per-span configuration",
+  "points": [
+    [
+      21.335,
+      -158.058
+    ],
+    [
+      21.321233402887998,
+      -157.95966716348568
+    ],
+    [
+      21.307,
+      -157.858
+    ]
+  ],
+  "site_names": [
+    "Kapolei",
+    "Site C",
+    "Honolulu"
+  ],
+  "map_estimate_km": 20.979621,
+  "spans": [
+    {
+      "id": "A-B-a",
+      "from": "Kapolei",
+      "to": "Site C",
+      "geodesic_km": 10.314442,
+      "simulation_km": 10.314442,
+      "source": "Segmented WGS84",
+      "splice_losses_db": [],
+      "splice_total_db": 0,
+      "connector_loss_db": 1.2,
+      "inline_gain_db": null,
+      "amplifier_warning": false,
+      "marine_screening": true,
+      "route_vertices": [
+        [
+          21.335,
+          -158.058
+        ],
+        [
+          21.321233402887998,
+          -157.95966716348568
+        ]
+      ],
+      "passive_loss_db": 3.2628884
+    },
+    {
+      "id": "A-B-b",
+      "from": "Site C",
+      "to": "Honolulu",
+      "geodesic_km": 10.665179,
+      "simulation_km": 10.665179,
+      "source": "Segmented WGS84",
+      "splice_losses_db": [],
+      "splice_total_db": 0,
+      "connector_loss_db": 1.2,
+      "inline_gain_db": null,
+      "amplifier_warning": false,
+      "marine_screening": true,
+      "route_vertices": [
+        [
+          21.321233402887998,
+          -157.95966716348568
+        ],
+        [
+          21.307,
+          -157.858
+        ]
+      ],
+      "passive_loss_db": 3.3330358
+    }
+  ],
+  "baseline": null,
+  "selected_path": {
+    "nodes": [
+      {
+        "id": "A",
+        "name": "Kapolei",
+        "lat": 21.335,
+        "lon": -158.058
+      },
+      {
+        "id": "C",
+        "name": "Site C",
+        "lat": 21.321233402887998,
+        "lon": -157.95966716348568
+      },
+      {
+        "id": "B",
+        "name": "Honolulu",
+        "lat": 21.307,
+        "lon": -157.858
+      }
+    ],
+    "links": [
+      {
+        "id": "A-B-a",
+        "from": "A",
+        "to": "C",
+        "bends": [],
+        "override": null,
+        "splices": [],
+        "inline_gain": null,
+        "fiber": {
+          "type_variety": "SSMF",
+          "loss_coef": 0.2
+        }
+      },
+      {
+        "id": "A-B-b",
+        "from": "C",
+        "to": "B",
+        "bends": [],
+        "override": null,
+        "splices": [],
+        "inline_gain": null,
+        "fiber": {
+          "type_variety": "SSMF",
+          "loss_coef": 0.2
+        }
+      }
+    ],
+    "coordinates": [
+      [
+        21.335,
+        -158.058
+      ],
+      [
+        21.321233402887998,
+        -157.95966716348568
+      ],
+      [
+        21.307,
+        -157.858
+      ]
+    ],
+    "site_names": [
+      "Kapolei",
+      "Site C",
+      "Honolulu"
+    ],
+    "span_bends": [
+      [],
+      []
+    ],
+    "span_overrides": [
+      null,
+      null
+    ],
+    "degrees": {
+      "A": 1,
+      "B": 1,
+      "C": 2
+    },
+    "service_id": "service-1"
+  },
+  "snapshot": {
+    "version": 2,
+    "m6": true,
+    "requirements": {
+      "rate_gbps": 100,
+      "mode_id": "generic-100g",
+      "grid": "fixed",
+      "channels": 1,
+      "center_thz": 193.1,
+      "guard_band_ghz": 0,
+      "launch_dbm": 0,
+      "reserve_db": 2
+    },
+    "project_id": "caa4b628-43ff-415e-9006-9320b8e49607",
+    "revision": 3,
+    "route_name": "DWDM Route 1",
+    "network": {
+      "nodes": [
+        {
+          "id": "A",
+          "name": "Kapolei",
+          "lat": 21.335,
+          "lon": -158.058
+        },
+        {
+          "id": "B",
+          "name": "Honolulu",
+          "lat": 21.307,
+          "lon": -157.858
+        },
+        {
+          "id": "C",
+          "name": "Site C",
+          "lat": 21.321233402887998,
+          "lon": -157.95966716348568
+        }
+      ],
+      "links": [
+        {
+          "id": "A-B-a",
+          "from": "A",
+          "to": "C",
+          "bends": [],
+          "override": null,
+          "splices": [],
+          "inline_gain": null,
+          "fiber": {
+            "type_variety": "SSMF",
+            "loss_coef": 0.2
+          }
+        },
+        {
+          "id": "A-B-b",
+          "from": "C",
+          "to": "B",
+          "bends": [],
+          "override": null,
+          "splices": [],
+          "inline_gain": null,
+          "fiber": {
+            "type_variety": "SSMF",
+            "loss_coef": 0.2
+          }
+        }
+      ],
+      "services": [
+        {
+          "id": "service-1",
+          "source": "A",
+          "target": "B",
+          "via": []
+        }
+      ]
+    },
+    "active_service": "service-1",
+    "equipment": {
+      "vendor": "generic",
+      "service_gbps": 100,
+      "mode": "automatic",
+      "nodes": {
+        "A": {
+          "role": "terminal",
+          "amplifiers": {
+            "by_neighbor": {
+              "B": {
+                "incoming": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                },
+                "outgoing": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                }
+              },
+              "C": {
+                "incoming": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                },
+                "outgoing": {
+                  "enabled": true,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                }
+              }
+            }
+          },
+          "panel": {
+            "enabled": true,
+            "pairs_per_degree": 1,
+            "connector_loss_db": 0.5,
+            "splices_per_degree": 1,
+            "splice_loss_db": 0.1
+          }
+        },
+        "B": {
+          "role": "terminal",
+          "amplifiers": {
+            "by_neighbor": {
+              "A": {
+                "incoming": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                },
+                "outgoing": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                }
+              },
+              "C": {
+                "incoming": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                },
+                "outgoing": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                }
+              }
+            }
+          },
+          "panel": {
+            "enabled": true,
+            "pairs_per_degree": 1,
+            "connector_loss_db": 0.5,
+            "splices_per_degree": 1,
+            "splice_loss_db": 0.1
+          }
+        },
+        "C": {
+          "role": "pass-through",
+          "amplifiers": {
+            "by_neighbor": {
+              "A": {
+                "incoming": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                },
+                "outgoing": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                }
+              },
+              "B": {
+                "incoming": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                },
+                "outgoing": {
+                  "enabled": false,
+                  "control": "automatic",
+                  "gain_db": 15,
+                  "target_dbm": 0,
+                  "model": "std_medium_gain"
+                }
+              }
+            }
+          },
+          "panel": {
+            "enabled": true,
+            "pairs_per_degree": 1,
+            "connector_loss_db": 0.5,
+            "splices_per_degree": 1,
+            "splice_loss_db": 0.1
+          }
+        }
+      }
+    },
+    "tx_power_dbm": null,
+    "booster_gain_db": null,
+    "preamp_gain_db": null,
+    "quality_limits": null,
+    "ase_threshold_db": null,
+    "ase_warning_db": 1,
+    "reference_case": false,
+    "edit_reviews": [
+      {
+        "id": "C-insert-review",
+        "node_id": "C",
+        "link_ids": [
+          "A-B-a",
+          "A-B-b"
+        ],
+        "status": "Review",
+        "message": "The site was snapped to the selected drawn span. Confirm its geographic position."
+      }
+    ]
+  },
+  "zones": {
+    "source": {
+      "status": "Bundled snapshot",
+      "source": "Hyperion Zones v0.6 bundled snapshot",
+      "version": "0.6",
+      "detail": "Cached reference coverage. Set HYPERION_ZONES_URL for a current polygon feed.",
+      "publication": "https://github.com/Figment-Fiber/Hyperion-Zones/releases/tag/v0.6"
+    },
+    "findings": [],
+    "ignored_reference_features": 38,
+    "invalid_features": 0,
+    "coverage": "Source polygons screened"
+  },
+  "service_id": "service-1",
+  "component_readings": [
+    {
+      "uid": "Site_A",
+      "type": "Transceiver",
+      "section_id": 1,
+      "revision": 3,
+      "source": "GNPy CLI component report",
+      "units": "dB, dBm and km as indicated by field names",
+      "channel_output_power_dbm": [],
+      "node_id": "A"
+    },
+    {
+      "uid": "Amp_A_outgoing",
+      "type": "Edfa",
+      "section_id": 1,
+      "revision": 3,
+      "source": "GNPy CLI component report",
+      "units": "dB, dBm and km as indicated by field names",
+      "type_variety": "std_medium_gain",
+      "effective_gain_db": 8.0,
+      "noise_figure_db": 17.0,
+      "input_power_dbm": 0.0,
+      "output_power_dbm": 8.0,
+      "input_attenuation_db": 7.0,
+      "output_voa_db": 0.0,
+      "channel_output_power_dbm": [],
+      "node_id": "A",
+      "neighbor_id": "C",
+      "side": "outgoing",
+      "control": "automatic",
+      "requested_gain_db": null,
+      "requested_target_dbm": 0
+    },
+    {
+      "uid": "Span1",
+      "type": "Fiber",
+      "section_id": 1,
+      "revision": 3,
+      "source": "GNPy CLI component report",
+      "units": "dB, dBm and km as indicated by field names",
+      "type_variety": "SSMF",
+      "input_attenuation_db": 0.0,
+      "loss_db": 3.26,
+      "length_km": 10.31,
+      "reference_pch_out_dbm": 4.74,
+      "channel_output_power_dbm": []
+    },
+    {
+      "uid": "Span2",
+      "type": "Fiber",
+      "section_id": 1,
+      "revision": 3,
+      "source": "GNPy CLI component report",
+      "units": "dB, dBm and km as indicated by field names",
+      "type_variety": "SSMF",
+      "input_attenuation_db": 0.0,
+      "loss_db": 3.33,
+      "length_km": 10.67,
+      "reference_pch_out_dbm": 1.41,
+      "channel_output_power_dbm": []
+    },
+    {
+      "uid": "Site_B",
+      "type": "Transceiver",
+      "section_id": 1,
+      "revision": 3,
+      "source": "GNPy CLI component report",
+      "units": "dB, dBm and km as indicated by field names",
+      "channel_output_power_dbm": [],
+      "node_id": "B"
+    }
+  ],
+  "passive_budget": {
+    "line_spans_db": 6.595924200000001,
+    "site_splice_loss_db": 0,
+    "local_add_drop_panel_db": 0,
+    "total_external_passive_db": 6.595924200000001,
+    "scope": "Configured external fiber, panel connections and splices. ROADM loss is propagated separately."
+  },
+  "engineering": {
+    "schema": "hyperion.equipment-summary/1",
+    "project_id": "caa4b628-43ff-415e-9006-9320b8e49607",
+    "project_name": "DWDM Route 1",
+    "revision": "0a9c5d4c2e5e781d",
+    "service_gbps": 100.0,
+    "sites": [
+      {
+        "id": "A",
+        "name": "Kapolei",
+        "vendor": "generic",
+        "profile_id": "generic-gnpy-reference",
+        "degrees": 1,
+        "local_add_drop": true,
+        "panel": {
+          "enabled": true,
+          "pairs_per_degree": 1,
+          "connector_loss_db": 0.5,
+          "splices_per_degree": 1,
+          "splice_loss_db": 0.1
+        },
+        "role": "terminal",
+        "profile_label": "Generic \u00b7 GNPy reference",
+        "compatibility": {
+          "status": "Pass",
+          "reason": "Generic client rate assumption."
+        },
+        "panel_used_ports": 4,
+        "panel_capacity": 108,
+        "panel_housings": 1,
+        "panel_cassettes": 1,
+        "panel_fiber_positions": 4,
+        "panel_assumption": "One mated connector pair at 0.50 dB and one fusion splice at 0.10 dB per traversed line termination are editable planning assumptions."
+      },
+      {
+        "id": "C",
+        "name": "Site C",
+        "vendor": "generic",
+        "profile_id": "generic-gnpy-reference",
+        "degrees": 2,
+        "local_add_drop": false,
+        "panel": {
+          "enabled": true,
+          "pairs_per_degree": 1,
+          "connector_loss_db": 0.5,
+          "splices_per_degree": 1,
+          "splice_loss_db": 0.1
+        },
+        "role": "pass-through",
+        "profile_label": "Generic \u00b7 GNPy reference",
+        "compatibility": {
+          "status": "Not applicable",
+          "reason": "Express-only site has no local client transponder."
+        },
+        "panel_used_ports": 4,
+        "panel_capacity": 108,
+        "panel_housings": 1,
+        "panel_cassettes": 1,
+        "panel_fiber_positions": 4,
+        "panel_assumption": "One mated connector pair at 0.50 dB and one fusion splice at 0.10 dB per traversed line termination are editable planning assumptions."
+      },
+      {
+        "id": "B",
+        "name": "Honolulu",
+        "vendor": "generic",
+        "profile_id": "generic-gnpy-reference",
+        "degrees": 1,
+        "local_add_drop": true,
+        "panel": {
+          "enabled": true,
+          "pairs_per_degree": 1,
+          "connector_loss_db": 0.5,
+          "splices_per_degree": 1,
+          "splice_loss_db": 0.1
+        },
+        "role": "terminal",
+        "profile_label": "Generic \u00b7 GNPy reference",
+        "compatibility": {
+          "status": "Pass",
+          "reason": "Generic client rate assumption."
+        },
+        "panel_used_ports": 4,
+        "panel_capacity": 108,
+        "panel_housings": 1,
+        "panel_cassettes": 1,
+        "panel_fiber_positions": 4,
+        "panel_assumption": "One mated connector pair at 0.50 dB and one fusion splice at 0.10 dB per traversed line termination are editable planning assumptions."
+      }
+    ],
+    "issues": [
+      {
+        "node_id": "C",
+        "check": "Inserted equipment assignment",
+        "status": "Review",
+        "reason": "The site was snapped to the selected drawn span. Confirm its geographic position.",
+        "action": "Inspect and acknowledge the assignment, then rerun."
+      },
+      {
+        "check": "GNPy design warning",
+        "status": "Review",
+        "reason": "Section 1: \tWARNING: effective gain in Node Amp_A_outgoing",
+        "action": "Inspect the target power and amplifier configuration and rerun."
+      },
+      {
+        "node_id": "Amp_A_outgoing",
+        "check": "Amplifier operating range",
+        "status": "Review",
+        "reason": "Effective gain 8.0 dB is below model minimum; GNPy may add input attenuation.",
+        "action": "Select a suitable amplifier model, adjust gain/launch power and rerun."
+      }
+    ],
+    "bom": [
+      {
+        "id": "A.panel",
+        "site_id": "A",
+        "description": "Corning Centrix CTX-S1U housing",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "patch-panel",
+        "catalog_id": "corning-centrix-ctx-s1u",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.cassette",
+        "site_id": "A",
+        "description": "Corning Centrix 36-LC pigtailed cassette",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "cassette",
+        "catalog_id": "corning-centrix-lc36",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.patch-cord",
+        "site_id": "A",
+        "description": "Generic duplex patch cord",
+        "quantity": 2,
+        "unit": "each",
+        "kind": "patch-cord",
+        "catalog_id": null,
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.chassis",
+        "site_id": "A",
+        "description": "Generic transport chassis",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "chassis",
+        "catalog_id": null,
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.transponder",
+        "site_id": "A",
+        "description": "Generic transponder",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "transponder",
+        "catalog_id": "generic-gnpy-reference",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.client-optic",
+        "site_id": "A",
+        "description": "Generic 100GbE client optic",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "optic",
+        "catalog_id": "generic-client-optic",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.line-interface",
+        "site_id": "A",
+        "description": "Generic coherent line interface",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "line-interface",
+        "catalog_id": "generic-coherent-line-interface",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "C.panel",
+        "site_id": "C",
+        "description": "Corning Centrix CTX-S1U housing",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "patch-panel",
+        "catalog_id": "corning-centrix-ctx-s1u",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "C.cassette",
+        "site_id": "C",
+        "description": "Corning Centrix 36-LC pigtailed cassette",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "cassette",
+        "catalog_id": "corning-centrix-lc36",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "C.patch-cord",
+        "site_id": "C",
+        "description": "Generic duplex patch cord",
+        "quantity": 2,
+        "unit": "each",
+        "kind": "patch-cord",
+        "catalog_id": null,
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.panel",
+        "site_id": "B",
+        "description": "Corning Centrix CTX-S1U housing",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "patch-panel",
+        "catalog_id": "corning-centrix-ctx-s1u",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.cassette",
+        "site_id": "B",
+        "description": "Corning Centrix 36-LC pigtailed cassette",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "cassette",
+        "catalog_id": "corning-centrix-lc36",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.patch-cord",
+        "site_id": "B",
+        "description": "Generic duplex patch cord",
+        "quantity": 2,
+        "unit": "each",
+        "kind": "patch-cord",
+        "catalog_id": null,
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.chassis",
+        "site_id": "B",
+        "description": "Generic transport chassis",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "chassis",
+        "catalog_id": null,
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.transponder",
+        "site_id": "B",
+        "description": "Generic transponder",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "transponder",
+        "catalog_id": "generic-gnpy-reference",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.client-optic",
+        "site_id": "B",
+        "description": "Generic 100GbE client optic",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "optic",
+        "catalog_id": "generic-client-optic",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.line-interface",
+        "site_id": "B",
+        "description": "Generic coherent line interface",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "line-interface",
+        "catalog_id": "generic-coherent-line-interface",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "optical.Amp_A_outgoing",
+        "site_id": null,
+        "description": "EDFA Amp_A_outgoing \u00b7 std_medium_gain",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "amplifier",
+        "catalog_id": "std_medium_gain",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified",
+        "placement_source": "explicit topology"
+      }
+    ],
+    "options": [
+      {
+        "node_id": "A",
+        "options": [
+          {
+            "id": "generic-gnpy-reference",
+            "label": "Generic \u00b7 GNPy reference",
+            "status": "Pass",
+            "gnpy_equipment": "eqpt_config.json",
+            "description": "Generic planning reference. Selected client rate is a compatibility assumption. Optical propagation retains the configured generic spectrum.",
+            "vendor": "Generic",
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "line_interface_type": "generic",
+            "line_interface_label": "Generic coherent line interface",
+            "reason": "Generic client rate assumption."
+          },
+          {
+            "id": "ciena-6500-s14-wl6e-motr",
+            "label": "Ciena 6500-S14 \u00b7 WaveLogic 6 Extreme 1.6T MOTR",
+            "status": "Pass",
+            "vendor": "Ciena",
+            "platform": "6500-S14",
+            "card": "WaveLogic 6 Extreme 1.6T MOTR",
+            "published_max_payload_gbps_per_carrier": 1600,
+            "published_electro_optics_gbaud": 200,
+            "published_symbol_rate_range_gbaud": [
+              95,
+              200
+            ],
+            "published_tuning_range_thz": [
+              191.25,
+              196.125
+            ],
+            "published_fixed_grid_ghz": 200,
+            "published_flex_grid_support": true,
+            "published_rx_sensitivity_dbm": {
+              "1200_gbps": -19.5,
+              "1400_gbps": -16.5,
+              "1600_gbps": -12.0
+            },
+            "sources": [
+              "https://www.ciena.com/__data/assets/pdf_file/0021/157323/wavelogic_6_extreme_1-6t_motr_module_ds.pdf",
+              "https://www.ciena.com/insights/data-sheets/6500-S14-packet-optical-platform",
+              "https://www.ciena.com/insights/data-sheets/1-6t-wavelogic-6-extreme-motr"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 2,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "line_interface_type": "integrated",
+            "line_interface_label": "Integrated WaveLogic 6 Extreme line interface",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "nokia-1830-pss-hc-4cp4t8",
+            "label": "Nokia 1830 PSS-HC \u00b7 4CP4T8 / PSE-6s",
+            "status": "Pass",
+            "vendor": "Nokia",
+            "platform": "1830 PSS-HC",
+            "card": "4CP4T8",
+            "coherent_engine": "PSE-6s",
+            "published_max_line_rate_gbps_per_carrier": 1200,
+            "published_line_interface_gbaud": 140,
+            "published_supported_bands": [
+              "C",
+              "L"
+            ],
+            "published_typical_channel_spacing_ghz": 150,
+            "published_modulation_families": [
+              "PCS-64QAM",
+              "PCS-16QAM",
+              "QPSK"
+            ],
+            "sources": [
+              "https://www.nokia.com/optical-networks/pse-6s/",
+              "https://www.nokia.com/optical-networks/1830-photonic-service-switch/",
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "line_interface_type": "pluggable",
+            "line_interface_label": "PSE-6s BMDC012 coherent pluggable",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "ciena-2x100g-motr",
+            "label": "Ciena 6500 \u00b7 2 \u00d7 100G MOTR",
+            "vendor": "Ciena",
+            "status": "Pass",
+            "platform": "6500 D/S-Series",
+            "card": "2 \u00d7 100G MOTR",
+            "client_rates_gbps": [
+              10,
+              40,
+              100
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "sources": [
+              "https://www.ciena.com/insights/data-sheets/2-x-100g-motr-module",
+              "https://www.ciena.com/__data/assets/pdf_file/0030/154686/2x100G_MOTR_module_DS.pdf"
+            ],
+            "simulation_status": "No validated GNPy optical mode",
+            "line_interface_type": "pluggable",
+            "line_interface_label": "WL5n 100G/200G QSFP-DD coherent pluggable",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "nokia-1830-pss-42p800",
+            "label": "Nokia 1830 PSS-HC \u00b7 42P800 aggregation",
+            "vendor": "Nokia",
+            "status": "Fail",
+            "card": "42P800",
+            "client_rates_gbps": [
+              10,
+              25
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "sources": [
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "simulation_status": "Aggregation card; coherent line mode supplied by separate line card",
+            "line_interface_type": "separate_line_card",
+            "line_interface_label": "Requires a separate compatible coherent line card",
+            "reason": "Does not support the requested single 100GbE client handoff. Documented client rates: 10GbE, 25GbE."
+          }
+        ]
+      },
+      {
+        "node_id": "C",
+        "options": [
+          {
+            "id": "generic-gnpy-reference",
+            "label": "Generic \u00b7 GNPy reference",
+            "status": "Not applicable",
+            "gnpy_equipment": "eqpt_config.json",
+            "description": "Generic planning reference. Selected client rate is a compatibility assumption. Optical propagation retains the configured generic spectrum.",
+            "vendor": "Generic",
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "line_interface_type": "generic",
+            "line_interface_label": "Generic coherent line interface",
+            "reason": "Express-only site has no local client transponder."
+          },
+          {
+            "id": "ciena-6500-s14-wl6e-motr",
+            "label": "Ciena 6500-S14 \u00b7 WaveLogic 6 Extreme 1.6T MOTR",
+            "status": "Not applicable",
+            "vendor": "Ciena",
+            "platform": "6500-S14",
+            "card": "WaveLogic 6 Extreme 1.6T MOTR",
+            "published_max_payload_gbps_per_carrier": 1600,
+            "published_electro_optics_gbaud": 200,
+            "published_symbol_rate_range_gbaud": [
+              95,
+              200
+            ],
+            "published_tuning_range_thz": [
+              191.25,
+              196.125
+            ],
+            "published_fixed_grid_ghz": 200,
+            "published_flex_grid_support": true,
+            "published_rx_sensitivity_dbm": {
+              "1200_gbps": -19.5,
+              "1400_gbps": -16.5,
+              "1600_gbps": -12.0
+            },
+            "sources": [
+              "https://www.ciena.com/__data/assets/pdf_file/0021/157323/wavelogic_6_extreme_1-6t_motr_module_ds.pdf",
+              "https://www.ciena.com/insights/data-sheets/6500-S14-packet-optical-platform",
+              "https://www.ciena.com/insights/data-sheets/1-6t-wavelogic-6-extreme-motr"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 2,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "line_interface_type": "integrated",
+            "line_interface_label": "Integrated WaveLogic 6 Extreme line interface",
+            "reason": "Express-only site has no local client transponder."
+          },
+          {
+            "id": "nokia-1830-pss-hc-4cp4t8",
+            "label": "Nokia 1830 PSS-HC \u00b7 4CP4T8 / PSE-6s",
+            "status": "Not applicable",
+            "vendor": "Nokia",
+            "platform": "1830 PSS-HC",
+            "card": "4CP4T8",
+            "coherent_engine": "PSE-6s",
+            "published_max_line_rate_gbps_per_carrier": 1200,
+            "published_line_interface_gbaud": 140,
+            "published_supported_bands": [
+              "C",
+              "L"
+            ],
+            "published_typical_channel_spacing_ghz": 150,
+            "published_modulation_families": [
+              "PCS-64QAM",
+              "PCS-16QAM",
+              "QPSK"
+            ],
+            "sources": [
+              "https://www.nokia.com/optical-networks/pse-6s/",
+              "https://www.nokia.com/optical-networks/1830-photonic-service-switch/",
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "line_interface_type": "pluggable",
+            "line_interface_label": "PSE-6s BMDC012 coherent pluggable",
+            "reason": "Express-only site has no local client transponder."
+          },
+          {
+            "id": "ciena-2x100g-motr",
+            "label": "Ciena 6500 \u00b7 2 \u00d7 100G MOTR",
+            "vendor": "Ciena",
+            "status": "Not applicable",
+            "platform": "6500 D/S-Series",
+            "card": "2 \u00d7 100G MOTR",
+            "client_rates_gbps": [
+              10,
+              40,
+              100
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "sources": [
+              "https://www.ciena.com/insights/data-sheets/2-x-100g-motr-module",
+              "https://www.ciena.com/__data/assets/pdf_file/0030/154686/2x100G_MOTR_module_DS.pdf"
+            ],
+            "simulation_status": "No validated GNPy optical mode",
+            "line_interface_type": "pluggable",
+            "line_interface_label": "WL5n 100G/200G QSFP-DD coherent pluggable",
+            "reason": "Express-only site has no local client transponder."
+          },
+          {
+            "id": "nokia-1830-pss-42p800",
+            "label": "Nokia 1830 PSS-HC \u00b7 42P800 aggregation",
+            "vendor": "Nokia",
+            "status": "Not applicable",
+            "card": "42P800",
+            "client_rates_gbps": [
+              10,
+              25
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "sources": [
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "simulation_status": "Aggregation card; coherent line mode supplied by separate line card",
+            "line_interface_type": "separate_line_card",
+            "line_interface_label": "Requires a separate compatible coherent line card",
+            "reason": "Express-only site has no local client transponder."
+          }
+        ]
+      },
+      {
+        "node_id": "B",
+        "options": [
+          {
+            "id": "generic-gnpy-reference",
+            "label": "Generic \u00b7 GNPy reference",
+            "status": "Pass",
+            "gnpy_equipment": "eqpt_config.json",
+            "description": "Generic planning reference. Selected client rate is a compatibility assumption. Optical propagation retains the configured generic spectrum.",
+            "vendor": "Generic",
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "line_interface_type": "generic",
+            "line_interface_label": "Generic coherent line interface",
+            "reason": "Generic client rate assumption."
+          },
+          {
+            "id": "ciena-6500-s14-wl6e-motr",
+            "label": "Ciena 6500-S14 \u00b7 WaveLogic 6 Extreme 1.6T MOTR",
+            "status": "Pass",
+            "vendor": "Ciena",
+            "platform": "6500-S14",
+            "card": "WaveLogic 6 Extreme 1.6T MOTR",
+            "published_max_payload_gbps_per_carrier": 1600,
+            "published_electro_optics_gbaud": 200,
+            "published_symbol_rate_range_gbaud": [
+              95,
+              200
+            ],
+            "published_tuning_range_thz": [
+              191.25,
+              196.125
+            ],
+            "published_fixed_grid_ghz": 200,
+            "published_flex_grid_support": true,
+            "published_rx_sensitivity_dbm": {
+              "1200_gbps": -19.5,
+              "1400_gbps": -16.5,
+              "1600_gbps": -12.0
+            },
+            "sources": [
+              "https://www.ciena.com/__data/assets/pdf_file/0021/157323/wavelogic_6_extreme_1-6t_motr_module_ds.pdf",
+              "https://www.ciena.com/insights/data-sheets/6500-S14-packet-optical-platform",
+              "https://www.ciena.com/insights/data-sheets/1-6t-wavelogic-6-extreme-motr"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 2,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "line_interface_type": "integrated",
+            "line_interface_label": "Integrated WaveLogic 6 Extreme line interface",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "nokia-1830-pss-hc-4cp4t8",
+            "label": "Nokia 1830 PSS-HC \u00b7 4CP4T8 / PSE-6s",
+            "status": "Pass",
+            "vendor": "Nokia",
+            "platform": "1830 PSS-HC",
+            "card": "4CP4T8",
+            "coherent_engine": "PSE-6s",
+            "published_max_line_rate_gbps_per_carrier": 1200,
+            "published_line_interface_gbaud": 140,
+            "published_supported_bands": [
+              "C",
+              "L"
+            ],
+            "published_typical_channel_spacing_ghz": 150,
+            "published_modulation_families": [
+              "PCS-64QAM",
+              "PCS-16QAM",
+              "QPSK"
+            ],
+            "sources": [
+              "https://www.nokia.com/optical-networks/pse-6s/",
+              "https://www.nokia.com/optical-networks/1830-photonic-service-switch/",
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "line_interface_type": "pluggable",
+            "line_interface_label": "PSE-6s BMDC012 coherent pluggable",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "ciena-2x100g-motr",
+            "label": "Ciena 6500 \u00b7 2 \u00d7 100G MOTR",
+            "vendor": "Ciena",
+            "status": "Pass",
+            "platform": "6500 D/S-Series",
+            "card": "2 \u00d7 100G MOTR",
+            "client_rates_gbps": [
+              10,
+              40,
+              100
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "sources": [
+              "https://www.ciena.com/insights/data-sheets/2-x-100g-motr-module",
+              "https://www.ciena.com/__data/assets/pdf_file/0030/154686/2x100G_MOTR_module_DS.pdf"
+            ],
+            "simulation_status": "No validated GNPy optical mode",
+            "line_interface_type": "pluggable",
+            "line_interface_label": "WL5n 100G/200G QSFP-DD coherent pluggable",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "nokia-1830-pss-42p800",
+            "label": "Nokia 1830 PSS-HC \u00b7 42P800 aggregation",
+            "vendor": "Nokia",
+            "status": "Fail",
+            "card": "42P800",
+            "client_rates_gbps": [
+              10,
+              25
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "sources": [
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "simulation_status": "Aggregation card; coherent line mode supplied by separate line card",
+            "line_interface_type": "separate_line_card",
+            "line_interface_label": "Requires a separate compatible coherent line card",
+            "reason": "Does not support the requested single 100GbE client handoff. Documented client rates: 10GbE, 25GbE."
+          }
+        ]
+      }
+    ],
+    "cost_status": "Unit prices and quotes are maintained in Hyperion Estimator.",
+    "quantity_export": {
+      "schema": "hyperion.quantities/1",
+      "sourceApplication": "routes",
+      "projectId": "caa4b628-43ff-415e-9006-9320b8e49607",
+      "projectName": "DWDM Route 1",
+      "revision": "0a9c5d4c2e5e781d",
+      "synthetic": false,
+      "sites": [
+        {
+          "id": "A",
+          "name": "Kapolei"
+        },
+        {
+          "id": "C",
+          "name": "Site C"
+        },
+        {
+          "id": "B",
+          "name": "Honolulu"
+        }
+      ],
+      "segments": [
+        {
+          "id": "span-1",
+          "fromSiteId": "A",
+          "toSiteId": "C",
+          "method": "unspecified",
+          "lengthM": 10314.442,
+          "lengthSource": "Segmented WGS84",
+          "status": "unverified"
+        },
+        {
+          "id": "span-2",
+          "fromSiteId": "C",
+          "toSiteId": "B",
+          "method": "unspecified",
+          "lengthM": 10665.179,
+          "lengthSource": "Segmented WGS84",
+          "status": "unverified"
+        }
+      ],
+      "quantities": [
+        {
+          "sourceObjectId": "span-1.fiber",
+          "segmentId": "span-1",
+          "kind": "fiber-length",
+          "description": "Designed optical fiber length",
+          "unit": "m",
+          "quantity": 10314.442,
+          "itemKey": null,
+          "status": "unverified"
+        },
+        {
+          "sourceObjectId": "span-1.splice",
+          "segmentId": "span-1",
+          "kind": "splice-point",
+          "description": "Entered field splice points",
+          "unit": "each",
+          "quantity": 0,
+          "itemKey": null,
+          "status": "unverified"
+        },
+        {
+          "sourceObjectId": "span-2.fiber",
+          "segmentId": "span-2",
+          "kind": "fiber-length",
+          "description": "Designed optical fiber length",
+          "unit": "m",
+          "quantity": 10665.179,
+          "itemKey": null,
+          "status": "unverified"
+        },
+        {
+          "sourceObjectId": "span-2.splice",
+          "segmentId": "span-2",
+          "kind": "splice-point",
+          "description": "Entered field splice points",
+          "unit": "each",
+          "quantity": 0,
+          "itemKey": null,
+          "status": "unverified"
+        }
+      ],
+      "assumptions": [
+        "Quantities come from the selected service's modeled route and require engineering verification.",
+        "Construction quantities and costs are outside this equipment summary.",
+        "The equipment quantity extension is versioned separately from the Routes v1 segment importer."
+      ]
+    },
+    "estimator_equipment": {
+      "schema": "hyperion.equipment-quantities/1",
+      "projectId": "caa4b628-43ff-415e-9006-9320b8e49607",
+      "projectName": "DWDM Route 1",
+      "revision": "0a9c5d4c2e5e781d",
+      "items": [
+        {
+          "id": "A.panel",
+          "site_id": "A",
+          "description": "Corning Centrix CTX-S1U housing",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "patch-panel",
+          "catalog_id": "corning-centrix-ctx-s1u",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.cassette",
+          "site_id": "A",
+          "description": "Corning Centrix 36-LC pigtailed cassette",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "cassette",
+          "catalog_id": "corning-centrix-lc36",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.patch-cord",
+          "site_id": "A",
+          "description": "Generic duplex patch cord",
+          "quantity": 2,
+          "unit": "each",
+          "kind": "patch-cord",
+          "catalog_id": null,
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.chassis",
+          "site_id": "A",
+          "description": "Generic transport chassis",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "chassis",
+          "catalog_id": null,
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.transponder",
+          "site_id": "A",
+          "description": "Generic transponder",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "transponder",
+          "catalog_id": "generic-gnpy-reference",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.client-optic",
+          "site_id": "A",
+          "description": "Generic 100GbE client optic",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "optic",
+          "catalog_id": "generic-client-optic",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.line-interface",
+          "site_id": "A",
+          "description": "Generic coherent line interface",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "line-interface",
+          "catalog_id": "generic-coherent-line-interface",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "C.panel",
+          "site_id": "C",
+          "description": "Corning Centrix CTX-S1U housing",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "patch-panel",
+          "catalog_id": "corning-centrix-ctx-s1u",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "C.cassette",
+          "site_id": "C",
+          "description": "Corning Centrix 36-LC pigtailed cassette",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "cassette",
+          "catalog_id": "corning-centrix-lc36",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "C.patch-cord",
+          "site_id": "C",
+          "description": "Generic duplex patch cord",
+          "quantity": 2,
+          "unit": "each",
+          "kind": "patch-cord",
+          "catalog_id": null,
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.panel",
+          "site_id": "B",
+          "description": "Corning Centrix CTX-S1U housing",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "patch-panel",
+          "catalog_id": "corning-centrix-ctx-s1u",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.cassette",
+          "site_id": "B",
+          "description": "Corning Centrix 36-LC pigtailed cassette",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "cassette",
+          "catalog_id": "corning-centrix-lc36",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.patch-cord",
+          "site_id": "B",
+          "description": "Generic duplex patch cord",
+          "quantity": 2,
+          "unit": "each",
+          "kind": "patch-cord",
+          "catalog_id": null,
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.chassis",
+          "site_id": "B",
+          "description": "Generic transport chassis",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "chassis",
+          "catalog_id": null,
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.transponder",
+          "site_id": "B",
+          "description": "Generic transponder",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "transponder",
+          "catalog_id": "generic-gnpy-reference",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.client-optic",
+          "site_id": "B",
+          "description": "Generic 100GbE client optic",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "optic",
+          "catalog_id": "generic-client-optic",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.line-interface",
+          "site_id": "B",
+          "description": "Generic coherent line interface",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "line-interface",
+          "catalog_id": "generic-coherent-line-interface",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "optical.Amp_A_outgoing",
+          "site_id": null,
+          "description": "EDFA Amp_A_outgoing \u00b7 std_medium_gain",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "amplifier",
+          "catalog_id": "std_medium_gain",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified",
+          "placement_source": "explicit topology"
+        }
+      ],
+      "import_status": "Equipment extension requires an Estimator importer supporting this schema."
+    }
+  },
+  "equipment_summary": {
+    "schema": "hyperion.equipment-summary/1",
+    "project_id": "caa4b628-43ff-415e-9006-9320b8e49607",
+    "project_name": "DWDM Route 1",
+    "revision": "3",
+    "service_gbps": 100.0,
+    "sites": [
+      {
+        "id": "A",
+        "name": "Kapolei",
+        "vendor": "generic",
+        "profile_id": "generic-gnpy-reference",
+        "degrees": 1,
+        "local_add_drop": true,
+        "panel": {
+          "enabled": true,
+          "pairs_per_degree": 1,
+          "connector_loss_db": 0.5,
+          "splices_per_degree": 1,
+          "splice_loss_db": 0.1
+        },
+        "role": "terminal",
+        "profile_label": "Generic \u00b7 GNPy reference",
+        "compatibility": {
+          "status": "Pass",
+          "reason": "Generic client rate assumption."
+        },
+        "panel_used_ports": 4,
+        "panel_capacity": 108,
+        "panel_housings": 1,
+        "panel_cassettes": 1,
+        "panel_fiber_positions": 4,
+        "panel_assumption": "One mated connector pair at 0.50 dB and one fusion splice at 0.10 dB per traversed line termination are editable planning assumptions.",
+        "connected_degrees": 1
+      },
+      {
+        "id": "B",
+        "name": "Honolulu",
+        "vendor": "generic",
+        "profile_id": "generic-gnpy-reference",
+        "degrees": 1,
+        "local_add_drop": true,
+        "panel": {
+          "enabled": true,
+          "pairs_per_degree": 1,
+          "connector_loss_db": 0.5,
+          "splices_per_degree": 1,
+          "splice_loss_db": 0.1
+        },
+        "role": "terminal",
+        "profile_label": "Generic \u00b7 GNPy reference",
+        "compatibility": {
+          "status": "Pass",
+          "reason": "Generic client rate assumption."
+        },
+        "panel_used_ports": 4,
+        "panel_capacity": 108,
+        "panel_housings": 1,
+        "panel_cassettes": 1,
+        "panel_fiber_positions": 4,
+        "panel_assumption": "One mated connector pair at 0.50 dB and one fusion splice at 0.10 dB per traversed line termination are editable planning assumptions.",
+        "connected_degrees": 1
+      },
+      {
+        "id": "C",
+        "name": "Site C",
+        "vendor": "generic",
+        "profile_id": "generic-gnpy-reference",
+        "degrees": 2,
+        "local_add_drop": false,
+        "panel": {
+          "enabled": true,
+          "pairs_per_degree": 1,
+          "connector_loss_db": 0.5,
+          "splices_per_degree": 1,
+          "splice_loss_db": 0.1
+        },
+        "role": "pass-through",
+        "profile_label": "Generic \u00b7 GNPy reference",
+        "compatibility": {
+          "status": "Not applicable",
+          "reason": "Express-only site has no local client transponder."
+        },
+        "panel_used_ports": 4,
+        "panel_capacity": 108,
+        "panel_housings": 1,
+        "panel_cassettes": 1,
+        "panel_fiber_positions": 4,
+        "panel_assumption": "One mated connector pair at 0.50 dB and one fusion splice at 0.10 dB per traversed line termination are editable planning assumptions.",
+        "connected_degrees": 2
+      }
+    ],
+    "issues": [],
+    "bom": [
+      {
+        "id": "A.panel",
+        "site_id": "A",
+        "description": "Corning Centrix CTX-S1U housing",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "patch-panel",
+        "catalog_id": "corning-centrix-ctx-s1u",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.cassette",
+        "site_id": "A",
+        "description": "Corning Centrix 36-LC pigtailed cassette",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "cassette",
+        "catalog_id": "corning-centrix-lc36",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.patch-cord",
+        "site_id": "A",
+        "description": "Generic duplex patch cord",
+        "quantity": 2,
+        "unit": "each",
+        "kind": "patch-cord",
+        "catalog_id": null,
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.chassis",
+        "site_id": "A",
+        "description": "Generic transport chassis",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "chassis",
+        "catalog_id": null,
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.transponder",
+        "site_id": "A",
+        "description": "Generic transponder",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "transponder",
+        "catalog_id": "generic-gnpy-reference",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.client-optic",
+        "site_id": "A",
+        "description": "Generic 100GbE client optic",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "optic",
+        "catalog_id": "generic-client-optic",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.line-interface",
+        "site_id": "A",
+        "description": "Generic coherent line interface",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "line-interface",
+        "catalog_id": "generic-coherent-line-interface",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.panel",
+        "site_id": "B",
+        "description": "Corning Centrix CTX-S1U housing",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "patch-panel",
+        "catalog_id": "corning-centrix-ctx-s1u",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.cassette",
+        "site_id": "B",
+        "description": "Corning Centrix 36-LC pigtailed cassette",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "cassette",
+        "catalog_id": "corning-centrix-lc36",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.patch-cord",
+        "site_id": "B",
+        "description": "Generic duplex patch cord",
+        "quantity": 2,
+        "unit": "each",
+        "kind": "patch-cord",
+        "catalog_id": null,
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.chassis",
+        "site_id": "B",
+        "description": "Generic transport chassis",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "chassis",
+        "catalog_id": null,
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.transponder",
+        "site_id": "B",
+        "description": "Generic transponder",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "transponder",
+        "catalog_id": "generic-gnpy-reference",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.client-optic",
+        "site_id": "B",
+        "description": "Generic 100GbE client optic",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "optic",
+        "catalog_id": "generic-client-optic",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "B.line-interface",
+        "site_id": "B",
+        "description": "Generic coherent line interface",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "line-interface",
+        "catalog_id": "generic-coherent-line-interface",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "C.panel",
+        "site_id": "C",
+        "description": "Corning Centrix CTX-S1U housing",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "patch-panel",
+        "catalog_id": "corning-centrix-ctx-s1u",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "C.cassette",
+        "site_id": "C",
+        "description": "Corning Centrix 36-LC pigtailed cassette",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "cassette",
+        "catalog_id": "corning-centrix-lc36",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "C.patch-cord",
+        "site_id": "C",
+        "description": "Generic duplex patch cord",
+        "quantity": 2,
+        "unit": "each",
+        "kind": "patch-cord",
+        "catalog_id": null,
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified"
+      },
+      {
+        "id": "A.amp.outgoing.C",
+        "site_id": "A",
+        "description": "EDFA Amp_A_outgoing \u00b7 std_medium_gain",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "amplifier",
+        "catalog_id": "std_medium_gain",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified",
+        "placement_source": "explicit topology",
+        "engine_element_id": "Amp_A_outgoing",
+        "service_id": "service-1",
+        "quantity_scope": "Modeled selected service",
+        "neighbor_id": "C",
+        "side": "outgoing"
+      }
+    ],
+    "options": [
+      {
+        "node_id": "A",
+        "options": [
+          {
+            "id": "generic-gnpy-reference",
+            "label": "Generic \u00b7 GNPy reference",
+            "status": "Pass",
+            "gnpy_equipment": "eqpt_config.json",
+            "description": "Generic planning reference. Selected client rate is a compatibility assumption. Optical propagation retains the configured generic spectrum.",
+            "vendor": "Generic",
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "line_interface_type": "generic",
+            "line_interface_label": "Generic coherent line interface",
+            "reason": "Generic client rate assumption."
+          },
+          {
+            "id": "ciena-6500-s14-wl6e-motr",
+            "label": "Ciena 6500-S14 \u00b7 WaveLogic 6 Extreme 1.6T MOTR",
+            "status": "Pass",
+            "vendor": "Ciena",
+            "platform": "6500-S14",
+            "card": "WaveLogic 6 Extreme 1.6T MOTR",
+            "published_max_payload_gbps_per_carrier": 1600,
+            "published_electro_optics_gbaud": 200,
+            "published_symbol_rate_range_gbaud": [
+              95,
+              200
+            ],
+            "published_tuning_range_thz": [
+              191.25,
+              196.125
+            ],
+            "published_fixed_grid_ghz": 200,
+            "published_flex_grid_support": true,
+            "published_rx_sensitivity_dbm": {
+              "1200_gbps": -19.5,
+              "1400_gbps": -16.5,
+              "1600_gbps": -12.0
+            },
+            "sources": [
+              "https://www.ciena.com/__data/assets/pdf_file/0021/157323/wavelogic_6_extreme_1-6t_motr_module_ds.pdf",
+              "https://www.ciena.com/insights/data-sheets/6500-S14-packet-optical-platform",
+              "https://www.ciena.com/insights/data-sheets/1-6t-wavelogic-6-extreme-motr"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 2,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "line_interface_type": "integrated",
+            "line_interface_label": "Integrated WaveLogic 6 Extreme line interface",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "nokia-1830-pss-hc-4cp4t8",
+            "label": "Nokia 1830 PSS-HC \u00b7 4CP4T8 / PSE-6s",
+            "status": "Pass",
+            "vendor": "Nokia",
+            "platform": "1830 PSS-HC",
+            "card": "4CP4T8",
+            "coherent_engine": "PSE-6s",
+            "published_max_line_rate_gbps_per_carrier": 1200,
+            "published_line_interface_gbaud": 140,
+            "published_supported_bands": [
+              "C",
+              "L"
+            ],
+            "published_typical_channel_spacing_ghz": 150,
+            "published_modulation_families": [
+              "PCS-64QAM",
+              "PCS-16QAM",
+              "QPSK"
+            ],
+            "sources": [
+              "https://www.nokia.com/optical-networks/pse-6s/",
+              "https://www.nokia.com/optical-networks/1830-photonic-service-switch/",
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "line_interface_type": "pluggable",
+            "line_interface_label": "PSE-6s BMDC012 coherent pluggable",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "ciena-2x100g-motr",
+            "label": "Ciena 6500 \u00b7 2 \u00d7 100G MOTR",
+            "vendor": "Ciena",
+            "status": "Pass",
+            "platform": "6500 D/S-Series",
+            "card": "2 \u00d7 100G MOTR",
+            "client_rates_gbps": [
+              10,
+              40,
+              100
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "sources": [
+              "https://www.ciena.com/insights/data-sheets/2-x-100g-motr-module",
+              "https://www.ciena.com/__data/assets/pdf_file/0030/154686/2x100G_MOTR_module_DS.pdf"
+            ],
+            "simulation_status": "No validated GNPy optical mode",
+            "line_interface_type": "pluggable",
+            "line_interface_label": "WL5n 100G/200G QSFP-DD coherent pluggable",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "nokia-1830-pss-42p800",
+            "label": "Nokia 1830 PSS-HC \u00b7 42P800 aggregation",
+            "vendor": "Nokia",
+            "status": "Fail",
+            "card": "42P800",
+            "client_rates_gbps": [
+              10,
+              25
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "sources": [
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "simulation_status": "Aggregation card; coherent line mode supplied by separate line card",
+            "line_interface_type": "separate_line_card",
+            "line_interface_label": "Requires a separate compatible coherent line card",
+            "reason": "Does not support the requested single 100GbE client handoff. Documented client rates: 10GbE, 25GbE."
+          }
+        ]
+      },
+      {
+        "node_id": "B",
+        "options": [
+          {
+            "id": "generic-gnpy-reference",
+            "label": "Generic \u00b7 GNPy reference",
+            "status": "Pass",
+            "gnpy_equipment": "eqpt_config.json",
+            "description": "Generic planning reference. Selected client rate is a compatibility assumption. Optical propagation retains the configured generic spectrum.",
+            "vendor": "Generic",
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "line_interface_type": "generic",
+            "line_interface_label": "Generic coherent line interface",
+            "reason": "Generic client rate assumption."
+          },
+          {
+            "id": "ciena-6500-s14-wl6e-motr",
+            "label": "Ciena 6500-S14 \u00b7 WaveLogic 6 Extreme 1.6T MOTR",
+            "status": "Pass",
+            "vendor": "Ciena",
+            "platform": "6500-S14",
+            "card": "WaveLogic 6 Extreme 1.6T MOTR",
+            "published_max_payload_gbps_per_carrier": 1600,
+            "published_electro_optics_gbaud": 200,
+            "published_symbol_rate_range_gbaud": [
+              95,
+              200
+            ],
+            "published_tuning_range_thz": [
+              191.25,
+              196.125
+            ],
+            "published_fixed_grid_ghz": 200,
+            "published_flex_grid_support": true,
+            "published_rx_sensitivity_dbm": {
+              "1200_gbps": -19.5,
+              "1400_gbps": -16.5,
+              "1600_gbps": -12.0
+            },
+            "sources": [
+              "https://www.ciena.com/__data/assets/pdf_file/0021/157323/wavelogic_6_extreme_1-6t_motr_module_ds.pdf",
+              "https://www.ciena.com/insights/data-sheets/6500-S14-packet-optical-platform",
+              "https://www.ciena.com/insights/data-sheets/1-6t-wavelogic-6-extreme-motr"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 2,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "line_interface_type": "integrated",
+            "line_interface_label": "Integrated WaveLogic 6 Extreme line interface",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "nokia-1830-pss-hc-4cp4t8",
+            "label": "Nokia 1830 PSS-HC \u00b7 4CP4T8 / PSE-6s",
+            "status": "Pass",
+            "vendor": "Nokia",
+            "platform": "1830 PSS-HC",
+            "card": "4CP4T8",
+            "coherent_engine": "PSE-6s",
+            "published_max_line_rate_gbps_per_carrier": 1200,
+            "published_line_interface_gbaud": 140,
+            "published_supported_bands": [
+              "C",
+              "L"
+            ],
+            "published_typical_channel_spacing_ghz": 150,
+            "published_modulation_families": [
+              "PCS-64QAM",
+              "PCS-16QAM",
+              "QPSK"
+            ],
+            "sources": [
+              "https://www.nokia.com/optical-networks/pse-6s/",
+              "https://www.nokia.com/optical-networks/1830-photonic-service-switch/",
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "line_interface_type": "pluggable",
+            "line_interface_label": "PSE-6s BMDC012 coherent pluggable",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "ciena-2x100g-motr",
+            "label": "Ciena 6500 \u00b7 2 \u00d7 100G MOTR",
+            "vendor": "Ciena",
+            "status": "Pass",
+            "platform": "6500 D/S-Series",
+            "card": "2 \u00d7 100G MOTR",
+            "client_rates_gbps": [
+              10,
+              40,
+              100
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "sources": [
+              "https://www.ciena.com/insights/data-sheets/2-x-100g-motr-module",
+              "https://www.ciena.com/__data/assets/pdf_file/0030/154686/2x100G_MOTR_module_DS.pdf"
+            ],
+            "simulation_status": "No validated GNPy optical mode",
+            "line_interface_type": "pluggable",
+            "line_interface_label": "WL5n 100G/200G QSFP-DD coherent pluggable",
+            "reason": "The published card supports the requested client handoff rate. Optical mode remains unverified."
+          },
+          {
+            "id": "nokia-1830-pss-42p800",
+            "label": "Nokia 1830 PSS-HC \u00b7 42P800 aggregation",
+            "vendor": "Nokia",
+            "status": "Fail",
+            "card": "42P800",
+            "client_rates_gbps": [
+              10,
+              25
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "sources": [
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "simulation_status": "Aggregation card; coherent line mode supplied by separate line card",
+            "line_interface_type": "separate_line_card",
+            "line_interface_label": "Requires a separate compatible coherent line card",
+            "reason": "Does not support the requested single 100GbE client handoff. Documented client rates: 10GbE, 25GbE."
+          }
+        ]
+      },
+      {
+        "node_id": "C",
+        "options": [
+          {
+            "id": "generic-gnpy-reference",
+            "label": "Generic \u00b7 GNPy reference",
+            "status": "Not applicable",
+            "gnpy_equipment": "eqpt_config.json",
+            "description": "Generic planning reference. Selected client rate is a compatibility assumption. Optical propagation retains the configured generic spectrum.",
+            "vendor": "Generic",
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "line_interface_type": "generic",
+            "line_interface_label": "Generic coherent line interface",
+            "reason": "Express-only site has no local client transponder."
+          },
+          {
+            "id": "ciena-6500-s14-wl6e-motr",
+            "label": "Ciena 6500-S14 \u00b7 WaveLogic 6 Extreme 1.6T MOTR",
+            "status": "Not applicable",
+            "vendor": "Ciena",
+            "platform": "6500-S14",
+            "card": "WaveLogic 6 Extreme 1.6T MOTR",
+            "published_max_payload_gbps_per_carrier": 1600,
+            "published_electro_optics_gbaud": 200,
+            "published_symbol_rate_range_gbaud": [
+              95,
+              200
+            ],
+            "published_tuning_range_thz": [
+              191.25,
+              196.125
+            ],
+            "published_fixed_grid_ghz": 200,
+            "published_flex_grid_support": true,
+            "published_rx_sensitivity_dbm": {
+              "1200_gbps": -19.5,
+              "1400_gbps": -16.5,
+              "1600_gbps": -12.0
+            },
+            "sources": [
+              "https://www.ciena.com/__data/assets/pdf_file/0021/157323/wavelogic_6_extreme_1-6t_motr_module_ds.pdf",
+              "https://www.ciena.com/insights/data-sheets/6500-S14-packet-optical-platform",
+              "https://www.ciena.com/insights/data-sheets/1-6t-wavelogic-6-extreme-motr"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 2,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "line_interface_type": "integrated",
+            "line_interface_label": "Integrated WaveLogic 6 Extreme line interface",
+            "reason": "Express-only site has no local client transponder."
+          },
+          {
+            "id": "nokia-1830-pss-hc-4cp4t8",
+            "label": "Nokia 1830 PSS-HC \u00b7 4CP4T8 / PSE-6s",
+            "status": "Not applicable",
+            "vendor": "Nokia",
+            "platform": "1830 PSS-HC",
+            "card": "4CP4T8",
+            "coherent_engine": "PSE-6s",
+            "published_max_line_rate_gbps_per_carrier": 1200,
+            "published_line_interface_gbaud": 140,
+            "published_supported_bands": [
+              "C",
+              "L"
+            ],
+            "published_typical_channel_spacing_ghz": 150,
+            "published_modulation_families": [
+              "PCS-64QAM",
+              "PCS-16QAM",
+              "QPSK"
+            ],
+            "sources": [
+              "https://www.nokia.com/optical-networks/pse-6s/",
+              "https://www.nokia.com/optical-networks/1830-photonic-service-switch/",
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "client_rates_gbps": [
+              100,
+              400,
+              800
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "line_interface_type": "pluggable",
+            "line_interface_label": "PSE-6s BMDC012 coherent pluggable",
+            "reason": "Express-only site has no local client transponder."
+          },
+          {
+            "id": "ciena-2x100g-motr",
+            "label": "Ciena 6500 \u00b7 2 \u00d7 100G MOTR",
+            "vendor": "Ciena",
+            "status": "Not applicable",
+            "platform": "6500 D/S-Series",
+            "card": "2 \u00d7 100G MOTR",
+            "client_rates_gbps": [
+              10,
+              40,
+              100
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "ciena-6500-s14"
+            ],
+            "sources": [
+              "https://www.ciena.com/insights/data-sheets/2-x-100g-motr-module",
+              "https://www.ciena.com/__data/assets/pdf_file/0030/154686/2x100G_MOTR_module_DS.pdf"
+            ],
+            "simulation_status": "No validated GNPy optical mode",
+            "line_interface_type": "pluggable",
+            "line_interface_label": "WL5n 100G/200G QSFP-DD coherent pluggable",
+            "reason": "Express-only site has no local client transponder."
+          },
+          {
+            "id": "nokia-1830-pss-42p800",
+            "label": "Nokia 1830 PSS-HC \u00b7 42P800 aggregation",
+            "vendor": "Nokia",
+            "status": "Not applicable",
+            "card": "42P800",
+            "client_rates_gbps": [
+              10,
+              25
+            ],
+            "required_slots": 1,
+            "compatible_chassis": [
+              "nokia-1830-pss-4hc",
+              "nokia-1830-pss-10hc"
+            ],
+            "sources": [
+              "https://www.nokia.com/asset/i/215113/"
+            ],
+            "simulation_status": "Aggregation card; coherent line mode supplied by separate line card",
+            "line_interface_type": "separate_line_card",
+            "line_interface_label": "Requires a separate compatible coherent line card",
+            "reason": "Express-only site has no local client transponder."
+          }
+        ]
+      }
+    ],
+    "cost_status": "Unit prices and quotes are maintained in Hyperion Estimator.",
+    "quantity_export": {
+      "schema": "hyperion.quantities/1",
+      "sourceApplication": "routes",
+      "projectId": "caa4b628-43ff-415e-9006-9320b8e49607",
+      "projectName": "DWDM Route 1",
+      "revision": "3",
+      "synthetic": false,
+      "sites": [
+        {
+          "id": "A",
+          "name": "Kapolei"
+        },
+        {
+          "id": "B",
+          "name": "Honolulu"
+        },
+        {
+          "id": "C",
+          "name": "Site C"
+        }
+      ],
+      "segments": [
+        {
+          "id": "A-B-a",
+          "fromSiteId": "A",
+          "toSiteId": "C",
+          "method": "unspecified",
+          "lengthM": 10314.442004,
+          "lengthSource": "Segmented WGS84",
+          "status": "unverified"
+        },
+        {
+          "id": "A-B-b",
+          "fromSiteId": "C",
+          "toSiteId": "B",
+          "method": "unspecified",
+          "lengthM": 10665.178796,
+          "lengthSource": "Segmented WGS84",
+          "status": "unverified"
+        }
+      ],
+      "quantities": [
+        {
+          "sourceObjectId": "A-B-a.fiber",
+          "segmentId": "A-B-a",
+          "kind": "fiber-length",
+          "description": "Designed optical fiber length",
+          "unit": "m",
+          "quantity": 10314.442004,
+          "itemKey": null,
+          "status": "unverified"
+        },
+        {
+          "sourceObjectId": "A-B-a.splice",
+          "segmentId": "A-B-a",
+          "kind": "splice-point",
+          "description": "Entered field splice points",
+          "unit": "each",
+          "quantity": 0,
+          "itemKey": null,
+          "status": "unverified"
+        },
+        {
+          "sourceObjectId": "A-B-b.fiber",
+          "segmentId": "A-B-b",
+          "kind": "fiber-length",
+          "description": "Designed optical fiber length",
+          "unit": "m",
+          "quantity": 10665.178796,
+          "itemKey": null,
+          "status": "unverified"
+        },
+        {
+          "sourceObjectId": "A-B-b.splice",
+          "segmentId": "A-B-b",
+          "kind": "splice-point",
+          "description": "Entered field splice points",
+          "unit": "each",
+          "quantity": 0,
+          "itemKey": null,
+          "status": "unverified"
+        }
+      ],
+      "assumptions": [
+        "Quantities come from the selected service's modeled route and require engineering verification.",
+        "Construction quantities and costs are outside this equipment summary.",
+        "The equipment quantity extension is versioned separately from the Routes v1 segment importer."
+      ]
+    },
+    "estimator_equipment": {
+      "schema": "hyperion.equipment-quantities/1",
+      "projectId": "caa4b628-43ff-415e-9006-9320b8e49607",
+      "projectName": "DWDM Route 1",
+      "revision": "3",
+      "items": [
+        {
+          "id": "A.panel",
+          "site_id": "A",
+          "description": "Corning Centrix CTX-S1U housing",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "patch-panel",
+          "catalog_id": "corning-centrix-ctx-s1u",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.cassette",
+          "site_id": "A",
+          "description": "Corning Centrix 36-LC pigtailed cassette",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "cassette",
+          "catalog_id": "corning-centrix-lc36",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.patch-cord",
+          "site_id": "A",
+          "description": "Generic duplex patch cord",
+          "quantity": 2,
+          "unit": "each",
+          "kind": "patch-cord",
+          "catalog_id": null,
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.chassis",
+          "site_id": "A",
+          "description": "Generic transport chassis",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "chassis",
+          "catalog_id": null,
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.transponder",
+          "site_id": "A",
+          "description": "Generic transponder",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "transponder",
+          "catalog_id": "generic-gnpy-reference",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.client-optic",
+          "site_id": "A",
+          "description": "Generic 100GbE client optic",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "optic",
+          "catalog_id": "generic-client-optic",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.line-interface",
+          "site_id": "A",
+          "description": "Generic coherent line interface",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "line-interface",
+          "catalog_id": "generic-coherent-line-interface",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.panel",
+          "site_id": "B",
+          "description": "Corning Centrix CTX-S1U housing",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "patch-panel",
+          "catalog_id": "corning-centrix-ctx-s1u",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.cassette",
+          "site_id": "B",
+          "description": "Corning Centrix 36-LC pigtailed cassette",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "cassette",
+          "catalog_id": "corning-centrix-lc36",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.patch-cord",
+          "site_id": "B",
+          "description": "Generic duplex patch cord",
+          "quantity": 2,
+          "unit": "each",
+          "kind": "patch-cord",
+          "catalog_id": null,
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.chassis",
+          "site_id": "B",
+          "description": "Generic transport chassis",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "chassis",
+          "catalog_id": null,
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.transponder",
+          "site_id": "B",
+          "description": "Generic transponder",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "transponder",
+          "catalog_id": "generic-gnpy-reference",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.client-optic",
+          "site_id": "B",
+          "description": "Generic 100GbE client optic",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "optic",
+          "catalog_id": "generic-client-optic",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "B.line-interface",
+          "site_id": "B",
+          "description": "Generic coherent line interface",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "line-interface",
+          "catalog_id": "generic-coherent-line-interface",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "C.panel",
+          "site_id": "C",
+          "description": "Corning Centrix CTX-S1U housing",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "patch-panel",
+          "catalog_id": "corning-centrix-ctx-s1u",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "C.cassette",
+          "site_id": "C",
+          "description": "Corning Centrix 36-LC pigtailed cassette",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "cassette",
+          "catalog_id": "corning-centrix-lc36",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "C.patch-cord",
+          "site_id": "C",
+          "description": "Generic duplex patch cord",
+          "quantity": 2,
+          "unit": "each",
+          "kind": "patch-cord",
+          "catalog_id": null,
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified"
+        },
+        {
+          "id": "A.amp.outgoing.C",
+          "site_id": "A",
+          "description": "EDFA Amp_A_outgoing \u00b7 std_medium_gain",
+          "quantity": 1,
+          "unit": "each",
+          "kind": "amplifier",
+          "catalog_id": "std_medium_gain",
+          "unit_cost": null,
+          "currency": null,
+          "price_status": "missing",
+          "status": "unverified",
+          "placement_source": "explicit topology",
+          "engine_element_id": "Amp_A_outgoing",
+          "service_id": "service-1",
+          "quantity_scope": "Modeled selected service",
+          "neighbor_id": "C",
+          "side": "outgoing"
+        }
+      ],
+      "import_status": "Import with estimator_adapter.js",
+      "sites": [
+        {
+          "id": "A",
+          "name": "Kapolei"
+        },
+        {
+          "id": "B",
+          "name": "Honolulu"
+        },
+        {
+          "id": "C",
+          "name": "Site C"
+        }
+      ],
+      "segments": [
+        {
+          "id": "A-B-a",
+          "fromSiteId": "A",
+          "toSiteId": "C",
+          "method": "unspecified",
+          "lengthM": 10314.442004,
+          "lengthSource": "Segmented WGS84",
+          "status": "unverified"
+        },
+        {
+          "id": "A-B-b",
+          "fromSiteId": "C",
+          "toSiteId": "B",
+          "method": "unspecified",
+          "lengthM": 10665.178796,
+          "lengthSource": "Segmented WGS84",
+          "status": "unverified"
+        }
+      ],
+      "inventory_status": "Planned network plus modeled selected-service amplifier inventory."
+    },
+    "source_hash": "214546ee6ab99b3dc603156287b2d53d45998656f11ddd5ce306c8456d6888f5",
+    "source_snapshot": {
+      "version": 2,
+      "m6": true,
+      "requirements": {
+        "rate_gbps": 100,
+        "mode_id": "generic-100g",
+        "grid": "fixed",
+        "channels": 1,
+        "center_thz": 193.1,
+        "guard_band_ghz": 0,
+        "launch_dbm": 0,
+        "reserve_db": 2
+      },
+      "project_id": "caa4b628-43ff-415e-9006-9320b8e49607",
+      "revision": 3,
+      "route_name": "DWDM Route 1",
+      "network": {
+        "nodes": [
+          {
+            "id": "A",
+            "name": "Kapolei",
+            "lat": 21.335,
+            "lon": -158.058
+          },
+          {
+            "id": "B",
+            "name": "Honolulu",
+            "lat": 21.307,
+            "lon": -157.858
+          },
+          {
+            "id": "C",
+            "name": "Site C",
+            "lat": 21.321233402887998,
+            "lon": -157.95966716348568
+          }
+        ],
+        "links": [
+          {
+            "id": "A-B-a",
+            "from": "A",
+            "to": "C",
+            "bends": [],
+            "override": null,
+            "splices": [],
+            "inline_gain": null,
+            "fiber": {
+              "type_variety": "SSMF",
+              "loss_coef": 0.2
+            }
+          },
+          {
+            "id": "A-B-b",
+            "from": "C",
+            "to": "B",
+            "bends": [],
+            "override": null,
+            "splices": [],
+            "inline_gain": null,
+            "fiber": {
+              "type_variety": "SSMF",
+              "loss_coef": 0.2
+            }
+          }
+        ],
+        "services": [
+          {
+            "id": "service-1",
+            "source": "A",
+            "target": "B",
+            "via": []
+          }
+        ]
+      },
+      "active_service": "service-1",
+      "equipment": {
+        "vendor": "generic",
+        "service_gbps": 100.0,
+        "mode": "automatic",
+        "nodes": {
+          "A": {
+            "role": "terminal",
+            "amplifiers": {
+              "by_neighbor": {
+                "B": {
+                  "incoming": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  },
+                  "outgoing": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  }
+                },
+                "C": {
+                  "incoming": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  },
+                  "outgoing": {
+                    "enabled": true,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  }
+                }
+              }
+            },
+            "panel": {
+              "enabled": true,
+              "pairs_per_degree": 1,
+              "connector_loss_db": 0.5,
+              "splices_per_degree": 1,
+              "splice_loss_db": 0.1
+            }
+          },
+          "B": {
+            "role": "terminal",
+            "amplifiers": {
+              "by_neighbor": {
+                "A": {
+                  "incoming": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  },
+                  "outgoing": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  }
+                },
+                "C": {
+                  "incoming": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  },
+                  "outgoing": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  }
+                }
+              }
+            },
+            "panel": {
+              "enabled": true,
+              "pairs_per_degree": 1,
+              "connector_loss_db": 0.5,
+              "splices_per_degree": 1,
+              "splice_loss_db": 0.1
+            }
+          },
+          "C": {
+            "role": "pass-through",
+            "amplifiers": {
+              "by_neighbor": {
+                "A": {
+                  "incoming": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  },
+                  "outgoing": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  }
+                },
+                "B": {
+                  "incoming": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  },
+                  "outgoing": {
+                    "enabled": false,
+                    "control": "automatic",
+                    "gain_db": 15,
+                    "target_dbm": 0,
+                    "model": "std_medium_gain"
+                  }
+                }
+              }
+            },
+            "panel": {
+              "enabled": true,
+              "pairs_per_degree": 1,
+              "connector_loss_db": 0.5,
+              "splices_per_degree": 1,
+              "splice_loss_db": 0.1
+            }
+          }
+        }
+      },
+      "tx_power_dbm": null,
+      "booster_gain_db": null,
+      "preamp_gain_db": null,
+      "quality_limits": null,
+      "ase_threshold_db": null,
+      "ase_warning_db": 1,
+      "reference_case": false,
+      "edit_reviews": [
+        {
+          "id": "C-insert-review",
+          "node_id": "C",
+          "link_ids": [
+            "A-B-a",
+            "A-B-b"
+          ],
+          "status": "Review",
+          "message": "The site was snapped to the selected drawn span. Confirm its geographic position."
+        }
+      ]
+    },
+    "scope": "Full saved physical network",
+    "actual_service_amplifiers": [
+      {
+        "id": "A.amp.outgoing.C",
+        "site_id": "A",
+        "description": "EDFA Amp_A_outgoing \u00b7 std_medium_gain",
+        "quantity": 1,
+        "unit": "each",
+        "kind": "amplifier",
+        "catalog_id": "std_medium_gain",
+        "unit_cost": null,
+        "currency": null,
+        "price_status": "missing",
+        "status": "unverified",
+        "placement_source": "explicit topology",
+        "engine_element_id": "Amp_A_outgoing",
+        "service_id": "service-1",
+        "quantity_scope": "Modeled selected service",
+        "neighbor_id": "C",
+        "side": "outgoing"
+      }
+    ],
+    "inventory_status": "Planned network plus modeled selected-service amplifier inventory.",
+    "active_service_id": "service-1"
+  },
+  "quality_check": {
+    "status": "Not evaluated",
+    "reason": "Enter a GSNR planning threshold at signal bandwidth."
+  },
+  "ase_check": {
+    "status": "Not evaluated"
+  },
+  "catalog_profile": "generic-gnpy-reference",
+  "catalog_checks": []
+}

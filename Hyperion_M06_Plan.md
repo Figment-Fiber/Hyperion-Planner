@@ -61,3 +61,61 @@ Routes owns engineering results, connections and equipment quantities. Estimator
 ## Current baseline
 
 The inspected M04 reference uses 76 channels at 32 GBd, 50 GHz spacing and 0.15 roll-off. It remains the regression fixture as configurable service modes and spectrum are introduced.
+
+
+## November 24 scope and authorization record
+
+Kevin approved the narrowed M06 build, replacing the earlier planning hold. Current status: implemented development build on metis/m6; see CHANGELOG.md, README.md and evidence/m06/README.md for verified delivered behavior and remaining limits. The earlier detailed roadmap above is retained as historical context. This dated revision takes precedence.
+
+### Current engineering scope
+
+Keep the approved usability changes, explicit node/equipment roles, confirmed span insertion, optional per-direction amplification, 20-node target, supported generic service modes, fixed/flex spectrum checks, real optical calculation and OEO sections.
+
+Defer growth/resilience: future demand scenarios, beginning/end-of-life comparison, protection routing, shared-risk and failure/survivability evaluation. Current channel loading and design reserve remain core optical inputs.
+
+Defer formal engineering deliverables: installation/port/strand schedules, acceptance packages, field-measurement integration and comprehensive handover/Design Review packages. Retain basic save/load, results, Excel, model provenance and component readings.
+
+Defer new suite integration with Estimator/Rooms or synchronized projects. Retain existing quantity exports and the approved shared beige visual language. Earlier references to deferred work do not reactivate it.
+
+### Explicit optional amplification
+
+Each supported direction has Use amplifier, with OFF controls grayed out and the amplifier excluded from actual GNPy input and effective topology. Enabled hardware uses an automatic output target or manual gain and model selection; automatic control must not silently add hardware or overwrite manual settings. Preserve disabled settings for reuse. Count installed versus absent/bypassed equipment accurately. A physically powered-off installed device is not an assumed lossless bypass.
+
+Show incoming preamps and outgoing boosters separately at terminal and intermediate sites and by connected neighbor. Keep inline stages at their explicit location. Display requested versus actual gain, noise figure and input/output power with units, revision and operating-limit warnings. Respect the engine's actual supported control modes.
+
+Permit short paths with zero EDFAs. A failing unamplified path must fail or remain unevaluated where specifications are missing, rather than being repaired with hidden gain. Keep the 80-km placement-review rule separate from calculated receiver and quality feasibility. Compare exact serialized CLI inputs, ensure disabled stages contribute no amplifier ASE and verify reenable, reverse direction, save/load and undo/redo.
+
+### Insert a site into an existing span
+
+Select A-B, place a node and choose its role to propose A-C and C-B. Placement or dragging over an existing segment must ask Yes, split span or No, keep span unchanged; proximity or dismissal never counts as approval. Show the affected span and connections. No/cancel preserves the original span, configuration and service continuity; an existing moved node must not acquire new connections without approval.
+
+Preserve bends and split the drawn polyline at the insertion point. Preserve total engineered length, initially apportioned by geographic subpath length, with editable child overrides. Retain connector, field-splice and amplifier assignments without dropping or duplicating loss. Preserve actual inline-amplifier position; flag ambiguous assignments for review and acknowledgment. Commit confirmed insertion as one undoable operation. Validate straight/bent paths, overrides, Yes/No/cancel, removal, topology, optical results, quantities and exports.
+
+### Service requirements and three-rate comparison
+
+One route editor has What must this route support? and a separate Compare 100G / 400G / 800G view. Columns are alternative scenarios, not simultaneous services. Hold the physical route, fiber and equipment fixed; make proposed changes explicit. Distinguish one client handoff, aggregate demand and coherent carriers rather than equating eight 100G clients with one 800G interface.
+
+Resolve an explicit mode, baud rate, modulation/FEC assumptions, launch/Tx OSNR, spectrum allocation, supported receive levels, quality threshold and reserve for each case. Generic illustrative thresholds are not certified vendor data. Unqualified or missing vendor mode data must not yield a vendor pass. Hardware incompatibility and optical feasibility both matter. Reevaluate after any relevant equipment, length, fiber, loss, power, ROADM or spectrum change.
+
+Show allocated and occupied spectrum, guard gaps, overlap and band/filter constraints. Guard-band width does not automatically grow with distance. If reaching a longer distance requires another mode, propose it and recompute bandwidth and quality together. Enforce allocation continuity; do not invent a vendor WSS transfer/narrowing model or double-count penalties. ASE comes from actual enabled stages; NLI uses actual fiber, power and loading. Added gain or larger spacing is not an automatic pass.
+
+OEO explicitly receives, regenerates and transmits; split the service into independently propagated optical sections. Evaluate all sections and compatibility. A failed earlier section cannot be hidden by clean final output. Preserve per-section inputs, assumptions and basic exported results.
+
+### Ten approved user-workflow improvements
+
+1. Persistent selected-object inspector: clicking a node/span opens its relevant controls at the top, with selection highlight and an obvious return to overview.
+2. Discoverable contextual Add amplifier, Add ROADM, Add splice and Insert site controls, with explanations for unavailable actions. A site can house multiple components.
+3. Clickable actual optical component path, distinguishing passive bypass, ROADM express and OEO, with actual readings where reported.
+4. Everyday controls first; detailed modem/filter/model inputs under Advanced, with units/defaults/assumptions and visible warnings.
+5. Keep active service, endpoints, direction and effective distance visible. Distinguish off-path inventory from active propagation and drawn from engineered lengths.
+6. Actionable findings: component/service, units, threshold/value and settings navigation; separate placement review, calculated failure and missing characterization. Proposed corrections require review.
+7. Deliberate copy/batch defaults for compatible sites/spans, with preview, preserved manual overrides and undo.
+8. Unsaved/revision indicators, browser-local recovery, current versus last-calculated results and stale export warnings. A draft is not durable project storage.
+9. Preview destructive edits and impacted service paths, preserve settings on cancel and avoid silent engineering-data loss.
+10. First-time-user acceptance: create A-B, insert C, choose roles, add/disable equipment, set length, run, follow a finding, compare rerun, undo and save/reopen/export without developer guidance. Record usability failures separately from numerical parity.
+
+### Zones and scope boundaries
+
+Retain M05 full-polyline polygon screening, map overlays, warnings and basic exports. Default coverage is the limited bundled v0.6 snapshot; an optional configured feed is not a configured production live service. Show coverage/freshness. Recompute geometry screening after path changes. Do not turn geographic review into an optical attenuation penalty or legal permitting clearance.
+
+User-requested engineering change rule remains: every change must reach all calculations, validation, quantities and exports it can affect. Exact GNPy CLI comparison and effective-topology inspection are required for new optical paths. The recalled M04 LinkedIn baseline remains unverified as posting history; change notes distinguish existing M04 behavior from subsequent additions.

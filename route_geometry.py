@@ -6,7 +6,7 @@ from geographiclib.geodesic import Geodesic
 
 
 MAX_BENDS_PER_SPAN = 50
-MAX_SITES = 6
+MAX_SITES = 20
 
 
 def validate_coordinate(point):
@@ -24,7 +24,7 @@ def validate_coordinate(point):
 def segmented_route(points, bends=None, marine_screen=None):
     """Return per-span paths, cumulative distances and optional water screening.
 
-    `points` contains two to six ordered equipment sites.
+    `points` contains two to twenty ordered equipment sites.
     `bends` contains one array of intermediate geographic vertices per span.
     Marine screening is called with each entire polyline and returns one flag
     per segment, matching Hyperion's existing screening function.
@@ -166,6 +166,11 @@ def resolve_network(payload):
             if link["from"] != left:
                 oriented["connector_in_db"] = link.get("connector_out_db")
                 oriented["connector_out_db"] = link.get("connector_in_db")
+                if link.get("inline_position_fraction") is not None:
+                    fraction = link["inline_position_fraction"]
+                    if type(fraction) not in (int, float) or not 0 < fraction < 1:
+                        raise ValueError("Inline amplifier position must be between zero and one.")
+                    oriented["inline_position_fraction"] = 1 - fraction
             ordered_links.append(oriented)
             route_ids.append(right)
     return {

@@ -3,13 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hyperion Routes · M05</title>
+  <title>Hyperion Routes · M06</title>
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" href="/fonts/Barlow-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/leaflet.css">
   <link rel="stylesheet" href="/app.css">
   <script src="/leaflet.js" defer></script>
+  <script src="/editing.js" defer></script>
   <script src="/app.js" defer></script>
+  <script src="/m6-ui.js" defer></script>
 </head>
 <body>
   <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -54,8 +56,37 @@
       <div class="actions">
         <label class="toggle"><input id="auto-run" type="checkbox" checked> Recalculate after edits</label>
         <button id="run" class="primary"><svg class="icon"><use href="#icon-play"/></svg>Run simulation</button>
+        <button id="compare-rates">Compare 100G / 400G / 800G</button>
       </div>
     </div>
+    <p id="project-state" role="status" class="quiet">New project · Save a project file to keep it.</p>
+    <div class="actions"><button id="recover-draft" hidden>Recover local draft</button><button id="upgrade-project" hidden>Enable M06 controls</button></div>
+    <details id="design-requirements" class="pane requirement-pane" open>
+      <summary>What must this route support?</summary>
+      <div class="inside requirement-grid">
+        <label>Client handoff<select id="req-rate"><option value="100">100 GbE</option><option value="400">400 GbE</option><option value="800">800 GbE</option></select></label>
+        <label>Optical mode<select id="req-mode"><option value="generic-100g">Generic 100G · illustrative</option><option value="generic-400g">Generic 400G · illustrative</option><option value="generic-800g">Generic 800G · illustrative</option></select></label>
+        <label>Spectrum grid<select id="req-grid"><option value="fixed">Fixed spacing</option><option value="flex">Flex-grid</option></select></label>
+        <label>Number of carriers<input id="req-channels" type="number" min="1" max="96" value="1"></label>
+        <label>First channel center (THz)<input id="req-center" type="number" min="186" max="202" step="0.00625" value="193.1"></label>
+        <label>Minimum guard band (GHz)<input id="req-guard" type="number" min="0" max="100" step="0.5" value="0"></label>
+        <label>Channel spacing (GHz)<input id="req-spacing" type="number" min="6.25" max="400" step="6.25" placeholder="Mode default"></label>
+        <label>Allocated slot width (GHz)<input id="req-slot" type="number" min="12.5" max="400" step="12.5" placeholder="Mode default"></label>
+        <label>Launch power per channel (dBm)<input id="req-launch" type="number" min="-20" max="8" step="0.1" value="0"></label>
+        <label>Design reserve (dB)<input id="req-reserve" type="number" min="0" max="20" step="0.1" value="2"></label>
+        <button id="requirements-defaults">Use generic 100G defaults</button>
+        <p class="quiet wide">Illustrative generic modes evaluate stated assumptions, not vendor-certified performance. Vendor hardware selection remains a separate compatibility check. Comparisons hold the physical route fixed and use the default mode/slot per rate.</p>
+        <details class="wide"><summary>Advanced modem and receiver assumptions</summary><div class="requirement-grid">
+          <label>Required GSNR, signal bandwidth (dB)<input id="req-gsnr" type="number" min="-20" max="60" step="0.1" placeholder="Illustrative mode default"></label>
+          <label>Receiver minimum (dBm/channel)<input id="req-rx-min" type="number" min="-60" max="20" step="0.1" placeholder="−20 generic"></label>
+          <label>Receiver maximum (dBm/channel)<input id="req-rx-max" type="number" min="-60" max="20" step="0.1" placeholder="0 generic"></label>
+          <label>Transmitter OSNR, 0.1 nm (dB)<input id="req-tx-osnr" type="number" min="0" max="80" step="0.1" placeholder="40 generic"></label>
+          <label>Baud rate (GBd)<input id="req-baud" type="number" min="1" max="300" step="0.1" placeholder="Mode default"></label>
+          <label>Pulse-shaping roll-off<input id="req-roll" type="number" min="0" max="1" step="0.01" placeholder="Mode default"></label>
+        </div></details>
+      </div>
+    </details>
+    <div id="active-service-strip" class="service-strip" aria-live="polite"></div>
     <div class="work" id="workspace">
       <section class="pane map-pane" aria-labelledby="map-title">
         <div class="panehead maphead">
@@ -79,6 +110,7 @@
       <details id="route-settings" class="pane route-settings" open>
         <summary><svg class="icon"><use href="#icon-settings"/></svg>Route settings</summary>
         <div class="inside settings-items">
+          <div id="selection-editor"><p class="quiet">Click a site or span to open its settings here.</p></div>
           <details open>
             <summary>Service and design</summary>
             <label for="service-source">Transmit site</label><select id="service-source"></select>
@@ -87,14 +119,13 @@
             <label for="design-mode">Design mode</label><select id="design-mode"><option value="automatic">Automatic</option><option value="advanced">Advanced</option></select>
             <label for="service-rate">Single client handoff</label><select id="service-rate"><option value="100">100 GbE</option><option value="400">400 GbE</option><option value="800">800 GbE</option></select>
             <label for="vendor">Global equipment preset</label><select id="vendor"><option value="generic">Generic reference</option><option value="ciena">Ciena</option><option value="nokia">Nokia</option></select>
-            <p class="quiet">Vendor capability checks accompany a generic 76-channel optical calculation. Missing mode data appears in the results.</p>
+            <p class="quiet" id="catalog-scope">Vendor hardware checks accompany the selected optical mode. Missing mode data appears in the results.</p>
             <label for="tx-power">Transmitter output (dBm/channel)</label><input id="tx-power" type="number" min="-20" max="8" step="any" placeholder="0 default">
             <label for="booster-gain">Transmit booster gain (dB)</label><input id="booster-gain" type="number" min="8" max="35" step="any" placeholder="Automatic reference">
             <label for="preamp-gain">Receive preamp gain (dB)</label><input id="preamp-gain" type="number" min="8" max="35" step="any" placeholder="Automatic reference">
             <button id="reference">Load 80 km reference</button>
           </details>
           <details open><summary>Sites and spans</summary><div id="network-list" class="rows"></div></details>
-          <div id="selection-editor"><p class="quiet">Select a site or span.</p></div>
           <details><summary>Planning thresholds</summary>
             <label for="quality-threshold">Required GSNR (signal BW, dB)</label><input id="quality-threshold" type="number" min="-100" max="100" step="any" placeholder="Optional">
             <label for="quality-reserve">GSNR design reserve (dB)</label><input id="quality-reserve" type="number" min="0" max="100" step="any" value="2">
@@ -105,6 +136,7 @@
         </div>
       </details>
     </div>
+    <section id="comparison-pane" class="pane results" hidden><div class="panehead"><h2>Compare service rates</h2><button id="close-comparison">Close comparison</button></div><div class="inside"><p id="comparison-status" role="status"></p><div id="comparison-grid" class="comparison-grid"></div></div></section>
     <section class="pane results" aria-labelledby="results-title">
       <div class="panehead"><div><h2 id="results-title"><svg class="icon"><use href="#icon-chart"/></svg>Simulation results</h2><span id="stale-results" class="span-warning" hidden>Inputs changed · Rerun required</span></div>
         <div class="actions"><a id="download" hidden>Excel</a><a id="evidence-download" hidden>Run evidence</a><a id="estimator-download" hidden>Estimator quantities</a></div>
@@ -113,6 +145,8 @@
         <p id="result-summary" role="status">Run a service to inspect the completed design.</p>
         <p id="simulation-error" class="span-warning" role="alert" hidden></p>
         <div id="results-checks"></div>
+        <div id="optical-path" class="optical-path" aria-label="Calculated optical component path"></div>
+        <div id="spectrum-view" class="spectrum-view" aria-label="Allocated spectrum"></div>
         <div class="table-scroll" id="channel-table" hidden tabindex="0">
           <table aria-label="Channel results"><thead><tr><th>Channel</th><th>Frequency (THz)</th><th>Power (dBm)</th><th>ASE OSNR (signal BW, dB)</th><th>SNR NLI (signal BW, dB)</th><th>GSNR (signal BW, dB)</th></tr></thead><tbody id="channels"></tbody></table>
         </div>
@@ -121,6 +155,7 @@
       </div>
     </section>
     <dialog id="option-detail"><h2 id="option-title"></h2><p id="option-reason"></p><form method="dialog"><button>Close</button></form></dialog>
+    <dialog id="insert-confirm"><h2>Insert a site into this span?</h2><p id="insert-description"></p><label>New site role<select id="insert-role"><option value="pass-through">Passive pass-through</option><option value="roadm">ROADM</option><option value="amplifier">Amplifier site</option><option value="splice">Splice site</option><option value="oeo">OEO regeneration</option></select></label><p class="quiet">Lengths and bends are preserved. Review any equipment assignment notes after insertion.</p><div class="actions"><button id="insert-no">No, keep span unchanged</button><button id="insert-yes" class="primary">Yes, split span</button></div></dialog>
   </main>
 </body>
 </html>

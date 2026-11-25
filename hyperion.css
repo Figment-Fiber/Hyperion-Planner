@@ -118,3 +118,13 @@ dialog::backdrop{background:#3b382e77;backdrop-filter:blur(2px)}
 @media(max-width:1100px){.heading{align-items:flex-start;flex-direction:column}.route-name{width:min(700px,75vw)}.mast{gap:12px}.mast .actions button{padding:7px 9px}}
 @media(max-width:850px){.wrap{padding:16px;margin-left:0}.suite-rail{display:none}.mast{margin-left:0;padding:15px 16px}.work{grid-template-columns:1fr;gap:14px}.resize-vertical{display:none}.route-settings{max-height:65vh}.heading{align-items:start;flex-direction:column}.route-name{width:min(600px,90vw)}.map{height:400px}.brand small{font-size:11px}.brand span{font-size:28px}.map-tools .quiet{flex-basis:100%}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}button{transition:none}}
+.requirement-pane{margin:14px 0 18px}.requirement-pane>summary{padding:13px 16px;background:#f0e6d6;border-bottom:1px solid var(--edge)}
+.requirement-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 18px}.requirement-grid label{margin:0}.requirement-grid .wide{grid-column:1/-1;margin:4px 0}
+.service-strip{padding:11px 14px;border:1px solid var(--edge);border-radius:7px;background:#e9ebdd;margin-bottom:16px;font-size:14px}
+fieldset{border:1px solid var(--edge);border-radius:7px;margin:12px 0;padding:12px}legend{font-family:var(--hyperion-heading);font-size:17px;padding:0 6px}.disabled-stage{opacity:.5}
+.selected-marker{outline:3px solid #36736e;outline-offset:3px}.comparison-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.comparison-card{background:#f7efe2;padding:16px;border:1px solid var(--edge);border-radius:8px}.comparison-card pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:300px}.optical-path{margin:16px 0}.optical-path button{margin:4px;font-size:13px}.spectrum-view{padding:12px 0}.spectrum-slot{display:inline-block;max-width:100%;overflow-wrap:anywhere;padding:8px;background:#e1e8d9;border:1px solid #8da598;border-radius:5px;margin:4px;font-size:13px}
+#selection-editor{border-top:0;padding-top:0;border-bottom:2px solid #9caca0;padding-bottom:16px;margin-bottom:16px}
+@media(max-width:850px){.requirement-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.comparison-grid{grid-template-columns:1fr}}
+@media(max-width:450px){.requirement-grid{grid-template-columns:1fr}}
+.m6-project #tx-power,.m6-project #booster-gain,.m6-project #preamp-gain,.m6-project #service-rate,.m6-project label[for=tx-power],.m6-project label[for=booster-gain],.m6-project label[for=preamp-gain],.m6-project label[for=service-rate]{display:none}
+.spectrum-slot{display:block;position:relative;padding-bottom:18px}.occupied-spectrum{height:7px;background:#36736e;position:absolute;bottom:5px;left:0;border-radius:3px}.comparison-card a{display:block}

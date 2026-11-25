@@ -205,7 +205,8 @@ def evaluate_design(payload, result):
         profile = profiles.get(node["profile_id"])
         if profile is None:
             raise ValueError(f"Unknown equipment profile at {node['name']}.")
-        has_transponder = node["role"] == "terminal" or node["local_add_drop"]
+        has_transponder = node["role"] in ("terminal", "oeo") or node["local_add_drop"]
+        transponder_count = 2 if node["role"] == "oeo" else 1
         compatibility = (profile_compatibility(profile, settings["service_gbps"], node["vendor"])
                          if has_transponder else
                          {"status": "Not applicable", "reason": "Express-only site has no local client transponder."})
@@ -242,12 +243,12 @@ def evaluate_design(payload, result):
             item(node["id"], "chassis", profile.get("platform", "Generic transport chassis"),
                  1, "chassis", chassis)
             item(node["id"], "transponder", profile.get("card", "Generic transponder"),
-                 1, "transponder", profile["id"])
+                 transponder_count, "transponder", profile["id"])
             item(node["id"], "client-optic", f"Generic {settings['service_gbps']:g}GbE client optic",
-                 1, "optic", "generic-client-optic")
+                 0 if node["role"] == "oeo" else 1, "optic", "generic-client-optic")
             if profile.get("line_interface_type") != "integrated":
                 item(node["id"], "line-interface", profile.get("line_interface_label", "Generic coherent line interface"),
-                     1, "line-interface", "generic-coherent-line-interface")
+                     transponder_count, "line-interface", "generic-coherent-line-interface")
             if profile.get("line_interface_type") == "separate_line_card":
                 issues.append({
                     "node_id": node["id"], "check": "Coherent line termination", "status": "Not evaluated",
@@ -266,10 +267,11 @@ def evaluate_design(payload, result):
                     "reason": "Published switching and band capabilities do not specify a complete optical transfer function.",
                     "action": "Use the generic impairment settings or supply validated vendor path-loss and passband data.",
                 })
-    topology = result.get("topology_input", {})
+    sections = result.get("sections") or [result]
+    topology = {"elements": [element for section in sections for element in section.get("topology_input", {}).get("elements", [])]}
     amplifier_inputs = {element["uid"]: element for element in topology.get("elements", [])
                         if element.get("type") == "Edfa"}
-    effective = {element["uid"]: element for element in result.get("effective_topology", {}).get("elements", [])
+    effective = {element["uid"]: element for section in sections for element in section.get("effective_topology", {}).get("elements", [])
                  if element.get("type") == "Edfa"}
     amplifier_ids = set(amplifier_inputs) | set(effective)
     amplifier_ids.update(re.findall(r"^Edfa (.+)$", result.get("report", ""), re.MULTILINE))
@@ -312,8 +314,8 @@ def summarize_network(payload, active_result=None):
     if not isinstance(network, dict):
         raise ValueError("Provide a network for the equipment summary.")
     nodes, links, services = (network.get(key, []) for key in ("nodes", "links", "services"))
-    if not isinstance(nodes, list) or not 2 <= len(nodes) <= 6:
-        raise ValueError("Equipment summaries support two to six sites.")
+    if not isinstance(nodes, list) or not 2 <= len(nodes) <= 20:
+        raise ValueError("Equipment summaries support two to 20 sites.")
     node_ids = [node.get("id") for node in nodes if isinstance(node, dict)]
     if len(node_ids) != len(nodes) or len(set(node_ids)) != len(nodes):
         raise ValueError("Sites need unique stable IDs.")
@@ -397,10 +399,26 @@ def summarize_network(payload, active_result=None):
     projected["coordinates"] = [[node["lat"], node["lon"]] for node in nodes]
     source_equipment["nodes"] = [
         {**original.get(node_id, {}), "id": node_id, "degrees": max(1, degrees[node_id]),
-         "local_add_drop": node_id in endpoints, "role": "roadm" if degrees[node_id] > 1 else "terminal"}
+         "local_add_drop": node_id in endpoints or original.get(node_id, {}).get("role") == "oeo",
+         "role": original.get(node_id, {}).get("role", "roadm" if degrees[node_id] > 1 else "terminal")}
         for node_id in node_ids
     ]
     summary = evaluate_design(projected, {})
+    # Installed direction settings apply to all physical neighbors, including inactive services.
+    for node_id in node_ids:
+        cfg = original.get(node_id, {}).get("amplifiers", {})
+        neighbors = [link["to"] if link["from"] == node_id else link["from"]
+                     for link in links if node_id in (link["from"], link["to"])]
+        for neighbor in neighbors:
+            for side in ("incoming", "outgoing"):
+                setting = {**cfg.get(side, {}), **cfg.get("by_neighbor", {}).get(neighbor, {}).get(side, {})}
+                if not setting.get("enabled", False):
+                    continue
+                summary["bom"].append({"id": f"{node_id}.amp.{side}.{neighbor}", "site_id": node_id,
+                    "neighbor_id": neighbor, "side": side, "description": "Configured directional EDFA",
+                    "quantity": 1, "unit": "each", "kind": "amplifier", "catalog_id": setting.get("model", "generic-edfa"),
+                    "unit_cost": None, "currency": None, "price_status": "missing", "status": "unverified",
+                    "quantity_scope": "Configured full network"})
     for node in summary["sites"]:
         node["connected_degrees"] = degrees[node["id"]]
         if degrees[node["id"]] == 0:
@@ -436,10 +454,22 @@ def summarize_network(payload, active_result=None):
             engine_id = amplifier["id"].removeprefix("optical.")
             item = deepcopy(amplifier)
             item.update(engine_element_id=engine_id, service_id=service_id, quantity_scope="Modeled selected service")
+            m6_midpoint = re.fullmatch(r"ILA_(\d+)", engine_id)
+            m6_node = re.fullmatch(r"Amp_(.+)_(incoming|outgoing)", engine_id)
             midpoint = re.fullmatch(r"Span(\d+)_User_ILA", engine_id)
             receiver = re.fullmatch(r"Edfa(\d+)", engine_id)
             outgoing = re.search(r"_to_Span(\d+)$", engine_id)
-            if midpoint and int(midpoint[1]) <= len(route_links):
+            if m6_node and any(node["id"] == m6_node[1] for node in route_nodes):
+                index = next(i for i, node in enumerate(route_nodes) if node["id"] == m6_node[1])
+                neighbor_index = index - 1 if m6_node[2] == "incoming" else index + 1
+                if 0 <= neighbor_index < len(route_nodes):
+                    neighbor = route_nodes[neighbor_index]["id"]
+                    item.update(id=f"{m6_node[1]}.amp.{m6_node[2]}.{neighbor}", site_id=m6_node[1],
+                                neighbor_id=neighbor, side=m6_node[2])
+            elif m6_midpoint and int(m6_midpoint[1]) <= len(route_links):
+                link = route_links[int(m6_midpoint[1]) - 1]
+                item.update(id=link["id"] + ".inline-edfa", segment_id=link["id"])
+            elif midpoint and int(midpoint[1]) <= len(route_links):
                 link = route_links[int(midpoint[1]) - 1]
                 item.update(id=link["id"] + ".inline-edfa", segment_id=link["id"])
             elif receiver and int(receiver[1]) <= len(route_links) and int(receiver[1]) < len(route_nodes):
